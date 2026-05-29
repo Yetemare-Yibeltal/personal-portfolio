@@ -1,0 +1,50 @@
+.latest-work-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 45px;
+}
+.latest-work-wrapper .latest-work-title h1 {
+  background: linear-gradient(267deg, #8b3a18 1.06%, #4f1c02 60.06%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  font-family: "Yeseva One", serif;
+  margin: 0 0 40px;
+}
+.latest-work-component-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  height: 100%;
+  width: 100%;
+}
+.showmore-btn {
+  background: #140101;
+  width: 170px;
+  font-size: 17px;
+  border: 1px solid #fff;
+  padding: 9px;
+  margin: 50px;
+  border-radius: 50px;
+  color: #fff;
+}
+.showmore-btn:hover {
+  background: linear-gradient(267deg, #08df7b.36%, #ff7200 102.06%);
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  border-radius: 20px;
+  transform: scale(1.02);
+  transition: 0.9s ease-in-out;
+}
+.showmore-btn::after {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  width: 40px;
+  content: "\f30b";
+  margin: 10px 15px;
+  color: #fff;
+}

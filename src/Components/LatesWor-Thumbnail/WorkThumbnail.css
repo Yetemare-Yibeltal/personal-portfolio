@@ -1,0 +1,43 @@
+.image-with-title {
+  position: relative;
+  display: flex; /* Add this */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+  border-radius: 15px;
+}
+
+.image-with-title img {
+  width: 100%;
+  max-height: 200px;
+  border-radius: 20px;
+  border: 2px solid #fff;
+}
+.work-thumbnail:hover {
+  transform: scale(1.08);
+  transition: 0.6s ease-in-out;
+}
+.work-thumbnail {
+  background-color: transparent;
+}
+.image-with-title h2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 25px;
+  width: 300px;
+  text-align: center;
+  color: white;
+  z-index: 1;
+}
+
+.image-with-title h2 a {
+  text-decoration: none;
+  color: #fff;
+  background-color: transparent;
+}

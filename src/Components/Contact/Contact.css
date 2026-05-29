@@ -1,0 +1,190 @@
+.contact-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 40px;
+
+  background: linear-gradient(to bottom, hsl(99, 97%, 49%), hsl(206, 99%, 48%), hsl(94, 94%, 50%));
+  border-radius: 30px;
+}
+.contact-wrapper .contact-header h1 {
+  background: linear-gradient(to right, #ff00e6, #ff7200, #e602a2);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-weight: 900;
+  font-size: 38px;
+  font-family: "Yeseva One", serif;
+}
+
+.contact-body-wrapper {
+  width: 100%;
+  /* max-width: 1200px; */
+  margin: 0 auto;
+}
+.nearSide-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+.nearSide-left h1 {
+  background: linear-gradient(to right, #ff00e6, #ff7200, #e602a2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  font-size: 28px;
+  font-family: "Yeseva One", serif;
+  font-weight: 900;
+}
+
+.nearSide-left p {
+  color: #fff;
+  font-size: 20px;
+}
+.nearSide-left ul {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.nearSide-left ul li {
+  list-style: none;
+  color: #fff;
+  font-size: 18px;
+}
+
+.nearSide-left ul li span {
+  color: #ff4500;
+  font-size: 17px;
+  font-weight: 600;
+}
+.email-icon,
+.phone-icon,
+.location-icon {
+  margin: 5px;
+}
+.email-icon {
+  width: 10%;
+  align-items: center;
+}
+.phone-icon {
+  width: 13%;
+}
+.location-icon {
+  width: 12%;
+}
+.nearSide-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  width: 50%;
+}
+.nearSide-right label {
+  font-size: 20px;
+  color: #fff;
+}
+.nearSide-right input {
+  padding: 7px;
+  font-size: 20px;
+  background-color: #000;
+  border-radius: 10px;
+  color: #fff;
+  outline: none;
+  transform: scale(1.01);
+  transition: 0.8s;
+  border: 1px solid rgb(5, 97, 125);
+}
+input:focus {
+  background-color: #fff;
+  border: 1px solid #d47100;
+  box-shadow: 0 0 5px rgba(3, 40, 45, 0.5);
+  color: #000;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+}
+input:focus::placeholder {
+  color: #000;
+  font-size: 15px;
+}
+.nearSide-right textarea {
+  padding: 0 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 17px;
+  background-color: #111;
+  color: #000;
+  min-height: 90px;
+  margin-bottom: 10%;
+  outline: none;
+  transform: scale(1.01);
+  transition: 0.9s;
+}
+.nearSide-right textarea:focus {
+  background-color: #cbc6c6;
+}
+.nearSide-right textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+textarea:focus::placeholder {
+  color: #000;
+}
+.submit-btn button {
+  background: linear-gradient(to right, #ff00e6, #ff7200, #e602a2);
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 9px;
+  margin-top: 40px;
+}
+@media (max-width: 768px) {
+  .contact-body-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    gap: 10%;
+  }
+}
+@media (min-width: 768px) {
+  .contact-body-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    justify-content: space-between;
+    gap: 10%;
+  }
+}
+@media (max-width: 540px) {
+  .nearSide-left ul li {
+    font-size: 15px;
+  }
+}
+@media (max-width: 768px) {
+  .contact-body-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .nearSide-left,
+  .nearSide-right {
+    width: 100%;
+    max-width: 90%;
+  }
+  .nearSide-left p,
+  .nearSide-left ul li {
+    font-size: 15px;
+  }
+  .nearSide-right input,
+  .nearSide-right label,
+  .nearSide-right textarea {
+    font-size: 16px;
+  }
+}

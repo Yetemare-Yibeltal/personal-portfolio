@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+body {
+  background: linear-gradient(135deg, #054e8a);
+   /* Adjust based on your navbar height */
+}
+html {
+  scroll-behavior: smooth;
+}
+.react-scroll-element {
+  padding-top: 50%;
+}
+#about,
+#services,
+#portfolio,
+#contact {
+  padding-top: 40px;
+}

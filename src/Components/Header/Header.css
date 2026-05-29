@@ -1,0 +1,70 @@
+/* Image Style */
+.header-img img {
+  width: 60%;
+  background-color: #ff277b;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+.header-img img:hover {
+  background-color: #ff7200;
+  border-radius: 50%;
+  width: 66%;
+}
+@media (min-width: 738px) and (max-width: 930px) {
+  .header-img img {
+    display: none;
+  }
+}
+.UL-GAP {
+  gap: 5%;
+}
+.UL-GAP li {
+  padding: 8px;
+}
+.header-wrapper {
+  /* background-image: url('../../Images/nav-bg.jpg');
+background-size: cover; */
+}
+.header-wrapper nav ul li a {
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Header Button Style */
+.header-btn button {
+    background: linear-gradient(to right, #ff2a2a, #a100ff);
+  width: 150px;
+  border: none;
+  padding: 5px;
+  margin-top: 15px;
+  border-radius: 50px;
+  color: #fff;
+}
+.header-btn button:hover {
+  background:green;
+  color: #fff;
+  border-radius: 5px;
+}
+/* when click the nav underline style */
+.nav-item.underline .nav-link {
+  border-bottom: 3px solid #2ef32e;
+  color: #0004ff;
+  font-weight: 900;
+  border-radius: 10px;
+  cursor: pointer;
+}
+@media (min-width: 768px) {
+  .navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to right, #ff8a3d, #ff3ecb, #6aefff);
+    color: #fff;
+    transition: all 0.5s;
+    transition-timing-function: ease-in;
+    z-index: 2;
+  }
+}
