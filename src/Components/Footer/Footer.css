@@ -1,8 +1,23 @@
-/* Footer Base Container */
+/* Animated Gradient Background */
 .footer-wrapper {
-  background-color: #050505;
-  padding: 60px 20px;
-  border-top: 1px solid #222;
+  position: relative;
+  padding: 80px 20px;
+  background: linear-gradient(-45deg, #050505, #11111a, #0a0a14, #050505);
+  background-size: 400% 400%;
+  animation: gradientFlow 15s ease infinite;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Gradient Horizontal Separator */
@@ -12,6 +27,7 @@
   width: 90%;
   margin: 40px auto;
   background: linear-gradient(90deg, #ff00e6, #ff7200, #00f0ff);
+  opacity: 0.6;
 }
 
 /* Social Icons - Normal Background */
@@ -29,12 +45,11 @@
   justify-content: center;
   width: 50px;
   height: 50px;
-  background: #111; /* Normal background */
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.4s ease;
 }
 
-/* Hover Effect - Cyan Glow & Box Shadow */
 .social-media-icons ul li a:hover {
   background: #000;
   box-shadow: 0 0 25px rgba(4, 234, 222, 0.6);
@@ -47,52 +62,25 @@
 }
 
 .social-media-icons ul li a:hover i {
-  color: #04eade; /* Cyan icon color on hover */
+  color: #04eade;
 }
 
-/* Copyright Section */
+/* Copyright & Logo Sections */
 .footer-copyright {
   display: flex;
   justify-content: space-between;
   width: 90%;
   margin: auto;
   align-items: center;
-}
-
-.footer-copyright small {
-  color: #888;
-  font-size: 14px;
-}
-
-.footer-copyright ul {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-}
-
-.footer-copyright ul li {
-  font-size: 14px;
   color: #bbb;
-  cursor: pointer;
-  transition: color 0.3s ease;
 }
 
-.footer-copyright ul li:hover {
-  color: #04eade;
-}
-
-/* Dev Logo Section */
 .dev-logo-container {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 15px;
   margin: 40px 5% 0 0;
-}
-
-.dev-logo-container p {
-  font-size: 13px;
-  color: #666;
 }
 
 .dev-logo-container img {
@@ -107,20 +95,4 @@
   transform: rotate(360deg);
   border-color: #04eade;
   box-shadow: 0 0 15px rgba(4, 234, 222, 0.4);
-}
-
-/* Responsive adjustment */
-@media (max-width: 768px) {
-  .footer-copyright {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-  .social-media-icons ul {
-    justify-content: center;
-  }
-  .dev-logo-container {
-    justify-content: center;
-    margin-right: 0;
-  }
 }
