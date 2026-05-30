@@ -58,7 +58,7 @@ function Footer () {
       </div>
 
       <section className='dev-logo-container'>
-        <p>Designed by Metages Yibeltal</p>
+        <p>Designed by Yibeltal Yitayew</p>
         <img src={DeveloperLogo} alt='Developer logo' />
       </section>
     </section>

@@ -5,42 +5,49 @@
   border-top: 1px solid #222;
 }
 
+/* Gradient Horizontal Separator */
 .custom-hr {
   border: none;
-  height: 1px;
-  background-color: #222;
+  height: 2px;
   width: 90%;
   margin: 40px auto;
+  background: linear-gradient(90deg, #ff00e6, #ff7200, #00f0ff);
 }
 
-/* Social Icons */
+/* Social Icons - Normal Background */
 .social-media-icons ul {
   display: flex;
   justify-content: flex-end;
-  gap: 40px;
+  gap: 30px;
   list-style: none;
   padding: 0 5%;
 }
 
+.social-media-icons ul li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: #111; /* Normal background */
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover Effect - Cyan Glow & Box Shadow */
+.social-media-icons ul li a:hover {
+  background: #000;
+  box-shadow: 0 0 25px rgba(4, 234, 222, 0.6);
+  border: 1px solid #04eade;
+}
+
 .social-media-icons ul li a i {
   color: #fff;
-  transition: all 0.3s ease;
-  display: block;
+  transition: color 0.3s ease;
 }
 
-/* Icon Hover Glow */
-.social-media-icons ul li a:hover i.bi-linkedin,
-.social-media-icons ul li a:hover i.bi-telegram,
-.social-media-icons ul li a:hover i.bi-facebook {
-  color: #04eade;
-  text-shadow: 0 0 15px rgba(4, 234, 222, 0.6);
-  transform: scale(1.2);
-}
-
-.social-media-icons ul li a:hover i.bi-youtube {
-  color: #ff0011;
-  text-shadow: 0 0 15px rgba(255, 0, 17, 0.6);
-  transform: scale(1.2);
+.social-media-icons ul li a:hover i {
+  color: #04eade; /* Cyan icon color on hover */
 }
 
 /* Copyright Section */
@@ -71,7 +78,7 @@
 }
 
 .footer-copyright ul li:hover {
-  color: #ff7200;
+  color: #04eade;
 }
 
 /* Dev Logo Section */
@@ -93,12 +100,13 @@
   height: 45px;
   border-radius: 50%;
   border: 2px solid #333;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 .dev-logo-container img:hover {
   transform: rotate(360deg);
-  border-color: #ff7200;
+  border-color: #04eade;
+  box-shadow: 0 0 15px rgba(4, 234, 222, 0.4);
 }
 
 /* Responsive adjustment */
