@@ -1,45 +1,50 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import profileImage from '../../Images/profile.png'
 import { Element } from 'react-scroll'
 import { motion } from 'framer-motion'
 import './Profile.css'
 
-// --- Custom Component: Self-Writing/Typing Text Effect ---
+/* ─────────────────────────────────────────────
+   TYPING TEXT
+   5 roles, slower speed, 2.2s pause at end
+───────────────────────────────────────────── */
+const roles = [
+  'Fullstack Developer',
+  'Software Engineer',
+  'Backend Developer',
+  'Frontend Engineer',
+  'MERN Stack Developer'
+]
+
 const TypingText = () => {
   const [text, setText] = useState('')
+  const [roleIdx, setRoleIdx] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
-  const fullText = 'Full Stack Developer'
-  const typingSpeed = 150 // Speed of typing out letters
-  const deletingSpeed = 75 // Speed of deleting letters
 
   useEffect(() => {
-    const handleTyping = () => {
-      if (!isDeleting) {
-        // Typing out
-        setText(fullText.substring(0, text.length + 1))
+    const full = roles[roleIdx]
+    const speed = isDeleting ? 80 : 190 // slower type, faster delete
 
-        // Pause at the end before deleting
-        if (text === fullText) {
-          setTimeout(() => setIsDeleting(true), 1500)
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        const next = full.substring(0, text.length + 1)
+        setText(next)
+        if (next === full) {
+          // pause 2.2s before deleting
+          setTimeout(() => setIsDeleting(true), 2200)
         }
       } else {
-        // Deleting back
-        setText(fullText.substring(0, text.length - 1))
-
-        // Pause at the start before typing again
-        if (text === '') {
+        const next = full.substring(0, text.length - 1)
+        setText(next)
+        if (next === '') {
           setIsDeleting(false)
+          setRoleIdx(i => (i + 1) % roles.length)
         }
       }
-    }
-
-    const timer = setTimeout(
-      handleTyping,
-      isDeleting ? deletingSpeed : typingSpeed
-    )
+    }, speed)
 
     return () => clearTimeout(timer)
-  }, [text, isDeleting])
+  }, [text, isDeleting, roleIdx])
 
   return (
     <span className='typing-text-wrapper'>
@@ -49,89 +54,593 @@ const TypingText = () => {
   )
 }
 
-// --- Main Hero Profile Component ---
+/* ─────────────────────────────────────────────
+   PARTICLE FIELD (canvas)
+───────────────────────────────────────────── */
+const ParticleField = () => {
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    let animId
+
+    const resize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    const N = 75
+    const pts = Array.from({ length: N }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.38,
+      vy: (Math.random() - 0.5) * 0.38,
+      r: Math.random() * 1.4 + 0.4
+    }))
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      pts.forEach(p => {
+        p.x += p.vx
+        p.y += p.vy
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(0,242,254,0.32)'
+        ctx.fill()
+      })
+      for (let i = 0; i < N; i++) {
+        for (let j = i + 1; j < N; j++) {
+          const dx = pts[i].x - pts[j].x
+          const dy = pts[i].y - pts[j].y
+          const d = Math.sqrt(dx * dx + dy * dy)
+          if (d < 110) {
+            ctx.beginPath()
+            ctx.moveTo(pts[i].x, pts[i].y)
+            ctx.lineTo(pts[j].x, pts[j].y)
+            ctx.strokeStyle = `rgba(79,172,254,${0.11 * (1 - d / 110)})`
+            ctx.lineWidth = 0.55
+            ctx.stroke()
+          }
+        }
+      }
+      animId = requestAnimationFrame(draw)
+    }
+    draw()
+
+    return () => {
+      cancelAnimationFrame(animId)
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}
+    />
+  )
+}
+
+/* ─────────────────────────────────────────────
+   CUSTOM CIRCLE CURSOR
+───────────────────────────────────────────── */
+const CircleCursor = () => {
+  const dotRef = useRef(null)
+  const ringRef = useRef(null)
+  const pos = useRef({ x: 0, y: 0 })
+  const ring = useRef({ x: 0, y: 0 })
+  const hovering = useRef(false)
+
+  useEffect(() => {
+    const onMove = e => {
+      pos.current = { x: e.clientX, y: e.clientY }
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%)`
+      }
+    }
+    const onEnter = () => {
+      hovering.current = true
+    }
+    const onLeave = () => {
+      hovering.current = false
+    }
+
+    document
+      .querySelectorAll('button,a,.head-btn,.profile-img-glow-card,.skill-pill')
+      .forEach(el => {
+        el.addEventListener('mouseenter', onEnter)
+        el.addEventListener('mouseleave', onLeave)
+      })
+
+    window.addEventListener('mousemove', onMove)
+
+    let raf
+    const animate = () => {
+      ring.current.x += (pos.current.x - ring.current.x) * 0.12
+      ring.current.y += (pos.current.y - ring.current.y) * 0.12
+      if (ringRef.current) {
+        const scale = hovering.current ? 2.2 : 1
+        ringRef.current.style.transform = `translate(${ring.current.x}px,${ring.current.y}px) translate(-50%,-50%) scale(${scale})`
+        ringRef.current.style.borderColor = hovering.current
+          ? '#ff277b'
+          : '#00f2fe'
+      }
+      raf = requestAnimationFrame(animate)
+    }
+    animate()
+
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  return (
+    <>
+      <div ref={dotRef} className='cursor-dot' />
+      <div ref={ringRef} className='cursor-ring' />
+    </>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   3D TILT CARD
+───────────────────────────────────────────── */
+const TiltCard = ({ children }) => {
+  const cardRef = useRef(null)
+  const glowRef = useRef(null)
+
+  const onMove = e => {
+    const card = cardRef.current
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const cx = rect.width / 2
+    const cy = rect.height / 2
+    const rotX = ((y - cy) / cy) * -17
+    const rotY = ((x - cx) / cx) * 17
+    card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.05,1.05,1.05)`
+    if (glowRef.current) {
+      glowRef.current.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(0,242,254,0.26) 0%, transparent 65%)`
+    }
+  }
+
+  const onLeave = () => {
+    if (cardRef.current)
+      cardRef.current.style.transform =
+        'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)'
+    if (glowRef.current) glowRef.current.style.background = 'transparent'
+  }
+
+  return (
+    <div
+      ref={cardRef}
+      className='tilt-card'
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
+      <div ref={glowRef} className='tilt-glow' />
+      {children}
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   MAGNETIC BUTTON
+───────────────────────────────────────────── */
+const MagneticBtn = ({ children }) => {
+  const ref = useRef(null)
+  const onMove = e => {
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const x = e.clientX - r.left - r.width / 2
+    const y = e.clientY - r.top - r.height / 2
+    el.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px)`
+  }
+  const onLeave = () => {
+    if (ref.current) ref.current.style.transform = 'translate(0,0)'
+  }
+  return (
+    <div
+      ref={ref}
+      className='magnetic-wrap'
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
+      {children}
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   ANIMATED STAT COUNTER
+───────────────────────────────────────────── */
+const StatCounter = ({ value, label, suffix = '+' }) => {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          let start = 0
+          const step = Math.ceil(value / 55)
+          const timer = setInterval(() => {
+            start = Math.min(start + step, value)
+            setCount(start)
+            if (start >= value) clearInterval(timer)
+          }, 28)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.5 }
+    )
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [value])
+
+  return (
+    <div ref={ref} className='stat-item'>
+      <span className='stat-number'>
+        {count}
+        {suffix}
+      </span>
+      <span className='stat-label'>{label}</span>
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   SKILL PILL
+───────────────────────────────────────────── */
+const SkillPill = ({ name, icon, delay }) => (
+  <motion.div
+    className='skill-pill'
+    initial={{ opacity: 0, y: 18 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay, duration: 0.4 }}
+    whileHover={{ y: -4, scale: 1.08 }}
+  >
+    <span className='skill-icon'>{icon}</span>
+    <span>{name}</span>
+  </motion.div>
+)
+
+const skills = [
+  { name: 'React', icon: '⚛' },
+  { name: 'Node.js', icon: '🟢' },
+  { name: 'TypeScript', icon: '🔷' },
+  { name: 'MongoDB', icon: '🍃' },
+  { name: 'Express', icon: '🚂' },
+  { name: 'Next.js', icon: '▲' },
+  { name: 'GraphQL', icon: '🔺' },
+  { name: 'Docker', icon: '🐳' }
+]
+
+/* ─────────────────────────────────────────────
+   FLOATING ORB (background)
+───────────────────────────────────────────── */
+const Orb = ({ style, delay = 0 }) => (
+  <div className='orb' style={{ animationDelay: `${delay}s`, ...style }} />
+)
+
+/* ─────────────────────────────────────────────
+   MAIN PROFILE COMPONENT
+───────────────────────────────────────────── */
 function Profile () {
   return (
-    <Element name='profile'>
-      <section className='profile-wrapper'>
-        <div className='profile-container container'>
-          {/* Left/Right Balance: 3D Morphing Card */}
-          <motion.div
-            className='profile-img-side'
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          >
-            <div className='profile-img-glow-card'>
-              <img
-                src={profileImage}
-                alt='Metages Yibeltal Profile'
-                className='profile-avatar'
-              />
-            </div>
-          </motion.div>
+    <>
+      <CircleCursor />
 
-          {/* Typography Content Column */}
-          <motion.div
-            className='profile-text-side'
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-          >
-            <div className='headline'>
-              <h2 className='welcome-tag'>Welcome to my universe</h2>
-              <h1>
-                Hi, I'm <span className='name-gradient'> Yibeltal Yitayew</span>
-              </h1>
-              <h3 className='job-gradient'>
+      <Element name='profile'>
+        <section className='profile-wrapper'>
+          <ParticleField />
+
+          {/* Ambient orbs */}
+          <Orb
+            style={{
+              width: 500,
+              height: 500,
+              top: '-10%',
+              left: '-8%',
+              background:
+                'radial-gradient(circle, rgba(79,172,254,0.15) 0%, transparent 70%)'
+            }}
+            delay={0}
+          />
+          <Orb
+            style={{
+              width: 400,
+              height: 400,
+              bottom: '5%',
+              right: '-5%',
+              background:
+                'radial-gradient(circle, rgba(161,0,255,0.18) 0%, transparent 70%)'
+            }}
+            delay={2}
+          />
+          <Orb
+            style={{
+              width: 300,
+              height: 300,
+              top: '50%',
+              left: '40%',
+              background:
+                'radial-gradient(circle, rgba(255,39,123,0.12) 0%, transparent 70%)'
+            }}
+            delay={4}
+          />
+
+          {/* Subtle grid */}
+          <div className='grid-overlay' />
+
+          <div className='profile-container container'>
+            {/* ── AVATAR COLUMN ── */}
+            <motion.div
+              className='profile-img-side'
+              initial={{ opacity: 0, x: 80 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <TiltCard>
+                {/* Pulsing rings */}
+                <div className='avatar-ring-1' />
+                <div className='avatar-ring-2' />
+                <div className='avatar-ring-3' />
+
+                {/* Morphing glow card */}
+                <div className='profile-img-glow-card'>
+                  <div className='avatar-shimmer' />
+                  <img
+                    src={profileImage}
+                    alt='Yibeltal Yitayew'
+                    className='profile-avatar'
+                  />
+                </div>
+
+                {/* Floating info badges */}
+                <motion.div
+                  className='float-badge badge-tl'
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }}
+                >
+                  <span>💻</span> Open to Work
+                </motion.div>
+
+                <motion.div
+                  className='float-badge badge-br'
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{
+                    duration: 3.5,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: 1
+                  }}
+                >
+                  <span>🌐</span> MERN Stack
+                </motion.div>
+
+                <motion.div
+                  className='float-badge badge-tr'
+                  animate={{ x: [0, 8, 0] }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: 0.5
+                  }}
+                >
+                  ⚡ Clean Code
+                </motion.div>
+              </TiltCard>
+            </motion.div>
+
+            {/* ── TEXT COLUMN ── */}
+            <motion.div
+              className='profile-text-side'
+              initial={{ opacity: 0, x: -60 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: 0.9,
+                delay: 0.15,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+            >
+              {/* Tag line */}
+              <motion.div
+                className='welcome-tag'
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <span className='tag-dot' />
+                Welcome to my universe
+                <span className='tag-dot' />
+              </motion.div>
+
+              {/* Name — on its own line, large */}
+              <motion.h1
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                Hi, I'm
+                <br />
+                <span
+                  className='name-gradient glitch-text'
+                  data-text='Yibeltal Yitayew'
+                >
+                  Yibeltal Yitayew
+                </span>
+              </motion.h1>
+
+              {/* Typing role */}
+              <motion.h3
+                className='role-line'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <span className='role-prefix'>&lt;</span>
                 <TypingText />
-              </h3>
+                <span className='role-prefix'>/&gt;</span>
+              </motion.h3>
+
+              {/* Bio */}
+              <motion.div
+                className='profile-bio'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                <p>
+                  Passionate full stack developer who thrives on building{' '}
+                  <span className='inline-hl'>
+                    seamless digital experiences
+                  </span>{' '}
+                  from front to back. Deep expertise in responsive design and
+                  scalable backend architecture.
+                </p>
+                <p>
+                  Specializing in{' '}
+                  <span className='inline-hl'>MERN stack solutions</span>,
+                  custom interactive mechanics, and solving complex architecture
+                  challenges with precision and creativity.
+                </p>
+              </motion.div>
+
+              {/* Skill Pills */}
+              <div className='skills-row'>
+                {skills.map((s, i) => (
+                  <SkillPill key={s.name} {...s} delay={0.7 + i * 0.07} />
+                ))}
+              </div>
+
+              {/* Stats */}
+              <motion.div
+                className='stats-row'
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.85 }}
+              >
+                <StatCounter value={50} label='Projects Done' />
+                <div className='stat-divider' />
+                <StatCounter value={5} label='Yrs Experience' />
+                <div className='stat-divider' />
+                <StatCounter value={30} label='Happy Clients' />
+                <div className='stat-divider' />
+                <StatCounter value={20} label='APIs Built' suffix='+' />
+              </motion.div>
+
+              {/* CTA Buttons */}
+              <motion.div
+                className='headline-btns'
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 }}
+              >
+                <MagneticBtn>
+                  <a
+                    href='https://t.me/yibeltalyitayew2024'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='head-btn btn-primary-glow'
+                  >
+                    <span className='btn-inner'>
+                      <svg
+                        width='15'
+                        height='15'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='currentColor'
+                        strokeWidth='2.5'
+                      >
+                        <path d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' />
+                      </svg>
+                      Contact Me
+                    </span>
+                    <div className='btn-shine' />
+                  </a>
+                </MagneticBtn>
+
+                <MagneticBtn>
+                  <a
+                    href='/resume.pdf'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='head-btn btn-secondary-outline'
+                  >
+                    <span className='btn-inner'>
+                      <svg
+                        width='15'
+                        height='15'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='currentColor'
+                        strokeWidth='2.5'
+                      >
+                        <path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z' />
+                        <polyline points='14 2 14 8 20 8' />
+                        <line x1='16' y1='13' x2='8' y2='13' />
+                        <line x1='16' y1='17' x2='8' y2='17' />
+                      </svg>
+                      My Resume
+                    </span>
+                  </a>
+                </MagneticBtn>
+              </motion.div>
+
+              {/* Social links */}
+              <motion.div
+                className='social-links'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.1 }}
+              >
+                {[
+                  { label: 'GitHub', href: '#', icon: 'GH' },
+                  { label: 'LinkedIn', href: '#', icon: 'LI' },
+                  { label: 'Twitter', href: '#', icon: 'TW' }
+                ].map(s => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    className='social-link'
+                    title={s.label}
+                  >
+                    <span>{s.icon}</span>
+                  </a>
+                ))}
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            className='scroll-indicator'
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <div className='scroll-mouse'>
+              <div className='scroll-wheel' />
             </div>
-
-            <div className='profile-bio'>
-              <p>
-                Passionate full stack developer who thrives on building seamless
-                digital experiences from front to back. With a deep
-                understanding of responsive design and scalable backend
-                architecture, I create web platforms that are both visually
-                striking and technically sound.
-              </p>
-              <p>
-                My frontend work reflects precision and creativity, while my
-                backend logic ensures performance, security, and
-                maintainability. I specialize in crafting recruiter-ready
-                layouts, integrating custom interactive mechanics, and solving
-                complex architecture challenges.
-              </p>
-            </div>
-
-  ;<div className='headline-btns'>
-  {/* Contact Me Link pointing straight to your Telegram */}
-  <a
-    href='https://t.me/yibeltalyitayew2024'
-    target='_blank'
-    rel='noopener noreferrer'
-    className='head-btn btn-primary-glow'
-  >
-    <span>Contact Me</span>
-  </a>
-
-  {/* My Resume Link pointing to the public PDF asset */}
-  <a
-    href='/resume.pdf'
-    target='_blank'
-    rel='noopener noreferrer'
-    className='head-btn btn-secondary-outline'
-  >
-    <span>My Resume</span>
-  </a>
-</div>
-
-
+            <span>Scroll</span>
           </motion.div>
-        </div>
-      </section>
-    </Element>
+        </section>
+      </Element>
+    </>
   )
 }
 
