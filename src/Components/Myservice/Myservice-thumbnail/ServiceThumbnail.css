@@ -1,68 +1,8 @@
-:root {
-  --primary-cyan: #00f2fe;
-  --primary-blue: #4facfe;
-  --neon-pink: #ff3ecb;
-  --bg-dark-body: #0a0a10;
-  --bg-dark-card: #12121e;
-  --text-primary: #ffffff;
-  --text-secondary: #b4b4c0;
-}
-
-/* Master Component Root Wrapper */
-.myservice-root-container {
-  background: var(--bg-dark-body);
-  padding: 100px 20px;
-  /* Creates a true 3D space field for depth manipulation */
-  perspective: 1200px;
-}
-
-.myservice-wrapper {
-  width: 100%;
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 60px;
-}
-
-/* Title Layer with Neon Subtle Glow */
-.myservice-title h1 {
-  font-size: 3.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #ffffff 30%, var(--primary-cyan) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-align: center;
-  letter-spacing: -0.5px;
-}
-
-/* 3-Column Responsive Grid Layout */
-.myservice-thumbnail {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 30px;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .myservice-thumbnail {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .myservice-thumbnail {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 /* ==========================================================================
-   💎 THE 3D INTERACTIVE FLUID-SLIDE CARD
+   💎 3D INTERACTIVE FLUID-SLIDE SERVICE CARD
    ========================================================================== */
-
 .service-thum {
+  position: relative;
   background: var(--bg-dark-card);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 24px;
@@ -71,174 +11,120 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
-  position: relative;
   overflow: hidden;
-  box-sizing: border-box;
-
-  /* Activates real 3D layer perspective splits for text blocks */
   transform-style: preserve-3d;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-
-  /* Smooth weighted mechanical spring curves for physical mass simulation */
   transition: transform 0.5s cubic-bezier(0.15, 0.85, 0.35, 1.2),
-    border-color 0.4s ease, box-shadow 0.5s ease;
-  will-change: transform;
+    box-shadow 0.5s ease;
   z-index: 1;
 }
 
-/* 
-   🌊 DIRECTION CONTROL: FLUID BACKGROUND SLIDE LAYER
-   To slide from TOP-to-BOTTOM instead: change 'top: 100%' to 'bottom: 100%'
-*/
+/* 1. Sliding Background Layer */
 .service-thum::before {
   content: '';
   position: absolute;
-  top: 100%; /* Sits completely hidden out of view right below the card */
+  top: 100%;
   left: 0;
   width: 100%;
   height: 100%;
- background-image: linear-gradient(30deg, #ed8003,#22c322  , #ed8003 80%);
-
-  /* Smooth liquid transition rate - handles the 'creeping' cover speed */
+  background-image: linear-gradient(30deg, #ed8003, #22c322, #ed8003 80%);
   transition: top 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 0;
   opacity: 0.9;
 }
 
-/* --- High-End Frosted Glass Core Overlay --- */
+/* 2. Animated Conic Glow Layer */
 .service-thum::after {
   content: '';
   position: absolute;
-  inset: 1px;
-  border-radius: 23px;
-  background: rgba(255, 255, 255, 0.01);
-  backdrop-filter: blur(0px);
-  z-index: 1;
-  transition: background 0.4s ease, backdrop-filter 0.4s ease;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    transparent,
+    rgba(237, 128, 3, 0.4),
+    transparent 30%
+  );
+  animation: rotate-glow 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* ==========================================================================
-   🔥 ACTIVE HOVER TRIGGERS (Slide, Lift, and Outer Atmospheric Emission)
+   🔥 HOVER TRIGGERS
    ========================================================================== */
-
 .service-thum:hover {
-  /* Shifts card closer to user view and tilts backwards slightly */
   transform: translateY(-12px) rotateX(4deg);
   border-color: rgba(255, 255, 255, 0.4);
-  /* Combined deep ambient occlusion base shadow and multi-color glow aura */
-  box-shadow: 0 40px 80px rgba(6, 220, 231, 0.6), 0 0 45px rgba(33, 234, 234, 0.3),
-    0 0 90px rgba(53, 222, 241, 0.15);
+  box-shadow: 0 40px 80px rgba(6, 220, 231, 0.6),
+    0 0 45px rgba(33, 234, 234, 0.3);
 }
 
-/* Triggers the background to slide up and cover the space cleanly */
 .service-thum:hover::before {
   top: 0;
 }
-
-/* Infuses standard surface layer into a glossy frosted shield on active hover */
 .service-thum:hover::after {
-  background: rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(5px);
+  opacity: 1;
+}
+
+@keyframes rotate-glow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ==========================================================================
-   📦 LAYER POPPING (translateZ forces pieces to float high above the color)
+   📦 LAYER POPPING (Z-Axis Positioning)
    ========================================================================== */
-
 .card-top-accent,
 .card-content-block,
 .read-more-btn {
   position: relative;
   z-index: 3;
-  /* Structural transition delay to look unified with the sliding background */
-  transition: transform 0.5s cubic-bezier(0.15, 0.85, 0.35, 1.2);
 }
 
-/* Floating Roman Numerals Layer */
 .card-top-accent {
   transform: translateZ(20px);
 }
-.roman-numeral {
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: var(--primary-cyan);
-  opacity: 0.7;
-  letter-spacing: 1.5px;
-  transition: color 0.3s ease;
-}
-
-/* Floating Content Block (Title & Text Description) */
 .card-content-block {
   transform: translateZ(40px);
 }
-
-.service-card-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 14px;
-  line-height: 1.3;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.service-card-desc {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  margin-bottom: 30px;
-  transition: color 0.3s ease;
-}
-
-/* Floating Action Button Core */
 .read-more-btn {
-  transform: translateZ(55px); /* Highest physical point on the Z-axis */
+  transform: translateZ(55px);
   display: inline-flex;
   align-items: center;
   color: var(--primary-blue);
   font-weight: 700;
-  font-size: 0.95rem;
-  text-decoration: none !important;
-  background: rgba(255, 255, 255, 0.05);
   padding: 10px 22px;
   border-radius: 50px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
+  text-decoration: none !important;
   transition: all 0.3s ease;
 }
 
-.read-more-btn::after {
-  content: ' →';
-  font-size: 1.1rem;
-  transition: transform 0.3s ease;
-}
-
-/* ==========================================================================
-   ✨ HOVER COLOR TEXT MAP (Adapts gracefully as color rolls in)
-   ========================================================================== */
-
-.service-thum:hover .roman-numeral {
-  color: #ffffff;
-  opacity: 1;
-}
-
-.service-thum:hover .service-card-title {
-  color: #ffffff;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-.service-thum:hover .service-card-desc {
-  color: #ffffff;
-  opacity: 0.95;
-}
-
-/* Converts the pill button into a high-visibility token on active hover */
 .service-thum:hover .read-more-btn {
   color: #000000;
   background: #ffffff;
-  border-color: #ffffff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-.service-thum:hover .read-more-btn::after {
-  transform: translateX(5px);
+.roman-numeral {
+  color: var(--primary-cyan);
+  font-weight: 900;
+}
+.service-card-title {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-bottom: 14px;
+}
+.service-card-desc {
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 30px;
 }
