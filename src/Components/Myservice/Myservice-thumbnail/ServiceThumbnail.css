@@ -12,7 +12,7 @@
 .myservice-root-container {
   background: var(--bg-dark-body);
   padding: 100px 20px;
-  /* Adds spatial depth field to allow children cards to pop outward */
+  /* Creates a true 3D space field for depth manipulation */
   perspective: 1200px;
 }
 
@@ -38,7 +38,7 @@
   letter-spacing: -0.5px;
 }
 
-/* 3-Column Performance Grid Layout */
+/* 3-Column Responsive Grid Layout */
 .myservice-thumbnail {
   display: grid;
   grid-template-columns: 1fr;
@@ -59,7 +59,7 @@
 }
 
 /* ==========================================================================
-   💎 THE INTERACTIVE 3D PROPULSION CARD HOVER STATES
+   💎 THE 3D INTERACTIVE FLUID-SLIDE CARD
    ========================================================================== */
 
 .service-thum {
@@ -76,69 +76,74 @@
   overflow: hidden;
   box-sizing: border-box;
 
-  /* Enables real physical depth layering on sub-elements */
+  /* Activates real 3D layer perspective splits for text blocks */
   transform-style: preserve-3d;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
 
-  /* Ultra-smooth cubic transition simulates realistic weight/momentum */
+  /* Smooth weighted mechanical spring curves for physical mass simulation */
   transition: transform 0.5s cubic-bezier(0.15, 0.85, 0.35, 1.2),
     border-color 0.4s ease, box-shadow 0.5s ease;
   will-change: transform;
   z-index: 1;
 }
 
-/* --- The Liquid Gradient Base Underlayer --- */
+/* 
+   🌊 DIRECTION CONTROL: FLUID BACKGROUND SLIDE LAYER
+   To slide from TOP-to-BOTTOM instead: change 'top: 100%' to 'bottom: 100%'
+*/
 .service-thum::before {
   content: '';
   position: absolute;
-  top: 0;
+  top: 100%; /* Sits completely hidden out of view right below the card */
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #ff8a3d 0%, #ff3ecb 50%, #6aefff 100%);
-  opacity: 0;
-  transition: opacity 0.5s cubic-bezier(0.15, 0.85, 0.35, 1.2);
+ background-image: linear-gradient(30deg, #ed8003,#22c322  , #ed8003 80%);
+
+  /* Smooth liquid transition rate - handles the 'creeping' cover speed */
+  transition: top 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 0;
+  opacity: 0.9;
 }
 
-/* --- Glass-Overlay Flare Layer --- */
+/* --- High-End Frosted Glass Core Overlay --- */
 .service-thum::after {
   content: '';
   position: absolute;
   inset: 1px;
   border-radius: 23px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.01);
   backdrop-filter: blur(0px);
   z-index: 1;
   transition: background 0.4s ease, backdrop-filter 0.4s ease;
 }
 
 /* ==========================================================================
-   🔥 ACTIVE HOVER TRIGGERS (Pitching, Elevating, and Glowing)
+   🔥 ACTIVE HOVER TRIGGERS (Slide, Lift, and Outer Atmospheric Emission)
    ========================================================================== */
 
 .service-thum:hover {
-  /* Elevates the card closer to user view and tilts slightly back */
-  transform: translateY(-14px) rotateX(4deg) rotateY(-2deg);
-  border-color: rgba(255, 255, 255, 0.5);
-  /* Massive structural blur shadow + vibrant atmospheric color bleed flare */
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 62, 203, 0.35),
-    0 0 100px rgba(106, 239, 255, 0.15);
+  /* Shifts card closer to user view and tilts backwards slightly */
+  transform: translateY(-12px) rotateX(4deg);
+  border-color: rgba(255, 255, 255, 0.4);
+  /* Combined deep ambient occlusion base shadow and multi-color glow aura */
+  box-shadow: 0 40px 80px rgba(6, 220, 231, 0.6), 0 0 45px rgba(33, 234, 234, 0.3),
+    0 0 90px rgba(53, 222, 241, 0.15);
 }
 
-/* Fades your custom liquid canvas background smoothly in */
+/* Triggers the background to slide up and cover the space cleanly */
 .service-thum:hover::before {
-  opacity: 1;
+  top: 0;
 }
 
-/* Transmutes internal surface into a glossy frosted-glass layer over your gradient */
+/* Infuses standard surface layer into a glossy frosted shield on active hover */
 .service-thum:hover::after {
-  background: rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(5px);
 }
 
 /* ==========================================================================
-   📦 LAYER POPPING (translateZ forces pieces to hover above the background)
+   📦 LAYER POPPING (translateZ forces pieces to float high above the color)
    ========================================================================== */
 
 .card-top-accent,
@@ -146,11 +151,11 @@
 .read-more-btn {
   position: relative;
   z-index: 3;
-  /* Detaches content from background layer */
+  /* Structural transition delay to look unified with the sliding background */
   transition: transform 0.5s cubic-bezier(0.15, 0.85, 0.35, 1.2);
 }
 
-/* Floating Roman Numerals */
+/* Floating Roman Numerals Layer */
 .card-top-accent {
   transform: translateZ(20px);
 }
@@ -163,9 +168,9 @@
   transition: color 0.3s ease;
 }
 
-/* Floating Content Block (Title & Text) */
+/* Floating Content Block (Title & Text Description) */
 .card-content-block {
-  transform: translateZ(40px); /* Pushed out farther than the numbers */
+  transform: translateZ(40px);
 }
 
 .service-card-title {
@@ -174,7 +179,6 @@
   color: var(--text-primary);
   margin-bottom: 14px;
   line-height: 1.3;
-  letter-spacing: -0.2px;
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
@@ -186,9 +190,9 @@
   transition: color 0.3s ease;
 }
 
-/* Floating Action Button */
+/* Floating Action Button Core */
 .read-more-btn {
-  transform: translateZ(55px); /* Highest elevation layer */
+  transform: translateZ(55px); /* Highest physical point on the Z-axis */
   display: inline-flex;
   align-items: center;
   color: var(--primary-blue);
@@ -209,7 +213,7 @@
 }
 
 /* ==========================================================================
-   ✨ HOVER COLOR TEXT MAP (Guarantees Perfect Accessibility Match)
+   ✨ HOVER COLOR TEXT MAP (Adapts gracefully as color rolls in)
    ========================================================================== */
 
 .service-thum:hover .roman-numeral {
@@ -227,12 +231,12 @@
   opacity: 0.95;
 }
 
-/* Elevate the action button independently on deep hover */
+/* Converts the pill button into a high-visibility token on active hover */
 .service-thum:hover .read-more-btn {
   color: #000000;
   background: #ffffff;
   border-color: #ffffff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .service-thum:hover .read-more-btn::after {
