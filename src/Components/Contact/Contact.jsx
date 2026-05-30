@@ -291,12 +291,6 @@ const Contact = forwardRef((props, ref) => {
               </div>
             </div>
           </div>
-
-          {/* ── Divider ── */}
-          <div className='ct-divider'>
-            <hr className='dhr' />
-            <div className='dhr-glow' />
-          </div>
         </div>
       </Element>
     </section>
