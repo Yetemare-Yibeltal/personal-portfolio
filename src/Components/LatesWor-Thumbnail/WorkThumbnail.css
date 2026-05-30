@@ -155,15 +155,16 @@
   opacity: 1;
 }
 
+/* Keep the text readable without changing the thumbnail hover animation */
 .work-thumbnail:hover .project-main-heading {
-  background: linear-gradient(
-    135deg,
-    var(--cyan-glow) 0%,
-    var(--purple-glow) 100%
-  );
+  /* Using white for maximum contrast against any glow color */
+  background: black;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* Soft shadow to lift text from the background glow */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
+
 
 .work-thumbnail:hover .project-image-box {
   transform: scale(0.97) translateZ(10px);
