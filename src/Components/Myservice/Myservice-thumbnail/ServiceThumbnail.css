@@ -320,7 +320,6 @@
   border-radius: 22px;
   height: 100%;
 }
-
 @keyframes rotate-glow {
   0% {
     transform: rotate(0deg);
