@@ -1,89 +1,172 @@
+:root {
+  --primary-cyan: #00f2fe;
+  --primary-blue: #4facfe;
+  --neon-purple: #a100ff;
+  --bg-dark-body: #0a0a10;
+  --bg-dark-card: #11111a;
+  --text-primary: #ffffff;
+  --text-secondary: #b4b4c0;
+}
+
+/* Master Component Root */
+.myservice-root-container {
+  background: var(--bg-dark-body);
+  padding: 100px 20px;
+}
+
+.myservice-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+/* Title Glow Typography */
+.myservice-title h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 20%, var(--primary-cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}
+
+/* 3-Column Performance Grid Layout */
+.myservice-thumbnail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .myservice-thumbnail {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .myservice-thumbnail {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* --- Highly Interactive Premium 3D Card States --- */
 .service-thum {
+  background: var(--bg-dark-card);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  padding: 35px 30px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  word-break: break-word;
-  border: 2px solid #fff;
-  border-radius: 15px;
-}
-.service-thum {
+  align-items: flex-start;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.4s ease, box-shadow 0.4s ease;
+  will-change: transform;
+  box-sizing: border-box;
 }
+
+/* 3D Translation & Multilayer Color Bleed Hover Layer */
+.service-thum:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(0, 242, 254, 0.3);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 242, 254, 0.08);
+}
+
+/* Liquid Color Fill Underlayer */
 .service-thum::before {
-  content: "";
+  content: '';
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 0%;
-  background-image: linear-gradient(30deg, #ed8003,#22c322  , #ed8003 80%);
-  transition: height 0.5s ease;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 242, 254, 0.04) 0%,
+    rgba(161, 0, 255, 0.02) 100%
+  );
+  transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 0;
-  
 }
+
 .service-thum:hover::before {
   height: 100%;
 }
-.service-thum:hover {
-  transform: scale(1.1);
-  transition: transform 0.7s ease;
-}
-.service-thum > * {
+
+/* Inner Card Structure Blocks */
+.card-top-accent {
   position: relative;
-  z-index: 1;
-}
-.service-thum h2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 35px;
-  color: #fff;
-  background: transparent;
-}
-.service-thum h1 {
-  font-size: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background-image: linear-gradient(to right, black, #351c03); */
- background-image: linear-gradient(#03f2ae
-,#03f2ae,white,#03f2ae,#08f3d8);
- font-weight: 700;
-  -webkit-background-clip: text;
-  color: transparent;
-  font-family: ' Montserrat';
-
-}
-.service-thum p {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  font-size: 18px;
-  color: #006d;
-  background: transparent;
-}
-.service-thum p:hover{
-  color:#fff;
-}
-.service-thum a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: bisque;
-  font-size: 20px;
-  background: transparent;
-  text-decoration: none;
-}
-.service-thum a::after {
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  width: 40px;
-  content: "\f30b";
-  margin: 10px 15px;
+  z-index: 2;
+  margin-bottom: 20px;
 }
 
+.roman-numeral {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-cyan);
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+
+.card-content-block {
+  position: relative;
+  z-index: 2;
+  flex-grow: 1;
+}
+
+.service-card-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  line-height: 1.3;
+  transition: color 0.3s ease;
+}
+
+.service-thum:hover .service-card-title {
+  color: var(--primary-cyan);
+}
+
+.service-card-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+/* Premium Link Anchor Actions */
+.read-more-btn {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  color: var(--primary-blue);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none !important;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.read-more-btn::after {
+  content: ' →';
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.read-more-btn:hover {
+  color: var(--primary-cyan);
+}
+
+.read-more-btn:hover::after {
+  transform: translateX(6px);
+}
