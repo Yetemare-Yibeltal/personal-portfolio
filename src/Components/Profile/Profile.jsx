@@ -105,14 +105,22 @@ function Profile () {
               </p>
             </div>
 
-            <div className='headline-btns'>
-              <button className='head-btn btn-primary-glow'>
-                <span>Contact Me</span>
-              </button>
-              <button className='head-btn btn-secondary-outline'>
-                <span>My Resume</span>
-              </button>
-            </div>
+           ;<div className='headline-btns'>
+  {/* Contact Me Link pointing straight to your Telegram */}
+  <a
+    href='https://t.me/yibeltalyitayew2024'
+    target='_blank'
+    rel='noopener noreferrer'
+    className='head-btn btn-primary-glow text-decoration-none'
+  >
+    <span>Contact Me</span>
+  </a>
+
+  <button className='head-btn btn-secondary-outline'>
+    <span>My Resume</span>
+  </button>
+</div>
+
           </motion.div>
         </div>
       </section>
