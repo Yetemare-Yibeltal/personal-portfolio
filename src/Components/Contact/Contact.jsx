@@ -298,16 +298,6 @@ const Contact = forwardRef((props, ref) => {
             <div className='dhr-glow' />
           </div>
 
-          {/* ── Copyright ── */}
-          {/* <div className='ct-copy'>
-            <small>&copy; 2026 Metages Yibeltal. All rights reserved.</small>
-            <ul>
-              <li>Terms of Service</li>
-              <li>Privacy Policy</li>
-              <li>Accessibility</li>
-            </ul>
-          </div> */}
-
           {/* ── Dev logo ── */}
           {/* <div className='ct-dev'>
             <div className='dev-txt'>
