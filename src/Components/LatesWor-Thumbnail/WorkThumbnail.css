@@ -1,96 +1,251 @@
 /* ==========================================================================
-   🎨 DESIGN SYSTEM TOKENS
+   🌌 CUSTOM CIRCLE CURSOR
    ========================================================================== */
-:root {
-  --accent-orange: #ed8003;
-  --accent-green: #22c322;
-  --bg-dark-card: #12121e;
-  --bg-dock-isolated: #1a1a2e;
-  --text-pure: #ffffff;
-  --text-muted: #b4b4c0;
-  --cyan-glow: #06dce7;
-  --purple-glow: #a855f7;
-
-  --card-spring: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
-    :root {
-  /* Electric Violet & Neon Lime Palette */
-  --glow-primary: 153, 51, 255; /* Electric Violet */
-  --glow-secondary: 57, 255, 20; /* Neon Lime */
+*,
+*::before,
+*::after {
+  cursor: none !important;
 }
 
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: #06dce7;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease, background 0.3s ease, width 0.3s ease,
+    height 0.3s ease;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid rgba(6, 220, 231, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s ease, width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.cursor-ring.hovering {
+  width: 64px;
+  height: 64px;
+  border-color: rgba(168, 85, 247, 0.9);
+  background: rgba(168, 85, 247, 0.07);
+}
+
+.cursor-dot.hovering {
+  width: 6px;
+  height: 6px;
+  background: #a855f7;
 }
 
 /* ==========================================================================
-   🖼️ CARD CORE & ANIMATION STRUCTURE
+   🎨 DESIGN TOKENS
+   ========================================================================== */
+:root {
+  --accent-cyan: #06dce7;
+  --accent-purple: #a855f7;
+  --accent-pink: #f704ce;
+  --accent-orange: #ed8003;
+  --accent-green: #22c322;
+  --bg-card: #0b0b18;
+  --bg-dock: #13132a;
+  --bg-tag: rgba(6, 220, 231, 0.08);
+  --text-pure: #ffffff;
+  --text-muted: #9898b0;
+  --card-radius: 26px;
+  --glow-cyan: rgba(6, 220, 231, 0.55);
+  --glow-purple: rgba(168, 85, 247, 0.45);
+  --spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   🖼️ CARD CONTAINER & 3D PERSPECTIVE
    ========================================================================== */
 .work-card-container {
-  perspective: 1400px;
+  perspective: 1200px;
+  perspective-origin: center center;
   height: 100%;
+  position: relative;
 }
 
 .work-thumbnail {
   position: relative;
-  background: rgb(1, 23, 42);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 24px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--card-radius);
   padding: 18px;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   transform-style: preserve-3d;
-  transition: var(--card-spring), all 0.4s ease;
-  cursor: pointer;
+  transition: transform 0.5s var(--spring), box-shadow 0.5s var(--spring),
+    border-color 0.4s ease;
+  will-change: transform;
 }
 
-/* The Animated Border-Light */
+/* Animated rainbow border glow on hover */
 .work-thumbnail::before {
   content: '';
   position: absolute;
   inset: -2px;
-  border-radius: 26px;
-  background: linear-gradient(
-    45deg,
-    var(--cyan-glow),
-    var(--purple-glow),
-    var(--cyan-glow)
+  border-radius: calc(var(--card-radius) + 2px);
+  background: conic-gradient(
+    from var(--border-angle, 0deg),
+    var(--accent-cyan),
+    var(--accent-purple),
+    var(--accent-pink),
+    var(--accent-orange),
+    var(--accent-cyan)
   );
   opacity: 0;
-  transition: opacity 0.5s ease;
   z-index: -1;
+  transition: opacity 0.5s ease;
+  animation: spin-border 4s linear infinite paused;
+}
+
+.work-thumbnail:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-border {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+/* Scanline shimmer overlay */
+.work-thumbnail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.012) 2px,
+    rgba(255, 255, 255, 0.012) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.work-thumbnail:hover::after {
+  opacity: 1;
 }
 
 /* ==========================================================================
-   🎬 PROJECT MEDIA BOX
+   🎬 PROJECT IMAGE BOX
    ========================================================================== */
 .project-image-box {
   width: 100%;
-  height: 190px;
-  border-radius: 16px;
+  height: 200px;
+  border-radius: 18px;
   overflow: hidden;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s var(--spring);
+  flex-shrink: 0;
 }
 
 .project-image-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.7s var(--spring), filter 0.5s ease;
+  display: block;
+}
+
+/* Gradient overlay on image */
+.project-gradient-shroud {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(11, 11, 24, 0.65) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Floating tech badge on image top-right */
+.image-tech-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 3;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.work-thumbnail:hover .image-tech-badge {
+  transform: translateY(-2px);
+  background: rgba(6, 220, 231, 0.15);
 }
 
 /* ==========================================================================
-   💎 TEXT LAYOUT
+   🌟 PARTICLE SPARKLE CANVAS (injected via JS)
+   ========================================================================== */
+.card-sparkle-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  border-radius: var(--card-radius);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.work-thumbnail:hover .card-sparkle-canvas {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   💎 INFO SECTION
    ========================================================================== */
 .project-info-shield {
-  padding: 20px 6px 6px 6px;
+  padding: 18px 6px 6px 6px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
   transform-style: preserve-3d;
+  position: relative;
+  z-index: 2;
 }
 
 .project-header-block {
@@ -98,20 +253,127 @@
   text-align: center;
 }
 
+/* Tag pill */
+.project-meta-layer {
+  margin-bottom: 10px;
+}
+
+.project-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-tag);
+  border: 1px solid rgba(6, 220, 231, 0.2);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.work-thumbnail:hover .project-tag-pill {
+  background: rgba(6, 220, 231, 0.14);
+  border-color: rgba(6, 220, 231, 0.5);
+  transform: scale(1.04);
+}
+
+.slash-marker {
+  color: var(--accent-purple);
+  font-style: normal;
+}
+
+/* Main heading — animated gradient */
 .project-main-heading {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 800;
   line-height: 1.35;
   margin: 0 auto;
-  max-width: 90%;
-  background: linear-gradient(
-    135deg,
-    var(--text-pure) 30%,
-    var(--text-muted) 100%
-  );
+  max-width: 92%;
+  background: linear-gradient(135deg, #ffffff 0%, #a0a0c0 50%, #ffffff 100%);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  transition: background 0.4s ease;
+  background-clip: text;
+  transition: background-position 0.6s ease;
+  animation: shimmer-text 4s ease infinite paused;
+}
+
+.work-thumbnail:hover .project-main-heading {
+  animation-play-state: running;
+  background: linear-gradient(
+    135deg,
+    var(--accent-cyan) 0%,
+    var(--accent-purple) 50%,
+    var(--accent-pink) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer-text 2.5s ease infinite;
+}
+
+@keyframes shimmer-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ==========================================================================
+   📊 PROJECT STATS ROW
+   ========================================================================== */
+.project-stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 12px;
+  transform: translateZ(30px);
+}
+
+.stat-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.work-thumbnail:hover .stat-chip {
+  opacity: 1;
+}
+.work-thumbnail:hover .stat-chip:nth-child(1) {
+  transform: translateY(-3px);
+  transition-delay: 0.05s;
+}
+.work-thumbnail:hover .stat-chip:nth-child(2) {
+  transform: translateY(-3px);
+  transition-delay: 0.1s;
+}
+.work-thumbnail:hover .stat-chip:nth-child(3) {
+  transform: translateY(-3px);
+  transition-delay: 0.15s;
+}
+
+.stat-chip i {
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+}
+
+.stat-chip span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 /* ==========================================================================
@@ -122,98 +384,198 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
-  margin-top: 24px;
-  padding: 14px;
-  background: var(--bg-dock-isolated);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: var(--bg-dock);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  z-index: 3;
 }
 
-/* Base style for buttons - Keeps them circular when not hovered */
+/* Subtle animated gradient sweep inside dock */
+.project-control-dock::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(6, 220, 231, 0.04),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.work-thumbnail:hover .project-control-dock::before {
+  transform: translateX(100%);
+  transition: transform 0.9s ease;
+}
+
+/* Action buttons */
 .action-pill-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 44px;
-  width: 44px; /* Fixed width for circular icon look */
+  height: 42px;
+  width: 42px;
   border-radius: 50px;
   text-decoration: none !important;
-  color: var(--text-pure);
+  color: #fff;
   font-size: 1rem;
-  overflow: hidden; /* CRITICAL: Hides the text overflow */
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  transition: width 0.4s var(--spring), background 0.3s ease,
+    transform 0.3s var(--spring), box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  white-space: nowrap;
 }
-/* The text element hidden by default */
+
+.action-pill-btn:hover {
+  width: 118px;
+  transform: translateY(-3px);
+}
+
+.action-pill-btn:active {
+  transform: translateY(0px) scale(0.96);
+}
+
+.icon-marker {
+  flex-shrink: 0;
+  font-size: 1.05rem;
+}
+
 .sliding-text {
   white-space: nowrap;
-  max-width: 0; /* Starts invisible */
-  opacity: 0; /* Starts invisible */
-  font-size: 0.85rem;
+  max-width: 0;
+  opacity: 0;
+  font-size: 0.82rem;
   font-weight: 700;
-  transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-}
-/* HOVER STATES */
-.action-pill-btn:hover {
-  width: 130px; /* Expands to fit icon + text */
+  transition: max-width 0.4s var(--spring), opacity 0.25s ease,
+    margin-left 0.3s ease;
 }
 
 .action-pill-btn:hover .sliding-text {
-  max-width: 100px; /* Reveals text */
+  max-width: 90px;
   opacity: 1;
-  margin-left: 10px; /* Space between icon and text */
+  margin-left: 8px;
 }
-
 
 .github-btn {
-  background: #06f9f9;
+  background: linear-gradient(135deg, #0af, #06dce7);
+  box-shadow: 0 4px 18px rgba(6, 220, 231, 0.3);
 }
+
+.github-btn:hover {
+  box-shadow: 0 8px 28px rgba(6, 220, 231, 0.55);
+}
+
 .live-btn {
-  background: #f704ce;
+  background: linear-gradient(135deg, #c004a8, #f704ce);
+  box-shadow: 0 4px 18px rgba(247, 4, 206, 0.3);
+}
+
+.live-btn:hover {
+  box-shadow: 0 8px 28px rgba(247, 4, 206, 0.55);
 }
 
 /* ==========================================================================
-   ⚡ HOVER STATES & ANIMATIONS
+   ⚡ CARD HOVER STATE
    ========================================================================== */
 .work-thumbnail:hover {
-  transform: translateY(-10px) scale(1.02);
-  border-color: rgba(6, 220, 231, 0.8);
-  animation: pulse-glow 2s infinite alternate;
+  border-color: rgba(6, 220, 231, 0.6);
+  box-shadow: 0 0 0 1px rgba(6, 220, 231, 0.15),
+    0 20px 60px rgba(6, 220, 231, 0.2), 0 40px 80px rgba(168, 85, 247, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
-
-.work-thumbnail:hover::before {
-  opacity: 1;
-}
-
-/* Keep the text readable without changing the thumbnail hover animation */
-.work-thumbnail:hover .project-main-heading {
-  /* Using white for maximum contrast against any glow color */
-  background: black;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  /* Soft shadow to lift text from the background glow */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-}
-
 
 .work-thumbnail:hover .project-image-box {
-  transform: scale(0.97) translateZ(10px);
+  transform: scale(0.97) translateZ(12px);
 }
+
 .work-thumbnail:hover .project-image-box img {
-  transform: scale(1.06);
+  transform: scale(1.08);
+  filter: brightness(1.08) saturate(1.15);
 }
 
-@keyframes pulse-glow {
-  from {
-    box-shadow: 0 0 20px rgba(6, 220, 231, 0.4);
+/* Reflection shimmer on hover */
+@keyframes reflection-sweep {
+  0% {
+    left: -75%;
   }
-  to {
-    box-shadow: 0 0 50px rgba(6, 220, 231, 0.7),
-      0 0 80px rgba(168, 85, 247, 0.4);
+  100% {
+    left: 125%;
   }
 }
 
-.action-pill-btn:hover {
-  width: 110px;
+.work-thumbnail:hover .project-image-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  animation: reflection-sweep 0.75s ease forwards;
+  z-index: 4;
+}
+
+/* ==========================================================================
+   🔮 GLOW ORBS BEHIND CARD (ambient light)
+   ========================================================================== */
+.work-card-container::before,
+.work-card-container::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+  filter: blur(40px);
+}
+
+.work-card-container::before {
+  width: 160px;
+  height: 160px;
+  background: var(--accent-cyan);
+  bottom: -30px;
+  left: -30px;
+}
+
+.work-card-container::after {
+  width: 130px;
+  height: 130px;
+  background: var(--accent-purple);
+  top: -20px;
+  right: -20px;
+}
+
+.work-card-container:hover::before,
+.work-card-container:hover::after {
+  opacity: 0.18;
+}
+
+/* ==========================================================================
+   📱 RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+  .project-image-box {
+    height: 170px;
+  }
+  .project-main-heading {
+    font-size: 1.15rem;
+  }
+  .action-pill-btn {
+    height: 38px;
+    width: 38px;
+  }
 }
