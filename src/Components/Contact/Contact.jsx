@@ -297,17 +297,6 @@ const Contact = forwardRef((props, ref) => {
             <hr className='dhr' />
             <div className='dhr-glow' />
           </div>
-
-          {/* ── Dev logo ── */}
-          {/* <div className='ct-dev'>
-            <div className='dev-txt'>
-              <span className='dev-made'>Designed &amp; built by</span>
-              <span className='dev-name'>Yibeltal Yitayew</span>
-            </div>
-            <div className='logo-ring'>
-              <div className='logo-img'>YY</div>
-            </div>
-          </div> */}
         </div>
       </Element>
     </section>
