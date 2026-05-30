@@ -2,12 +2,13 @@
    🎨 DESIGN SYSTEM TOKENS (Variables)
    ========================================================================== */
 :root {
-  --accent-orange: #ed8003; /* GitHub theme color */
-  --accent-green: #22c322; /* Live View theme color */
-  --bg-dark-card: #12121e; /* Main project card background */
-  --bg-dock-isolated: #1a1a2e; /* Clean isolated background for buttons */
+  --accent-orange: #ed8003;
+  --accent-green: #22c322;
+  --bg-dark-card: #12121e;
+  --bg-dock-isolated: #1a1a2e;
   --text-pure: #ffffff;
   --text-muted: #b4b4c0;
+  --cyan-glow: #06dce7;
 
   --card-spring: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
@@ -82,7 +83,7 @@
 
 .project-header-block {
   transform: translateZ(40px);
-  text-align: center; /* 🚀 PERFECTLY CENTERS THE PROJECT TITLE AND TAGS */
+  text-align: center;
 }
 
 .project-meta-layer {
@@ -104,13 +105,12 @@
   transition: color 0.3s ease;
 }
 
-/* Center aligned resting formal gradient title state */
 .project-main-heading {
   font-size: 1.4rem;
   font-weight: 800;
   line-height: 1.35;
   margin: 0 auto;
-  max-width: 90%; /* Keeps text looking neat if it wraps */
+  max-width: 90%;
   background: linear-gradient(
     135deg,
     var(--text-pure) 30%,
@@ -122,17 +122,16 @@
 }
 
 /* ==========================================================================
-   🕹️ CENTERED ACTION DOCK (More Space Added)
+   🕹️ CENTERED ACTION DOCK
    ========================================================================== */
 .project-control-dock {
   transform: translateZ(60px);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px; /* 🚀 INCREASED SPACE BETWEEN THE BUTTONS (Was 16px) */
-
+  gap: 32px;
   margin-top: 24px;
-  padding: 14px; /* Slightly added more vertical interior space */
+  padding: 14px;
   background: var(--bg-dock-isolated);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
@@ -140,12 +139,11 @@
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-/* Base style for both buttons */
 .action-pill-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 44px; /* Slightly taller buttons for easier clicks */
+  height: 44px;
   width: 44px;
   border-radius: 50px;
   text-decoration: none !important;
@@ -159,22 +157,11 @@
     border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Normal solid resting background for GitHub Button */
 .github-btn {
   background: #06f9f9;
 }
-
-/* Normal solid resting background for Live View Button */
 .live-btn {
   background: #f704ce;
-}
-
-.icon-marker {
-  min-width: 20px;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .sliding-text {
@@ -189,10 +176,8 @@
 /* ==========================================================================
    ⚡ HOVER STATES & TRANSITIONS
    ========================================================================== */
-
-/* Button Hover Animations */
 .action-pill-btn:hover {
-  width: 110px; /* Expands smoothly to show text text */
+  width: 110px;
   color: #ffffff;
 }
 
@@ -214,21 +199,20 @@
   box-shadow: 0 0 20px rgba(34, 195, 34, 0.4);
 }
 
-/* Entire Card Hover Effects */
+/* Entire Card Hover Effects (Updated with Cyan Glow) */
 .work-thumbnail:hover {
   transform: translateY(-10px) translateZ(20px) rotateX(4deg);
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 40px 75px rgba(0, 0, 0, 0.65), 0 0 40px rgba(237, 128, 3, 0.1),
-    0 0 80px rgba(34, 195, 34, 0.06);
+  border-color: rgba(6, 220, 231, 0.5);
+  box-shadow: 0 0 15px rgba(6, 220, 231, 0.8),
+  /* Intense Cyan Core */ 0 0 30px rgba(6, 220, 231, 0.4),
+  /* Mid-range Cyan Glow */ 0 0 60px rgba(168, 85, 247, 0.3),
+  /* Soft Purple Aura for depth */ 0 20px 40px rgba(0, 0, 0, 0.6); /* Dark shadow for physical lift */
+
 }
 
-/* Changes the Title to a bold Engineering Gradient on Card Contact */
 .work-thumbnail:hover .project-main-heading {
-  background: linear-gradient(
-    135deg,
-    var(--accent-orange) 0%,
-    var(--accent-green) 100%
-  );
+  background: linear-gradient(135deg, #06dce7 0%, #a855f7 100%);
+  transform: translateY(-10px) scale(1.02);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -242,5 +226,5 @@
 }
 
 .work-thumbnail:hover .slash-marker {
-  color: var(--accent-green);
+  color: var(--cyan-glow);
 }
