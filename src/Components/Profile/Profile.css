@@ -190,6 +190,17 @@
   gap: 1.25rem;
   justify-content: center;
   margin-top: 2rem;
+  text-decoration: none;
+}
+/* Removes browser underlines from the interactive links */
+.headline-btns a {
+  text-decoration: none !important;
+}
+
+/* Double checks that the text inside stays underline-free on hover */
+.headline-btns a:hover,
+.headline-btns a span {
+  text-decoration: none !important;
 }
 
 @media (min-width: 992px) {
