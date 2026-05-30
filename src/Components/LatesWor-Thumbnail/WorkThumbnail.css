@@ -1,43 +1,178 @@
-.image-with-title {
-  position: relative;
-  display: flex; /* Add this */
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  word-break: break-word;
-  border-radius: 15px;
+:root {
+  --accent-orange: #ed8003;
+  --accent-green: #22c322;
+  --bg-dark-card: #12121e;
+  --text-pure: #ffffff;
+  --text-muted: #b4b4c0;
+
+  /* High-end variable spring transition curves */
+  --card-spring: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
 }
 
-.image-with-title img {
-  width: 100%;
-  max-height: 200px;
-  border-radius: 20px;
-  border: 2px solid #fff;
+/* Base Card Perspective Anchor Frame */
+.work-card-container {
+  perspective: 1200px; /* Gives local 3D workspace coordinate room to pop */
+  height: 100%;
 }
-.work-thumbnail:hover {
-  transform: scale(1.08);
-  transition: 0.6s ease-in-out;
-}
+
 .work-thumbnail {
-  background-color: transparent;
+  background: var(--bg-dark-card);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 24px;
+  padding: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  /* Enforces layer explosion coordinates to keep sub-elements from flattening */
+  transform-style: preserve-3d;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  transition: var(--card-spring);
+  cursor: pointer;
 }
-.image-with-title h2 {
+
+/* ==========================================================================
+   🎬 CINEMATIC PROJECT MEDIA WRAPPER
+   ========================================================================== */
+
+.project-image-box {
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Prevents stretching and scales pictures cleanly */
+  transform: scale(1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark cinematic vignette layer sitting over top of the image */
+.project-gradient-shroud {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 25px;
-  width: 300px;
-  text-align: center;
-  color: white;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 16, 0) 40%,
+    rgba(10, 10, 16, 0.85) 100%
+  );
   z-index: 1;
 }
 
-.image-with-title h2 a {
-  text-decoration: none;
-  color: #fff;
-  background-color: transparent;
+/* ==========================================================================
+   💎 FLOATING GLASS INFORMATION SHIELD CONTENT
+   ========================================================================== */
+
+.project-info-shield {
+  padding: 24px 12px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+  transform-style: preserve-3d;
+}
+
+/* Parallax Layer 1: Category Tag (Low Elevation Depth) */
+.project-meta-layer {
+  transform: translateZ(20px);
+  margin-bottom: 12px;
+}
+
+.project-tag-pill {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-orange);
+  background: rgba(237, 128, 3, 0.08);
+  padding: 6px 14px;
+  border-radius: 50px;
+  border: 1px solid rgba(237, 128, 3, 0.15);
+  transition: all 0.4s ease;
+}
+
+/* Parallax Layer 2: Main Project Heading Link (Mid Elevation Depth) */
+.project-main-heading {
+  transform: translateZ(40px);
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  line-height: 1.3;
+}
+
+.project-main-heading a {
+  text-decoration: none !important;
+  color: var(--text-pure);
+  transition: color 0.3s ease;
+}
+
+/* Parallax Layer 3: Action Link Call (High Elevation Depth - Closes to user) */
+.project-action-link {
+  transform: translateZ(55px);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.project-action-link::after {
+  content: ' →';
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+/* ==========================================================================
+   🔥 HIGH-FIDELITY ACTIVE 3D HOVER TRIGGERS
+   ========================================================================== */
+
+.work-thumbnail:hover {
+  /* Elevates panel outwards while pitching backward slightly toward natural viewer tracking angles */
+  transform: translateY(-12px) translateZ(20px) rotateX(4deg);
+  border-color: rgba(255, 255, 255, 0.25);
+
+  /* Dual orange-green ambient blur box-shadow glow layout */
+  box-shadow: 0 40px 75px rgba(0, 0, 0, 0.65), 0 0 40px rgba(237, 128, 3, 0.15),
+    0 0 80px rgba(34, 195, 34, 0.1);
+}
+
+/* Image shrinks into framing card container on active state */
+.work-thumbnail:hover .project-image-box {
+  transform: scale(0.96) translateZ(10px);
+}
+
+/* Image zooms slightly inside its frame window boundary simultaneously */
+.work-thumbnail:hover .project-image-box img {
+  transform: scale(1.08);
+}
+
+/* Color and arrow transition shifts inside text arrays */
+.work-thumbnail:hover .project-tag-pill {
+  color: var(--text-pure);
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  box-shadow: 0 4px 15px rgba(34, 195, 34, 0.3);
+}
+
+.work-thumbnail:hover .project-main-heading a {
+  color: var(--accent-orange);
+}
+
+.work-thumbnail:hover .project-action-link {
+  color: var(--text-pure);
+}
+
+.work-thumbnail:hover .project-action-link::after {
+  transform: translateX(6px);
 }
