@@ -1,59 +1,118 @@
-.custome-hr {
-  display: flex;
-  align-items: center;
+/* Footer Base Container */
+.footer-wrapper {
+  background-color: #050505;
+  padding: 60px 20px;
+  border-top: 1px solid #222;
+}
+
+.custom-hr {
   border: none;
-  height: 2px;
-  background-color: #dfe2e5;
+  height: 1px;
+  background-color: #222;
   width: 90%;
   margin: 40px auto;
 }
 
-.social-media-icons {
-}
+/* Social Icons */
 .social-media-icons ul {
   display: flex;
   justify-content: flex-end;
-  gap: 50px;
-  margin: 6%;
+  gap: 40px;
   list-style: none;
+  padding: 0 5%;
 }
+
+.social-media-icons ul li a i {
+  color: #fff;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+/* Icon Hover Glow */
+.social-media-icons ul li a:hover i.bi-linkedin,
+.social-media-icons ul li a:hover i.bi-telegram,
+.social-media-icons ul li a:hover i.bi-facebook {
+  color: #04eade;
+  text-shadow: 0 0 15px rgba(4, 234, 222, 0.6);
+  transform: scale(1.2);
+}
+
+.social-media-icons ul li a:hover i.bi-youtube {
+  color: #ff0011;
+  text-shadow: 0 0 15px rgba(255, 0, 17, 0.6);
+  transform: scale(1.2);
+}
+
+/* Copyright Section */
 .footer-copyright {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   width: 90%;
   margin: auto;
-  margin-top: 30px;
+  align-items: center;
 }
+
 .footer-copyright small {
-  color: #dfe2e5;
+  color: #888;
+  font-size: 14px;
 }
+
 .footer-copyright ul {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   list-style: none;
-    gap: 40px;
+  gap: 30px;
 }
-.footer-copyright ul li {
 
-  font-size: 13px;
-  color: #fff;
+.footer-copyright ul li {
+  font-size: 14px;
+  color: #bbb;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
-.Dev-logo{
-  margin: 3%;
+
+.footer-copyright ul li:hover {
+  color: #ff7200;
+}
+
+/* Dev Logo Section */
+.dev-logo-container {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
- 
-  align-items: end;
+  align-items: center;
+  gap: 15px;
+  margin: 40px 5% 0 0;
 }
-.Dev-logo p{
-  font-size: 12px;
-  color: #fff;
+
+.dev-logo-container p {
+  font-size: 13px;
+  color: #666;
 }
-.Dev-logo img{
-  width:40px;
-  height: 40px;
+
+.dev-logo-container img {
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
+  border: 2px solid #333;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.dev-logo-container img:hover {
+  transform: rotate(360deg);
+  border-color: #ff7200;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .footer-copyright {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  .social-media-icons ul {
+    justify-content: center;
+  }
+  .dev-logo-container {
+    justify-content: center;
+    margin-right: 0;
+  }
 }
