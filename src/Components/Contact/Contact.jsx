@@ -298,38 +298,18 @@ const Contact = forwardRef((props, ref) => {
             <div className='dhr-glow' />
           </div>
 
-          {/* ── Socials ── */}
-          <ul className='ct-socials'>
-            {socials.map(({ icon, href, label, color }) => (
-              <li key={icon}>
-                <a
-                  href={href}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  aria-label={label}
-                  className='soc-a'
-                  style={{ '--acc': color }}
-                >
-                  <span className='sbg' style={{ background: color }} />
-                  <i className={`bi ${icon}`} />
-                  <span className='slbl'>{label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-
           {/* ── Copyright ── */}
-          <div className='ct-copy'>
+          {/* <div className='ct-copy'>
             <small>&copy; 2026 Metages Yibeltal. All rights reserved.</small>
             <ul>
               <li>Terms of Service</li>
               <li>Privacy Policy</li>
               <li>Accessibility</li>
             </ul>
-          </div>
+          </div> */}
 
           {/* ── Dev logo ── */}
-          <div className='ct-dev'>
+          {/* <div className='ct-dev'>
             <div className='dev-txt'>
               <span className='dev-made'>Designed &amp; built by</span>
               <span className='dev-name'>Yibeltal Yitayew</span>
@@ -337,7 +317,7 @@ const Contact = forwardRef((props, ref) => {
             <div className='logo-ring'>
               <div className='logo-img'>YY</div>
             </div>
-          </div>
+          </div> */}
         </div>
       </Element>
     </section>
