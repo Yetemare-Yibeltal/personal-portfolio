@@ -31,8 +31,8 @@ function WorkThumbnail ({
             <h2 className='project-main-heading'>{WorkThumbnailTitle}</h2>
           </div>
 
-          {/* 🕹️ COHESIVE INTERACTIVE BASE ACTION ROW */}
-          <div className='project-action-row'>
+          {/* 🕹️ CENTERED ACTIONS ON AN ISOLATED CONTROL DECK BACKGROUND */}
+          <div className='project-control-dock'>
             {/* GitHub Code Repo Pill */}
             <a
               href='https://github.com/Yetemare-Yibeltal'
