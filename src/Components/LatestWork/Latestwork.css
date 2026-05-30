@@ -26,11 +26,17 @@
   align-items: center;
 }
 
+.latest-work-title {
+  display: flex;
+  justify-content: center; /* Centers the main title on the page screen */
+  margin-bottom: 40px; /* Push space down between header and the card grid */
+}
+
 /* Elegant Modern Title Geometry */
 .latest-work-wrapper .latest-work-title h1 {
   font-size: 3.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #ffffff 30%, var(--work-orange) 100%);
+  background: linear-gradient(135deg, #ea9606 30%, var(--work-orange) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

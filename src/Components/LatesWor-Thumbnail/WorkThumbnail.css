@@ -1,8 +1,11 @@
+/* ==========================================================================
+   🎨 DESIGN SYSTEM TOKENS (Variables)
+   ========================================================================== */
 :root {
-  --accent-orange: #ed8003;
-  --accent-green: #22c322;
-  --bg-dark-card: #12121e;
-  --bg-dock-isolated: #1a1a2e; /* Structural background separation */
+  --accent-orange: #ed8003; /* GitHub theme color */
+  --accent-green: #22c322; /* Live View theme color */
+  --bg-dark-card: #12121e; /* Main project card background */
+  --bg-dock-isolated: #1a1a2e; /* Clean isolated background for buttons */
   --text-pure: #ffffff;
   --text-muted: #b4b4c0;
 
@@ -10,6 +13,9 @@
     box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
 }
 
+/* ==========================================================================
+   🖼️ CARD CORE BOUNDARIES & LAYOUT
+   ========================================================================== */
 .work-card-container {
   perspective: 1400px;
   height: 100%;
@@ -33,9 +39,8 @@
 }
 
 /* ==========================================================================
-   🎬 MEDIA LAYER FRAME
+   🎬 PROJECT MEDIA (IMAGE) BOX
    ========================================================================== */
-
 .project-image-box {
   width: 100%;
   height: 190px;
@@ -64,9 +69,8 @@
 }
 
 /* ==========================================================================
-   💎 FORMAL GRADIENT TEXT INFORMATION SHIELD
+   💎 CENTERED TEXT LAYOUT & GRADIENT HEADINGS
    ========================================================================== */
-
 .project-info-shield {
   padding: 20px 6px 6px 6px;
   display: flex;
@@ -78,6 +82,7 @@
 
 .project-header-block {
   transform: translateZ(40px);
+  text-align: center; /* 🚀 PERFECTLY CENTERS THE PROJECT TITLE AND TAGS */
 }
 
 .project-meta-layer {
@@ -99,12 +104,13 @@
   transition: color 0.3s ease;
 }
 
-/* Premium Formal Typography Gradient State Setup */
+/* Center aligned resting formal gradient title state */
 .project-main-heading {
   font-size: 1.4rem;
   font-weight: 800;
   line-height: 1.35;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 90%; /* Keeps text looking neat if it wraps */
   background: linear-gradient(
     135deg,
     var(--text-pure) 30%,
@@ -112,45 +118,55 @@
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  transition: background 0.4s ease;
+  transition: background 0.4s ease, transform 0.3s ease;
 }
 
 /* ==========================================================================
-   🕹️ CENTERED ACTION CONTROL DECK (Separated Background)
+   🕹️ CENTERED ACTION DOCK (More Space Added)
    ========================================================================== */
-
 .project-control-dock {
   transform: translateZ(60px);
   display: flex;
   align-items: center;
-  justify-content: center; /* Centers horizontal items perfectly */
-  gap: 16px; /* Standard professional inline structural padding */
+  justify-content: center;
+  gap: 32px; /* 🚀 INCREASED SPACE BETWEEN THE BUTTONS (Was 16px) */
 
   margin-top: 24px;
-  padding: 12px;
+  padding: 14px; /* Slightly added more vertical interior space */
   background: var(--bg-dock-isolated);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
+/* Base style for both buttons */
 .action-pill-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 42px;
-  width: 42px;
+  height: 44px; /* Slightly taller buttons for easier clicks */
+  width: 44px;
   border-radius: 50px;
   text-decoration: none !important;
   color: var(--text-pure);
   font-size: 1rem;
   box-sizing: border-box;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease,
     border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Normal solid resting background for GitHub Button */
+.github-btn {
+  background: #06f9f9;
+}
+
+/* Normal solid resting background for Live View Button */
+.live-btn {
+  background: #f704ce;
 }
 
 .icon-marker {
@@ -170,9 +186,13 @@
   transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
 }
 
-/* Hover Adjustments for Interactive Micro-Animations */
+/* ==========================================================================
+   ⚡ HOVER STATES & TRANSITIONS
+   ========================================================================== */
+
+/* Button Hover Animations */
 .action-pill-btn:hover {
-  width: 105px;
+  width: 110px; /* Expands smoothly to show text text */
   color: #ffffff;
 }
 
@@ -194,10 +214,7 @@
   box-shadow: 0 0 20px rgba(34, 195, 34, 0.4);
 }
 
-/* ==========================================================================
-   🔥 HOVER TRANSITION DISPLACEMENTS
-   ========================================================================== */
-
+/* Entire Card Hover Effects */
 .work-thumbnail:hover {
   transform: translateY(-10px) translateZ(20px) rotateX(4deg);
   border-color: rgba(255, 255, 255, 0.18);
@@ -226,9 +243,4 @@
 
 .work-thumbnail:hover .slash-marker {
   color: var(--accent-green);
-}
-
-.work-thumbnail:hover .project-control-dock {
-  background: rgba(26, 26, 46, 0.9);
-  border-color: rgba(255, 255, 255, 0.1);
 }

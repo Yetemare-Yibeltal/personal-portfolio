@@ -1,190 +1,535 @@
+/* ==========================================================================
+   🧱 GLOBAL LAYOUT & 3D SYSTEM DEFINITIONS
+   ========================================================================== */
+.contact-perspective-shell {
+  perspective: 1800px; /* Builds the viewport depth environment box */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: #06060c;
+  box-sizing: border-box;
+}
+
+/* Updated premium deep glass container */
 .contact-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1150px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  gap: 40px;
-
-  background: linear-gradient(to bottom, hsl(99, 97%, 49%), hsl(206, 99%, 48%), hsl(94, 94%, 50%));
-  border-radius: 30px;
+  padding: 50px 40px;
+  gap: 45px;
+  background: rgba(14, 14, 26, 0.75);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 32px;
+  transform-style: preserve-3d;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7);
+  transition: transform 0.15s ease-out, box-shadow 0.4s ease,
+    border-color 0.4s ease;
 }
-.contact-wrapper .contact-header h1 {
-  background: linear-gradient(to right, #ff00e6, #ff7200, #e602a2);
 
+.contact-wrapper:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 50px 110px rgba(0, 240, 255, 0.06), 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Neon Accent Trim Lines */
+.laser-trim-bar {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  opacity: 0.3;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.top-neon {
+  top: 0;
+  background: linear-gradient(90deg, transparent, #ff7200, transparent);
+}
+.bottom-neon {
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+}
+
+.contact-wrapper:hover .top-neon {
+  opacity: 1;
+  left: 3%;
+  right: 3%;
+}
+.contact-wrapper:hover .bottom-neon {
+  opacity: 1;
+  left: 3%;
+  right: 3%;
+}
+
+/* ==========================================================================
+   💎 HEADER TYPOGRAPHY MATRIX
+   ========================================================================== */
+.contact-header .glitch-header {
+  background: linear-gradient(135deg, #ffffff 30%, #a0a5b5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
   font-weight: 900;
-  font-size: 38px;
-  font-family: "Yeseva One", serif;
+  font-size: 42px;
+  letter-spacing: -1px;
+  margin: 0;
+  transform: translateZ(40px);
 }
 
 .contact-body-wrapper {
   width: 100%;
-  /* max-width: 1200px; */
-  margin: 0 auto;
+  transform-style: preserve-3d;
 }
+
+/* ==========================================================================
+   📡 LEFT PANEL: LINK PLATFORM NODES
+   ========================================================================== */
 .nearSide-left {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   width: 100%;
-  max-width: 600px;
+  transform: translateZ(30px);
 }
+
 .nearSide-left h1 {
-  background: linear-gradient(to right, #ff00e6, #ff7200, #e602a2);
+  background: linear-gradient(135deg, #ff7200 0%, #ff00e6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 600;
-  font-size: 28px;
-  font-family: "Yeseva One", serif;
   font-weight: 900;
+  font-size: 32px;
+  margin: 0;
 }
 
 .nearSide-left p {
-  color: #fff;
-  font-size: 20px;
+  color: #a0a6b5;
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0 0 10px 0;
 }
+
 .nearSide-left ul {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-.nearSide-left ul li {
-  list-style: none;
-  color: #fff;
-  font-size: 18px;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
 }
 
-.nearSide-left ul li span {
-  color: #ff4500;
-  font-size: 17px;
-  font-weight: 600;
+/* High-Visibility Custom Row Layout Blocks */
+.info-node-row {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease,
+    border-color 0.3s ease;
 }
-.email-icon,
-.phone-icon,
-.location-icon {
-  margin: 5px;
+
+.icon-shroud {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  transition: all 0.3s ease;
+}
+
+.icon-shroud img {
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 .email-icon {
-  width: 10%;
-  align-items: center;
+  width: 22px;
 }
 .phone-icon {
-  width: 13%;
+  width: 22px;
 }
 .location-icon {
-  width: 12%;
-}
-.nearSide-right {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 20px;
-  width: 50%;
-}
-.nearSide-right label {
-  font-size: 20px;
-  color: #fff;
-}
-.nearSide-right input {
-  padding: 7px;
-  font-size: 20px;
-  background-color: #000;
-  border-radius: 10px;
-  color: #fff;
-  outline: none;
-  transform: scale(1.01);
-  transition: 0.8s;
-  border: 1px solid rgb(5, 97, 125);
-}
-input:focus {
-  background-color: #fff;
-  border: 1px solid #d47100;
-  box-shadow: 0 0 5px rgba(3, 40, 45, 0.5);
-  color: #000;
+  width: 22px;
 }
 
-input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+.info-meta-strings {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-node-row span {
+  color: #6d778a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.string-val {
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 2px 0 0 0;
+  transition: color 0.3s ease;
+}
+
+/* 🔥 Left Row 3D Parallax Hover Shifts */
+.info-node-row:hover {
+  transform: translateZ(35px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tg-glow:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 240, 255, 0.15);
+}
+.tg-glow:hover .icon-shroud {
+  color: #00f0ff;
+  border-color: rgba(0, 240, 255, 0.3);
+  background: rgba(0, 240, 255, 0.05);
+}
+.tg-glow:hover .string-val {
+  color: #00f0ff;
+}
+
+.orange-glow:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 114, 0, 0.15);
+}
+.orange-glow:hover .icon-shroud {
+  border-color: rgba(255, 114, 0, 0.3);
+  background: rgba(255, 114, 0, 0.05);
+}
+.orange-glow:hover .string-val {
+  color: #ff7200;
+}
+
+.green-glow:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(57, 255, 20, 0.15);
+}
+.green-glow:hover .icon-shroud {
+  border-color: rgba(57, 255, 20, 0.3);
+  background: rgba(57, 255, 20, 0.05);
+}
+.green-glow:hover .string-val {
+  color: #39ff14;
+}
+
+/* ==========================================================================
+   🖥️ RIGHT PANEL: GLASS ENGINE FORM SYSTEM
+   ========================================================================== */
+.nearSide-right {
+  width: 100%;
+  transform: translateZ(40px);
+  transform-style: preserve-3d;
+}
+
+.interactive-form-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Custom Input Glass Capsules */
+.cyber-input-capsule {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #0f0f1d;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cyber-input-capsule label {
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #5c6678;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+.decorator-id {
+  color: #ff7200;
+  margin-right: 4px;
+}
+
+.cyber-input-capsule input,
+.cyber-input-capsule textarea {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 4px 0 2px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cyber-input-capsule textarea {
+  resize: none;
+  min-height: 100px;
+}
+
+.capsule-laser-line {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.4s ease;
+}
+
+/* Input Target Active State Modifications */
+.cyber-input-capsule.capsule-focused {
+  background: #17172c;
+  border-color: rgba(0, 240, 255, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.cyber-input-capsule.capsule-focused label {
+  color: #ffffff;
+}
+
+.cyber-input-capsule.capsule-focused .capsule-laser-line {
+  background: linear-gradient(90deg, #ff7200, #ff00e6, #00f0ff);
+  height: 2px;
+  left: 0;
+  right: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25);
   font-size: 15px;
 }
-input:focus::placeholder {
-  color: #000;
-  font-size: 15px;
-}
-.nearSide-right textarea {
-  padding: 0 20px;
-  border-radius: 8px;
-  border: none;
-  font-size: 17px;
-  background-color: #111;
-  color: #000;
-  min-height: 90px;
-  margin-bottom: 10%;
-  outline: none;
-  transform: scale(1.01);
-  transition: 0.9s;
-}
-.nearSide-right textarea:focus {
-  background-color: #cbc6c6;
-}
-.nearSide-right textarea::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
+input:focus::placeholder,
 textarea:focus::placeholder {
-  color: #000;
+  color: rgba(255, 255, 255, 0.1);
 }
+
+/* ==========================================================================
+   🚀 HIGH-ENERGY HARNESS SUBMIT BUTTON SYSTEM
+   ========================================================================== */
+.submit-btn {
+  margin-top: 10px;
+  width: 100%;
+}
+
 .submit-btn button {
-  background: linear-gradient(to right, #ff00e6, #ff7200, #e602a2);
-  width: 200px;
-  height: 40px;
-  font-size: 20px;
-  color: #fff;
-  border-radius: 9px;
-  margin-top: 40px;
+  position: relative;
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 14px;
+  background: #ffffff;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  transform: translateZ(10px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
-@media (max-width: 768px) {
-  .contact-body-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: center;
-    gap: 10%;
+
+.btn-payload-text {
+  position: relative;
+  z-index: 5;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #06060c;
+  transition: color 0.3s ease;
+}
+
+.btn-vibe-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #ff00e6, #ff7200);
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Submit Trigger Action Animations */
+.submit-btn button:hover {
+  transform: translateZ(30px) translateY(-2px);
+  box-shadow: 0 15px 35px rgba(255, 114, 0, 0.25);
+}
+
+.submit-btn button:hover .btn-vibe-overlay {
+  transform: translateY(0);
+}
+
+.submit-btn button:hover .btn-payload-text {
+  color: #ffffff;
+}
+
+.submit-btn button:active {
+  transform: translateZ(15px) translateY(0);
+}
+
+/* ==========================================================================
+   ⚙️ DYNAMIC HARDWARE NETWORK PACKET SIMULATOR PACKS
+   ========================================================================== */
+.terminal-packet-stream,
+.hud-success-module {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  animation: paneRise 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes paneRise {
+  from {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
+
+.cyber-loader-ring {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(0, 240, 255, 0.1);
+  border-top-color: #ff7200;
+  border-bottom-color: #00f0ff;
+  border-radius: 50%;
+  animation: internalSpin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes internalSpin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.terminal-packet-stream h3,
+.hud-success-module h3 {
+  font-family: monospace;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 16px 0;
+}
+
+.waterfall-log-terminal {
+  width: 100%;
+  background: #090911;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+}
+
+.log-line {
+  font-family: monospace;
+  font-size: 0.8rem;
+  margin: 0 0 6px 0;
+}
+.text-cyan {
+  color: #00f0ff;
+}
+.text-orange {
+  color: #ff7200;
+}
+.text-green {
+  color: #39ff14;
+}
+
+.infinite-flash {
+  color: #39ff14;
+  animation: operationalFlash 1s infinite alternate;
+}
+
+@keyframes operationalFlash {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Success Layout Strings */
+.success-pulse-ring {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(57, 255, 20, 0.04);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  color: #39ff14;
+  text-shadow: 0 0 15px #39ff14;
+  margin-bottom: 20px;
+}
+
+.hud-success-module p {
+  color: #a0a6b5;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.checksum-footer {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #4b5563;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 4px 12px;
+  border-radius: 50px;
+}
+
+/* ==========================================================================
+   📱 ADAPTIVE MEDIA GRID RESPONSIVENESS FALLBACKS
+   ========================================================================== */
 @media (min-width: 768px) {
   .contact-body-wrapper {
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    justify-content: space-between;
-    gap: 10%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
   }
 }
-@media (max-width: 540px) {
-  .nearSide-left ul li {
-    font-size: 15px;
-  }
-}
+
 @media (max-width: 768px) {
+  .contact-wrapper {
+    padding: 32px 20px;
+    gap: 30px;
+  }
   .contact-body-wrapper {
+    display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 35px;
   }
-  .nearSide-left,
-  .nearSide-right {
-    width: 100%;
-    max-width: 90%;
+  .contact-header h1 {
+    font-size: 32px;
   }
-  .nearSide-left p,
-  .nearSide-left ul li {
-    font-size: 15px;
+  .nearSide-left h1 {
+    font-size: 26px;
   }
-  .nearSide-right input,
-  .nearSide-right label,
-  .nearSide-right textarea {
-    font-size: 16px;
+  .string-val {
+    font-size: 0.95rem;
   }
 }

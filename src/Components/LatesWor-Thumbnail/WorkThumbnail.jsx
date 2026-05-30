@@ -1,4 +1,5 @@
 import React from 'react'
+import './WorkThumbnail.css'
 
 function WorkThumbnail ({
   WorkThumbnailImage,
@@ -8,32 +9,32 @@ function WorkThumbnail ({
   return (
     <div className='work-card-container'>
       <section className='work-thumbnail'>
-        {/* Media Frame Section */}
+        {/* Project Visual Container */}
         <div className='project-image-box'>
           <img
             src={WorkThumbnailImage}
-            alt={WorkThumbnailTitle}
+            alt={WorkThumbnailTitle || 'Project Card'}
             loading='lazy'
           />
           <div className='project-gradient-shroud'></div>
         </div>
 
-        {/* Text and Button Control Frame */}
+        {/* Dynamic Typography & Control Frame */}
         <div className='project-info-shield'>
+          {/* Centered Top Text Container */}
           <div className='project-header-block'>
             <div className='project-meta-layer'>
               <span className='project-tag-pill'>
                 <span className='slash-marker'>//</span>{' '}
-                {WorkThumbnailTag || 'Full Stack Dev'}
+                {WorkThumbnailTag || 'Full Stack'}
               </span>
             </div>
 
             <h2 className='project-main-heading'>{WorkThumbnailTitle}</h2>
           </div>
 
-          {/* 🕹️ CENTERED ACTIONS ON AN ISOLATED CONTROL DECK BACKGROUND */}
+          {/* Action Dock with expanded spacing */}
           <div className='project-control-dock'>
-            {/* GitHub Code Repo Pill */}
             <a
               href='https://github.com/Yetemare-Yibeltal'
               target='_blank'
@@ -44,7 +45,6 @@ function WorkThumbnail ({
               <span className='sliding-text'>Code</span>
             </a>
 
-            {/* Live Web Application View Pill */}
             <a
               href='https://github.com/Yetemare-Yibeltal'
               target='_blank'
