@@ -5,14 +5,13 @@
   --text-pure: #ffffff;
   --text-muted: #b4b4c0;
 
-  /* High-end variable spring transition curves */
   --card-spring: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
 }
 
 /* Base Card Perspective Anchor Frame */
 .work-card-container {
-  perspective: 1200px; /* Gives local 3D workspace coordinate room to pop */
+  perspective: 1400px; /* Enhanced depth perspective field */
   height: 100%;
 }
 
@@ -27,8 +26,6 @@
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-
-  /* Enforces layer explosion coordinates to keep sub-elements from flattening */
   transform-style: preserve-3d;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   transition: var(--card-spring);
@@ -36,7 +33,7 @@
 }
 
 /* ==========================================================================
-   🎬 CINEMATIC PROJECT MEDIA WRAPPER
+   🎬 MEDIA WRAPPER & HIGH-GLOW FLOATING OVERLAY BAR
    ========================================================================== */
 
 .project-image-box {
@@ -52,25 +49,114 @@
 .project-image-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Prevents stretching and scales pictures cleanly */
+  object-fit: cover;
   transform: scale(1);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Dark cinematic vignette layer sitting over top of the image */
 .project-gradient-shroud {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(10, 10, 16, 0) 40%,
-    rgba(10, 10, 16, 0.85) 100%
+    rgba(10, 10, 16, 0) 30%,
+    rgba(10, 10, 16, 0.9) 100%
   );
   z-index: 1;
 }
 
+/* 🕹️ The Floating Control Deck Overlay Grid */
+.project-action-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  opacity: 0; /* Hidden when resting */
+  transform: translateZ(0px) scale(0.85);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
 /* ==========================================================================
-   💎 FLOATING GLASS INFORMATION SHIELD CONTENT
+   💎 ACTIVE BUTTON EXTENSION FLIP STATES
+   ========================================================================== */
+
+.action-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 48px; /* Perfectly round icon token when resting */
+  border-radius: 50px;
+  text-decoration: none !important;
+  color: var(--text-pure);
+  font-size: 1.1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  background: rgba(10, 10, 16, 0.75);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+
+  /* Pushes buttons forward into the highest 3D plane coordinate space */
+  transform: translateZ(90px);
+  transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15),
+    background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Fixed metric layout width adjustments for icon containers */
+.icon-marker {
+  min-width: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+/* Text hidden by default inside sliding tracks */
+.sliding-text {
+  max-width: 0;
+  opacity: 0;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  transition: max-width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15),
+    opacity 0.25s ease;
+  z-index: 2;
+}
+
+/* 🔥 Triggers Expansion and High-Intensity 3D Micro-Glow on Button Contact */
+.action-pill-btn:hover {
+  width: 135px; /* Smoothly stretches container box to accommodate label */
+  color: #000000;
+}
+
+.action-pill-btn:hover .sliding-text {
+  max-width: 80px;
+  opacity: 1;
+  margin-left: 10px;
+}
+
+/* Custom Palette Profiles mapped seamlessly to your colors */
+.github-btn:hover {
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 30px rgba(237, 128, 3, 0.6);
+}
+
+.live-btn:hover {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 30px rgba(34, 195, 34, 0.6);
+}
+
+/* ==========================================================================
+   🧱 FORMAL INFORMATION SHIELD INTERACTIVE LAYER RULES
    ========================================================================== */
 
 .project-info-shield {
@@ -82,7 +168,7 @@
   transform-style: preserve-3d;
 }
 
-/* Parallax Layer 1: Category Tag (Low Elevation Depth) */
+/* Parallax Layer 1: Slash Marker Flag */
 .project-meta-layer {
   transform: translateZ(20px);
   margin-bottom: 12px;
@@ -92,16 +178,20 @@
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--accent-orange);
-  background: rgba(237, 128, 3, 0.08);
-  padding: 6px 14px;
-  border-radius: 50px;
-  border: 1px solid rgba(237, 128, 3, 0.15);
-  transition: all 0.4s ease;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
 }
 
-/* Parallax Layer 2: Main Project Heading Link (Mid Elevation Depth) */
+/* Formal programming dual slash logic style */
+.slash-marker {
+  color: var(--accent-orange);
+  font-weight: 900;
+  margin-right: 4px;
+  transition: color 0.3s ease;
+}
+
+/* Parallax Layer 2: Headings Matrix */
 .project-main-heading {
   transform: translateZ(40px);
   font-size: 1.4rem;
@@ -116,11 +206,13 @@
   transition: color 0.3s ease;
 }
 
-/* Parallax Layer 3: Action Link Call (High Elevation Depth - Closes to user) */
+/* Parallax Layer 3: Formal Action Indicators */
 .project-action-link {
   transform: translateZ(55px);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   color: var(--text-muted);
   display: inline-flex;
   align-items: center;
@@ -128,41 +220,40 @@
 }
 
 .project-action-link::after {
-  content: ' →';
-  font-size: 1.1rem;
+  content: ' //'; /* Formal slash indicators matching link structures */
+  font-size: 0.9rem;
+  color: var(--accent-green);
+  margin-left: 6px;
   transition: transform 0.3s ease;
 }
 
 /* ==========================================================================
-   🔥 HIGH-FIDELITY ACTIVE 3D HOVER TRIGGERS
+   🔥 MASTER 3D HOVER COORDINATE DISPLACEMENTS
    ========================================================================== */
 
 .work-thumbnail:hover {
-  /* Elevates panel outwards while pitching backward slightly toward natural viewer tracking angles */
-  transform: translateY(-12px) translateZ(20px) rotateX(4deg);
+  transform: translateY(-12px) translateZ(25px) rotateX(5deg);
   border-color: rgba(255, 255, 255, 0.25);
-
-  /* Dual orange-green ambient blur box-shadow glow layout */
-  box-shadow: 0 40px 75px rgba(0, 0, 0, 0.65), 0 0 40px rgba(237, 128, 3, 0.15),
-    0 0 80px rgba(34, 195, 34, 0.1);
+  box-shadow: 0 45px 80px rgba(0, 0, 0, 0.7), 0 0 45px rgba(237, 128, 3, 0.15),
+    0 0 90px rgba(34, 195, 34, 0.1);
 }
 
-/* Image shrinks into framing card container on active state */
+/* Overlay deck cascades directly into frame on thumbnail hover */
+.work-thumbnail:hover .project-action-overlay {
+  opacity: 1;
+  transform: translateZ(60px) scale(1);
+}
+
 .work-thumbnail:hover .project-image-box {
-  transform: scale(0.96) translateZ(10px);
+  transform: scale(0.96) translateZ(15px);
 }
 
-/* Image zooms slightly inside its frame window boundary simultaneously */
 .work-thumbnail:hover .project-image-box img {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
-/* Color and arrow transition shifts inside text arrays */
-.work-thumbnail:hover .project-tag-pill {
-  color: var(--text-pure);
-  background: var(--accent-green);
-  border-color: var(--accent-green);
-  box-shadow: 0 4px 15px rgba(34, 195, 34, 0.3);
+.work-thumbnail:hover .slash-marker {
+  color: var(--accent-green);
 }
 
 .work-thumbnail:hover .project-main-heading a {
@@ -172,7 +263,210 @@
 .work-thumbnail:hover .project-action-link {
   color: var(--text-pure);
 }
+:root {
+  --accent-orange: #ed8003;
+  --accent-green: #22c322;
+  --bg-dark-card: #12121e;
+  --text-pure: #ffffff;
+  --text-muted: #b4b4c0;
 
-.work-thumbnail:hover .project-action-link::after {
-  transform: translateX(6px);
+  --card-spring: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+}
+
+.work-card-container {
+  perspective: 1400px;
+  height: 100%;
+}
+
+.work-thumbnail {
+  background: var(--bg-dark-card);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 24px;
+  padding: 18px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  transition: var(--card-spring);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   🎬 MEDIA LAYER FRAME
+   ========================================================================== */
+
+.project-image-box {
+  width: 100%;
+  height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-gradient-shroud {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 16, 0) 50%,
+    rgba(10, 10, 16, 0.4) 100%
+  );
+}
+
+/* ==========================================================================
+   💎 INFORMATION SHIELD LAYOUT (Title Top, Buttons Bottom)
+   ========================================================================== */
+
+.project-info-shield {
+  padding: 24px 8px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1; /* Pushes action row cleanly to the floor boundary */
+  transform-style: preserve-3d;
+}
+
+/* 3D Parallax Coordinate Elevation Layers */
+.project-header-block {
+  transform: translateZ(40px);
+}
+
+.project-meta-layer {
+  margin-bottom: 10px;
+}
+
+.project-tag-pill {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+}
+
+.slash-marker {
+  color: var(--accent-orange);
+  font-weight: 900;
+  margin-right: 4px;
+  transition: color 0.3s ease;
+}
+
+.project-main-heading {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* ==========================================================================
+   🕹️ EXPANDING BASE BUTTON CONTROLLER BAR
+   ========================================================================== */
+
+.project-action-row {
+  transform: translateZ(70px); /* Highest Z-plane coordinates */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.action-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 44px; /* Default uniform circle icon shape */
+  border-radius: 50px;
+  text-decoration: none !important;
+  color: var(--text-pure);
+  font-size: 1.05rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease,
+    border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.icon-marker {
+  min-width: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sliding-text {
+  max-width: 0;
+  opacity: 0;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+/* 🔥 Stretch and Glow Core Animations */
+.action-pill-btn:hover {
+  width: 110px; /* Expands dynamically to reveal the label */
+  color: #ffffff;
+}
+
+.action-pill-btn:hover .sliding-text {
+  max-width: 70px;
+  opacity: 1;
+  margin-left: 8px;
+}
+
+.github-btn:hover {
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 25px rgba(237, 128, 3, 0.45);
+}
+
+.live-btn:hover {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 25px rgba(34, 195, 34, 0.45);
+}
+
+/* ==========================================================================
+   🔥 MASTER 3D HOVER COORDINATE DISPLACEMENTS
+   ========================================================================== */
+
+.work-thumbnail:hover {
+  transform: translateY(-12px) translateZ(20px) rotateX(4deg);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 40px 75px rgba(0, 0, 0, 0.65), 0 0 40px rgba(237, 128, 3, 0.12),
+    0 0 80px rgba(34, 195, 34, 0.08);
+}
+
+.work-thumbnail:hover .project-image-box {
+  transform: scale(0.97) translateZ(10px);
+}
+
+.work-thumbnail:hover .project-image-box img {
+  transform: scale(1.06);
+}
+
+.work-thumbnail:hover .slash-marker {
+  color: var(--accent-green);
+}
+
+.work-thumbnail:hover .project-main-heading {
+  color: var(--accent-orange);
 }

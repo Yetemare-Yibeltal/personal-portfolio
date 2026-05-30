@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 function WorkThumbnail ({
   WorkThumbnailImage,
@@ -9,7 +8,7 @@ function WorkThumbnail ({
   return (
     <div className='work-card-container'>
       <section className='work-thumbnail'>
-        {/* Cinematic Media Capture Box */}
+        {/* Media Frame Section */}
         <div className='project-image-box'>
           <img
             src={WorkThumbnailImage}
@@ -19,22 +18,42 @@ function WorkThumbnail ({
           <div className='project-gradient-shroud'></div>
         </div>
 
-        {/* 3D Layer Exploded Text Floating Content Shield */}
+        {/* Text and Button Control Frame */}
         <div className='project-info-shield'>
-          <div className='project-meta-layer'>
-            <span className='project-tag-pill'>
-              {WorkThumbnailTag || 'Web Application'}
-            </span>
+          <div className='project-header-block'>
+            <div className='project-meta-layer'>
+              <span className='project-tag-pill'>
+                <span className='slash-marker'>//</span>{' '}
+                {WorkThumbnailTag || 'Full Stack Dev'}
+              </span>
+            </div>
+
+            <h2 className='project-main-heading'>{WorkThumbnailTitle}</h2>
           </div>
 
-          <h2 className='project-main-heading'>
-            <Link to='/portfolio' className='text-clear'>
-              {WorkThumbnailTitle}
-            </Link>
-          </h2>
+          {/* 🕹️ COHESIVE INTERACTIVE BASE ACTION ROW */}
+          <div className='project-action-row'>
+            {/* GitHub Code Repo Pill */}
+            <a
+              href='https://github.com/Yetemare-Yibeltal'
+              target='_blank'
+              rel='noreferrer'
+              className='action-pill-btn github-btn'
+            >
+              <i className='fa-brands fa-github icon-marker'></i>
+              <span className='sliding-text'>Code</span>
+            </a>
 
-          <div className='project-action-link'>
-            <span>View Case Study</span>
+            {/* Live Web Application View Pill */}
+            <a
+              href='https://github.com/Yetemare-Yibeltal'
+              target='_blank'
+              rel='noreferrer'
+              className='action-pill-btn live-btn'
+            >
+              <i className='fa-solid fa-arrow-up-right-from-square icon-marker'></i>
+              <span className='sliding-text'>Live View</span>
+            </a>
           </div>
         </div>
       </section>
