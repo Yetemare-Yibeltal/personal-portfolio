@@ -1,70 +1,186 @@
-/* Image Style */
-.header-img img {
-  width: 60%;
-  background-color: #ff277b;
-  border-radius: 50%;
-  margin-bottom: 20px;
-}
-.header-img img:hover {
-  background-color: #ff7200;
-  border-radius: 50%;
-  width: 66%;
-}
-@media (min-width: 738px) and (max-width: 930px) {
-  .header-img img {
-    display: none;
-  }
-}
-.UL-GAP {
-  gap: 5%;
-}
-.UL-GAP li {
-  padding: 8px;
-}
-.header-wrapper {
-  /* background-image: url('../../Images/nav-bg.jpg');
-background-size: cover; */
-}
-.header-wrapper nav ul li a {
-  color: #fff;
-  font-weight: 800;
-  text-decoration: none;
-  cursor: pointer;
+/* Header.css */
+/* Custom Variable Setup for Easy Theming */
+:root {
+  --primary-glow: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  --accent-gradient: linear-gradient(90deg, #ff2a2a, #a100ff);
+  --glass-bg: rgba(10, 10, 16, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-gradient: linear-gradient(135deg, #00f2fe, #4facfe);
 }
 
-/* Header Button Style */
-.header-btn button {
-    background: linear-gradient(to right, #ff2a2a, #a100ff);
-  width: 150px;
-  border: none;
-  padding: 5px;
-  margin-top: 15px;
-  border-radius: 50px;
-  color: #fff;
+/* Navbar Container Base */
+.header-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 15px 0;
 }
-.header-btn button:hover {
-  background:green;
-  color: #fff;
-  border-radius: 5px;
+
+/* Glassmorphism with Depth (3D feel) triggered when user scrolls */
+.header-wrapper.navbar-scrolled {
+  padding: 10px 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transform: translateY(2px) scale(0.99); /* Add subtle 3D shift on scroll */
 }
-/* when click the nav underline style */
-.nav-item.underline .nav-link {
-  border-bottom: 3px solid #2ef32e;
-  color: #0004ff;
-  font-weight: 900;
-  border-radius: 10px;
+
+/* Brand Logo Layout */
+.navbar-brand-custom {
+  text-decoration: none;
+}
+
+.brand-logo-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px rgba(161, 0, 255, 0.3);
+}
+
+/* Interactive brand hover with rotation and glowing effects */
+.brand-logo-wrapper:hover {
+  transform: rotate(360deg) scale(1.08);
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+}
+
+.brand-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: #111;
+}
+
+/* Navigation Links Styling */
+.nav-gap {
+  gap: 1.5rem;
+}
+
+.nav-item-custom {
+  position: relative;
+  list-style: none;
+}
+
+/* Custom Cursor Change when hovering links */
+.cursor-change:hover {
+  cursor: crosshair; /* You can change this to a custom image if you want */
+}
+
+.nav-link-custom {
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 8px 12px;
   cursor: pointer;
+  transition: color 0.3s ease;
+  display: block;
 }
-@media (min-width: 768px) {
-  .navbar {
-    position: fixed !important;
-    top: 0;
-    left: 0;
+
+/* Hover effect with vibrant gradient text */
+.nav-link-custom.hover-gradient-text:hover {
+  background-image: var(--text-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  transition: all 0.3s ease;
+}
+
+/* Futuristic Active Link Underline Effect with depth */
+.nav-item-custom::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-glow);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.6); /* Glow on active link */
+}
+
+.nav-item-custom.active-link .nav-link-custom {
+  background-image: var(--text-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+}
+
+.nav-item-custom.active-link::after {
+  width: 80%;
+}
+
+/* Premium Interactive Action Button (3D Effect) */
+.connect-btn {
+  background: var(--accent-gradient);
+  border: none;
+  padding: 2px; /* Border spacing */
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.3s ease;
+}
+
+.connect-btn span {
+  display: block;
+  background: #0d0e15;
+  color: #fff;
+  padding: 8px 24px;
+  border-radius: 28px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.3s ease;
+}
+
+/* Highly interactive hover for the button, adding depth and shadow */
+.connect-btn.hover-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(161, 0, 255, 0.4);
+}
+
+.connect-btn:hover span {
+  background: transparent; /* Reveals full vibrant gradient background on hover */
+}
+
+/* Mobile Responsiveness Improvements */
+.custom-toggler {
+  border: 1px solid var(--glass-border);
+  padding: 6px;
+}
+
+@media (max-width: 767px) {
+  .navbar-collapse {
+    background: #0d0e15;
+    margin-top: 15px;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+  }
+
+  .nav-gap {
+    gap: 1rem;
+    align-items: flex-start !important;
+  }
+
+  .connect-btn {
+    margin-top: 10px;
     width: 100%;
-    background: linear-gradient(to right, #ff8a3d, #ff3ecb, #6aefff);
-    color: #fff;
-    transition: all 0.5s;
-    transition-timing-function: ease-in;
-    z-index: 2;
+  }
+
+  .connect-btn span {
+    text-align: center;
   }
 }
