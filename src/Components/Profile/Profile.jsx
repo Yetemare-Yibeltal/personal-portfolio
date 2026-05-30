@@ -81,7 +81,7 @@ function Profile () {
             <div className='headline'>
               <h2 className='welcome-tag'>Welcome to my universe</h2>
               <h1>
-                Hi, I'm <span className='name-gradient'>Metages Yibeltal</span>
+                Hi, I'm <span className='name-gradient'> Yibeltal Yitayew</span>
               </h1>
               <h3 className='job-gradient'>
                 <TypingText />

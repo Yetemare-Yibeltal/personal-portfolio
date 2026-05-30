@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import aboutImage from '../../Images/About-image.jpg'
+import aboutImage from '../../Images/About-image.png'
 import { Element } from 'react-scroll'
 import { motion } from 'framer-motion'
 
