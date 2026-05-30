@@ -1,78 +1,87 @@
-import React from "react";
-import WorkThumbnail from "../LatesWor-Thumbnail/WorkThumbnail";
-import flower from "../../Images/flower.jpg"
-import { Element } from "react-scroll";
-function Latestwork() {
+import React, { useState } from 'react'
+import WorkThumbnail from '../LatesWor-Thumbnail/WorkThumbnail'
+import flower from '../../Images/flower.jpg'
+import { Element } from 'react-scroll'
+import { motion, AnimatePresence } from 'framer-motion'
+
+function Latestwork () {
+  // Array holding all your 13 development builds
+  const projectsData = [
+    { title: 'Netflix App with React', tag: 'Full Stack' },
+    { title: 'YouTube Clone', tag: 'Frontend' },
+    { title: 'Apple with Bootstrap', tag: 'UI/UX' },
+    { title: 'Instagram App', tag: 'Full Stack' },
+    { title: 'Zoom App', tag: 'WebRTC' },
+    { title: 'Weather App', tag: 'API Integration' },
+    { title: 'Scientific Calculator', tag: 'JavaScript' },
+    { title: 'Ecommerce Etcare Website', tag: 'Full Stack' },
+    { title: 'WhatsApp Clone', tag: 'Real-Time Web' },
+    { title: 'Injibara University Feature', tag: 'Security Architecture' },
+    { title: 'Food and Restaurant Portal', tag: 'Frontend' },
+    { title: 'Video Editing Website', tag: 'UI/UX Architecture' },
+    { title: 'Ethiopian Videos with API', tag: 'Backend Systems' }
+  ]
+
+  // State flag tracking whether grid has been expanded
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  // Evaluates exactly how many items should pass to the active layout grid
+  const visibleProjects = isExpanded ? projectsData : projectsData.slice(0, 6)
+
   return (
-    <div>
-      <Element name="portfolio">
-        <div className="latest-work-wrapper">
-          <div className="latest-work-title">
-            <h1> My Latest Work</h1>
+    <div className='latest-work-root'>
+      <Element name='portfolio'>
+        <section className='latest-work-wrapper container'>
+          <div className='latest-work-title'>
+            <motion.h1
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              My Latest Work
+            </motion.h1>
           </div>
-          <div className="latest-work-component-wrapper">
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Netflex app with react"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Youtube Clone"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Apple with Bootstrap"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Instagram App"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Zoom app"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Weather app"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Scientific Calculator"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Ecommerence Etcare Website"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="WhatstApp"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Injibara University Feature"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Food and Restaurant"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Video Editing Website"
-            />
-            <WorkThumbnail
-              WorkThumbnailImage={flower}
-              WorkThumbnailTitle="Ethiopian Videos with API"
-            />
+
+          {/* Precision 3D Project Matrix Grid Container */}
+          <div className='latest-work-component-wrapper'>
+            <AnimatePresence mode='popLayout'>
+              {visibleProjects.map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 100,
+                    damping: 15,
+                    delay: index * 0.03
+                  }}
+                >
+                  <WorkThumbnail
+                    WorkThumbnailImage={flower}
+                    WorkThumbnailTitle={project.title}
+                    WorkThumbnailTag={project.tag} // Passing custom categorization flags
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
-          {/* Show more button Style */}
-          <section className="button-wrapper">
-            <span className="showmore-arrow"></span>
-            <button className="showmore-btn">Show more</button>
-          </section>
-        </div>
+
+          {/* Interactive Pagination Controller Section */}
+          <div className='button-wrapper'>
+            <button
+              className={`showmore-btn ${isExpanded ? 'btn-active' : ''}`}
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              <span>{isExpanded ? 'Show Less' : 'Show More'}</span>
+            </button>
+          </div>
+        </section>
       </Element>
     </div>
-  );
+  )
 }
 
-export default Latestwork;
+export default Latestwork

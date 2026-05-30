@@ -1,50 +1,143 @@
+:root {
+  --work-orange: #ed8003;
+  --work-green: #22c322;
+  --bg-dark-canvas: #0a0a10;
+  --bg-dark-card: #12121e;
+  --text-pure: #ffffff;
+  --text-muted: #a0a0b0;
+
+  --spring-curve: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+}
+
+/* Master Component Section Container */
+.latest-work-root {
+  background: var(--bg-dark-canvas);
+  padding: 100px 24px;
+  perspective: 1600px; /* Activates global 3D workspace viewport */
+}
+
 .latest-work-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 45px;
 }
+
+/* Elegant Modern Title Geometry */
 .latest-work-wrapper .latest-work-title h1 {
-  background: linear-gradient(267deg, #8b3a18 1.06%, #4f1c02 60.06%);
-  background-clip: text;
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 30%, var(--work-orange) 100%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 700;
-  font-family: "Yeseva One", serif;
-  margin: 0 0 40px;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 55px;
+  text-align: center;
 }
+
+/* High-Performance 3-Column Responsive Grid Matrix */
 .latest-work-component-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
   gap: 30px;
-  height: 100%;
   width: 100%;
 }
+
+@media (min-width: 768px) {
+  .latest-work-component-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .latest-work-component-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ==========================================================================
+   🎮 PREMIUM SEAMLESS CONTROLLER ACTION BUTTON
+   ========================================================================== */
+
+.button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
 .showmore-btn {
-  background: #140101;
-  width: 170px;
-  font-size: 17px;
-  border: 1px solid #fff;
-  padding: 9px;
-  margin: 50px;
-  border-radius: 50px;
-  color: #fff;
+  background: var(--bg-dark-card);
+  width: 190px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px 28px;
+  border-radius: 100px;
+  color: var(--text-pure);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: var(--spring-curve);
 }
-.showmore-btn:hover {
-  background: linear-gradient(267deg, #08df7b.36%, #ff7200 102.06%);
-  color: #fff;
-  border-radius: 5px;
-  border: none;
-  border-radius: 20px;
-  transform: scale(1.02);
-  transition: 0.9s ease-in-out;
+
+/* Sliding liquid background inside button controller */
+.showmore-btn::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--work-orange), var(--work-green));
+  transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
 }
-.showmore-btn::after {
-  font-family: "Font Awesome 6 Free";
+
+.showmore-btn span {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+/* FontAwesome Arrow Icon Integration Mapping */
+.showmore-btn span::after {
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
-  width: 40px;
-  content: "\f30b";
-  margin: 10px 15px;
-  color: #fff;
+  content: '\f30b'; /* Native structural down-arrow token */
+  margin-left: 12px;
+  font-size: 0.9rem;
+  transition: transform 0.4s ease;
+}
+
+/* Active State: Automatically switches arrow directions when list expands */
+.showmore-btn.btn-active span::after {
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   🔥 BUTTON INTERACTIVE HOVER EVENTS
+   ========================================================================== */
+
+.showmore-btn:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 15px 35px rgba(237, 128, 3, 0.25);
+}
+
+.showmore-btn:hover::before {
+  top: 0;
+}
+
+.showmore-btn:hover span {
+  color: #000000; /* Contrast anchor swap for maximum legibility */
 }
