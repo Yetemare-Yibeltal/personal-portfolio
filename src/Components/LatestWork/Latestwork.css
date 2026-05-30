@@ -1,58 +1,358 @@
+/* ==========================================================================
+   🎨 DESIGN TOKENS
+   ========================================================================== */
 :root {
   --work-orange: #ed8003;
   --work-green: #22c322;
-  --bg-dark-canvas: #0a0a10;
-  --bg-dark-card: #12121e;
+  --work-cyan: #06dce7;
+  --work-purple: #a855f7;
+  --work-pink: #f704ce;
+  --bg-canvas: #060610;
+  --bg-card: #0b0b18;
   --text-pure: #ffffff;
-  --text-muted: #a0a0b0;
-
-  --spring-curve: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+  --text-muted: #9898b0;
+  --spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Master Component Section Container */
+/* ==========================================================================
+   🌌 SECTION ROOT — deep space background
+   ========================================================================== */
 .latest-work-root {
-  background: var(--bg-dark-canvas);
-  padding: 100px 24px;
-  perspective: 1600px; /* Activates global 3D workspace viewport */
+  background: var(--bg-canvas);
+  padding: 110px 24px 130px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 
+/* ── Static noise grain texture overlay ── */
+.latest-work-root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+}
+
+/* ── Grid line pattern ── */
+.latest-work-root::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      rgba(6, 220, 231, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(6, 220, 231, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    black 40%,
+    transparent 100%
+  );
+}
+
+/* ==========================================================================
+   🔮 FLOATING AMBIENT ORB BLOBS (CSS-only, no JS)
+   ========================================================================== */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orb-drift 18s ease-in-out infinite alternate;
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(168, 85, 247, 0.18) 0%,
+    transparent 70%
+  );
+  top: -120px;
+  left: -100px;
+  animation-duration: 20s;
+}
+
+.orb-2 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(
+    circle,
+    rgba(6, 220, 231, 0.15) 0%,
+    transparent 70%
+  );
+  bottom: -80px;
+  right: -80px;
+  animation-duration: 24s;
+  animation-direction: alternate-reverse;
+}
+
+.orb-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(247, 4, 206, 0.1) 0%,
+    transparent 70%
+  );
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-duration: 16s;
+}
+
+.orb-4 {
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(
+    circle,
+    rgba(237, 128, 3, 0.1) 0%,
+    transparent 70%
+  );
+  bottom: 20%;
+  left: 8%;
+  animation-duration: 22s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes orb-drift {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.06);
+  }
+  66% {
+    transform: translate(-20px, 15px) scale(0.95);
+  }
+  100% {
+    transform: translate(15px, 25px) scale(1.03);
+  }
+}
+
+/* ==========================================================================
+   📐 WRAPPER & LAYOUT
+   ========================================================================== */
 .latest-work-wrapper {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1220px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
+/* ==========================================================================
+   🏷️ SECTION EYEBROW
+   ========================================================================== */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(6, 220, 231, 0.07);
+  border: 1px solid rgba(6, 220, 231, 0.2);
+  border-radius: 100px;
+  padding: 6px 18px;
+  margin-bottom: 20px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--work-cyan);
+  animation: eyebrow-pulse 3s ease-in-out infinite;
+}
+
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--work-cyan);
+  border-radius: 50%;
+  animation: dot-blink 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes dot-blink {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes eyebrow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(6, 220, 231, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(6, 220, 231, 0.15);
+  }
+}
+
+/* ==========================================================================
+   🖋️ MAIN TITLE — animated gradient with underline reveal
+   ========================================================================== */
 .latest-work-title {
   display: flex;
-  justify-content: center; /* Centers the main title on the page screen */
-  margin-bottom: 40px; /* Push space down between header and the card grid */
-}
-
-/* Elegant Modern Title Geometry */
-.latest-work-wrapper .latest-work-title h1 {
-  font-size: 3.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #ea9606 30%, var(--work-orange) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  margin-bottom: 55px;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
   text-align: center;
 }
 
-/* High-Performance 3-Column Responsive Grid Matrix */
+.latest-work-wrapper .latest-work-title h1 {
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    var(--work-cyan) 30%,
+    var(--work-purple) 60%,
+    var(--work-orange) 85%,
+    #ffffff 100%
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: title-gradient-flow 6s ease infinite;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+@keyframes title-gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Animated underline bar */
+.title-underline {
+  width: 0;
+  height: 3px;
+  border-radius: 100px;
+  background: linear-gradient(
+    90deg,
+    var(--work-cyan),
+    var(--work-purple),
+    var(--work-pink)
+  );
+  animation: underline-expand 1.2s var(--spring) 0.4s forwards;
+  margin-bottom: 0;
+}
+
+@keyframes underline-expand {
+  from {
+    width: 0;
+  }
+  to {
+    width: 180px;
+  }
+}
+
+/* Subtitle */
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 14px;
+  max-width: 480px;
+  text-align: center;
+  line-height: 1.7;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fade-up 0.8s ease 0.7s forwards;
+}
+
+@keyframes fade-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   📊 STATS BAR — project count, technologies, etc.
+   ========================================================================== */
+.section-stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  margin-top: 36px;
+  margin-bottom: 56px;
+  padding: 18px 36px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 100px;
+  opacity: 0;
+  animation: fade-up 0.8s ease 0.9s forwards;
+}
+
+.stats-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.stat-item .stat-number {
+  font-size: 1.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--work-cyan), var(--work-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+.stat-item .stat-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   🗂️ 3-COLUMN RESPONSIVE GRID
+   ========================================================================== */
 .latest-work-component-wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 30px;
+  gap: 28px;
   width: 100%;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .latest-work-component-wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -65,85 +365,148 @@
 }
 
 /* ==========================================================================
-   🎮 PREMIUM SEAMLESS CONTROLLER ACTION BUTTON
+   🎮 SHOW MORE / LESS BUTTON
    ========================================================================== */
-
 .button-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 60px;
+  margin-top: 64px;
+  position: relative;
+}
+
+/* Glow line above button */
+.button-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(6, 220, 231, 0.3),
+    transparent
+  );
 }
 
 .showmore-btn {
-  background: var(--bg-dark-card);
-  width: 190px;
-  font-size: 1rem;
-  font-weight: 700;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 14px 28px;
-  border-radius: 100px;
-  color: var(--text-pure);
-  cursor: pointer;
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  gap: 10px;
+  padding: 15px 38px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-pure);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: none;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  transition: var(--spring-curve);
+  transition: transform 0.4s var(--spring), border-color 0.3s ease,
+    box-shadow 0.4s ease;
 }
 
-/* Sliding liquid background inside button controller */
+/* Liquid fill layer */
 .showmore-btn::before {
   content: '';
   position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: linear-gradient(135deg, var(--work-orange), var(--work-green));
-  transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(105%);
+  transition: transform 0.45s var(--spring);
+  border-radius: inherit;
   z-index: 0;
 }
 
-.showmore-btn span {
+.showmore-btn:hover::before {
+  transform: translateY(0%);
+}
+
+.showmore-btn span,
+.showmore-btn i {
   position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
+  z-index: 1;
   transition: color 0.3s ease;
 }
 
-/* FontAwesome Arrow Icon Integration Mapping */
-.showmore-btn span::after {
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-  content: '\f30b'; /* Native structural down-arrow token */
-  margin-left: 12px;
-  font-size: 0.9rem;
-  transition: transform 0.4s ease;
+.showmore-btn:hover span,
+.showmore-btn:hover i {
+  color: #000;
 }
 
-/* Active State: Automatically switches arrow directions when list expands */
-.showmore-btn.btn-active span::after {
+.showmore-btn:hover {
+  transform: translateY(-5px);
+  border-color: rgba(237, 128, 3, 0.4);
+  box-shadow: 0 12px 36px rgba(237, 128, 3, 0.25), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.showmore-btn:active {
+  transform: translateY(-2px) scale(0.97);
+}
+
+/* Rotating icon on active state */
+.showmore-btn .btn-icon {
+  display: inline-flex;
+  transition: transform 0.45s var(--spring);
+}
+
+.showmore-btn.btn-active .btn-icon {
   transform: rotate(180deg);
 }
 
 /* ==========================================================================
-   🔥 BUTTON INTERACTIVE HOVER EVENTS
+   🌀 SCROLL FADE ANIMATION (used via Framer Motion but also CSS fallback)
    ========================================================================== */
-
-.showmore-btn:hover {
-  transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 15px 35px rgba(237, 128, 3, 0.25);
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.showmore-btn:hover::before {
-  top: 0;
+/* ==========================================================================
+   📱 RESPONSIVE TWEAKS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .latest-work-root {
+    padding: 80px 16px 100px;
+  }
+
+  .section-stats-bar {
+    gap: 20px;
+    padding: 14px 24px;
+    flex-wrap: wrap;
+    border-radius: 20px;
+  }
+
+  .stats-divider {
+    display: none;
+  }
+
+  .latest-work-wrapper .latest-work-title h1 {
+    font-size: 2.2rem;
+  }
+
+  .showmore-btn {
+    padding: 13px 30px;
+    font-size: 0.9rem;
+  }
 }
 
-.showmore-btn:hover span {
-  color: #000000; /* Contrast anchor swap for maximum legibility */
+@media (max-width: 480px) {
+  .section-stats-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-radius: 16px;
+  }
 }
