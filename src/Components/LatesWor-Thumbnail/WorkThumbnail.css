@@ -206,19 +206,12 @@
 
 @keyframes pulse-glow {
   from {
-    box-shadow: 0 0 20px rgba(var(--glow-primary), 0.4);
+    box-shadow: 0 0 20px rgba(6, 220, 231, 0.4);
   }
   to {
-    box-shadow: 0 0 50px rgba(var(--glow-primary), 0.7),
-      0 0 80px rgba(var(--glow-secondary), 0.5);
+    box-shadow: 0 0 50px rgba(6, 220, 231, 0.7),
+      0 0 80px rgba(168, 85, 247, 0.4);
   }
-}
-
-/* Update border color in the work-thumbnail:hover block */
-.work-thumbnail:hover {
-  transform: translateY(-10px) scale(1.02);
-  border-color: rgba(var(--glow-secondary), 0.8); /* Lime border */
-  animation: pulse-glow 2s infinite alternate;
 }
 
 .action-pill-btn:hover {

@@ -124,24 +124,14 @@
 }
 
 /* 3. The New Animation Keyframes */
-/* Update the glow animation */
-@keyframes violet-lime-pulse {
+@keyframes sunset-pulse {
   from {
-    box-shadow: 0 0 20px rgba(var(--glow-primary), 0.3);
+    box-shadow: 0 0 20px rgba(240, 101, 213, 0.3);
   }
   to {
-    box-shadow: 0 0 50px rgba(var(--glow-primary), 0.6),
-      0 0 80px rgba(var(--glow-secondary), 0.4);
+    box-shadow: 0 0 50px rgba(58, 242, 217, 0.6), 0 0 80px var(--primary-cyan); /* Sunset Red Aura */
   }
 }
-
-/* Apply to service hover */
-.service-thum:hover {
-  transform: translateY(-12px) rotateX(4deg);
-  animation: violet-lime-pulse 2s infinite alternate;
-  border-color: rgba(var(--glow-primary), 0.6);
-}
-
 
 /* 4. Text Readability on Hover (Ensuring white text/shadow) */
 .service-thum:hover .service-card-title,
