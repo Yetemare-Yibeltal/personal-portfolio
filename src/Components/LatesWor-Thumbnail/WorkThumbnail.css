@@ -25,7 +25,7 @@
 
 .work-thumbnail {
   position: relative;
-  background: var(--bg-dark-card);
+  background: rgb(1, 23, 42);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 24px;
   padding: 18px;
@@ -124,16 +124,41 @@
   border-radius: 16px;
 }
 
+/* Base style for buttons - Keeps them circular when not hovered */
 .action-pill-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 44px;
-  width: 44px;
+  width: 44px; /* Fixed width for circular icon look */
   border-radius: 50px;
+  text-decoration: none !important;
   color: var(--text-pure);
-  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  font-size: 1rem;
+  overflow: hidden; /* CRITICAL: Hides the text overflow */
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
+/* The text element hidden by default */
+.sliding-text {
+  white-space: nowrap;
+  max-width: 0; /* Starts invisible */
+  opacity: 0; /* Starts invisible */
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+/* HOVER STATES */
+.action-pill-btn:hover {
+  width: 130px; /* Expands to fit icon + text */
+}
+
+.action-pill-btn:hover .sliding-text {
+  max-width: 100px; /* Reveals text */
+  opacity: 1;
+  margin-left: 10px; /* Space between icon and text */
+}
+
 
 .github-btn {
   background: #06f9f9;
