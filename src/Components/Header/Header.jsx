@@ -108,10 +108,11 @@ function HeaderParticles () {
    Subtly pulls toward cursor on hover
 ───────────────────────────────────────────── */
 function MagneticNavLink ({ to, label, icon, isActive, onClick }) {
-  const linkRef = useRef(null)
+  // Attach ref to the <li> — a real DOM node, unlike react-scroll's <Link>
+  const liRef = useRef(null)
 
   const onMove = useCallback(e => {
-    const el = linkRef.current
+    const el = liRef.current
     if (!el) return
     const rect = el.getBoundingClientRect()
     const cx = rect.left + rect.width / 2
@@ -122,17 +123,17 @@ function MagneticNavLink ({ to, label, icon, isActive, onClick }) {
   }, [])
 
   const onLeave = useCallback(() => {
-    if (linkRef.current) linkRef.current.style.transform = ''
+    if (liRef.current) liRef.current.style.transform = ''
   }, [])
 
   return (
     <li
+      ref={liRef}
       className={`nav-item-custom ${isActive ? 'active-link' : ''}`}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
     >
       <Link
-        ref={linkRef}
         className='nav-link-custom hover-gradient-text'
         to={to}
         smooth={true}
