@@ -1,15 +1,61 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import profileImage from '../../Images/profile.png'
 import { Element } from 'react-scroll'
 import { motion } from 'framer-motion'
 import './Profile.css'
 
+// --- Custom Component: Self-Writing/Typing Text Effect ---
+const TypingText = () => {
+  const [text, setText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+  const fullText = 'Full Stack Developer'
+  const typingSpeed = 150 // Speed of typing out letters
+  const deletingSpeed = 75 // Speed of deleting letters
+
+  useEffect(() => {
+    const handleTyping = () => {
+      if (!isDeleting) {
+        // Typing out
+        setText(fullText.substring(0, text.length + 1))
+
+        // Pause at the end before deleting
+        if (text === fullText) {
+          setTimeout(() => setIsDeleting(true), 1500)
+        }
+      } else {
+        // Deleting back
+        setText(fullText.substring(0, text.length - 1))
+
+        // Pause at the start before typing again
+        if (text === '') {
+          setIsDeleting(false)
+        }
+      }
+    }
+
+    const timer = setTimeout(
+      handleTyping,
+      isDeleting ? deletingSpeed : typingSpeed
+    )
+
+    return () => clearTimeout(timer)
+  }, [text, isDeleting])
+
+  return (
+    <span className='typing-text-wrapper'>
+      {text}
+      <span className='typing-cursor'>|</span>
+    </span>
+  )
+}
+
+// --- Main Hero Profile Component ---
 function Profile () {
   return (
     <Element name='profile'>
       <section className='profile-wrapper'>
         <div className='profile-container container'>
-          {/* Left Column: Interactive 3D Animated Image Container */}
+          {/* Left/Right Balance: 3D Morphing Card */}
           <motion.div
             className='profile-img-side'
             initial={{ opacity: 0, scale: 0.8 }}
@@ -25,7 +71,7 @@ function Profile () {
             </div>
           </motion.div>
 
-          {/* Right Column: Premium Interactive Typography Content */}
+          {/* Typography Content Column */}
           <motion.div
             className='profile-text-side'
             initial={{ opacity: 0, x: 50 }}
@@ -37,7 +83,9 @@ function Profile () {
               <h1>
                 Hi, I'm <span className='name-gradient'>Metages Yibeltal</span>
               </h1>
-              <h3 className='job-gradient'>Full Stack Web Developer</h3>
+              <h3 className='job-gradient'>
+                <TypingText />
+              </h3>
             </div>
 
             <div className='profile-bio'>
