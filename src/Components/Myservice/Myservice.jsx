@@ -10,12 +10,11 @@ import {
   AnimatePresence
 } from 'framer-motion'
 
-/* ─── Animated Number Counter ─── */
+/* ── Counter ── */
 function Counter ({ target, suffix = '' }) {
   const [count, setCount] = useState(0)
   const ref = useRef(null)
   const [triggered, setTriggered] = useState(false)
-
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([e]) => {
@@ -26,7 +25,6 @@ function Counter ({ target, suffix = '' }) {
     obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
-
   useEffect(() => {
     if (!triggered) return
     const duration = 1600
@@ -39,7 +37,6 @@ function Counter ({ target, suffix = '' }) {
     }
     requestAnimationFrame(t => step(t, null))
   }, [triggered])
-
   return (
     <span ref={ref}>
       {count}
@@ -48,22 +45,21 @@ function Counter ({ target, suffix = '' }) {
   )
 }
 
-/* ─── Magnetic Wrapper ─── */
+/* ── Magnetic ── */
 function Magnetic ({ children, strength = 0.35 }) {
   const ref = useRef(null)
   const x = useMotionValue(0),
     y = useMotionValue(0)
   const sx = useSpring(x, { stiffness: 180, damping: 18 })
   const sy = useSpring(y, { stiffness: 180, damping: 18 })
-  const onMove = e => {
-    const r = ref.current.getBoundingClientRect()
-    x.set((e.clientX - r.left - r.width / 2) * strength)
-    y.set((e.clientY - r.top - r.height / 2) * strength)
-  }
   return (
     <motion.div
       ref={ref}
-      onMouseMove={onMove}
+      onMouseMove={e => {
+        const r = ref.current.getBoundingClientRect()
+        x.set((e.clientX - r.left - r.width / 2) * strength)
+        y.set((e.clientY - r.top - r.height / 2) * strength)
+      }}
       onMouseLeave={() => {
         x.set(0)
         y.set(0)
@@ -75,7 +71,7 @@ function Magnetic ({ children, strength = 0.35 }) {
   )
 }
 
-/* ─── Process Step Card ─── */
+/* ── ProcessStep ── */
 function ProcessStep ({ number, title, desc, color, delay }) {
   const [hov, setHov] = useState(false)
   return (
@@ -97,7 +93,6 @@ function ProcessStep ({ number, title, desc, color, delay }) {
       >
         {number}
       </motion.div>
-      <div className='process-connector' />
       <h4 className='process-title'>{title}</h4>
       <p className='process-desc'>{desc}</p>
       <motion.div
@@ -109,7 +104,7 @@ function ProcessStep ({ number, title, desc, color, delay }) {
   )
 }
 
-/* ─── Tool Badge ─── */
+/* ── ToolBadge ── */
 function ToolBadge ({ name, icon, color, delay }) {
   return (
     <motion.div
@@ -127,7 +122,7 @@ function ToolBadge ({ name, icon, color, delay }) {
   )
 }
 
-/* ─── FAQ Accordion ─── */
+/* ── FaqItem ── */
 function FaqItem ({ q, a, delay }) {
   const [open, setOpen] = useState(false)
   return (
@@ -165,7 +160,7 @@ function FaqItem ({ q, a, delay }) {
   )
 }
 
-/* ─── Pricing Card (text-based, no specific currency) ─── */
+/* ── PricingCard — text only, no numbers/currency ── */
 function PricingCard ({
   plan,
   priceLabel,
@@ -182,7 +177,7 @@ function PricingCard ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay, type: 'spring', stiffness: 80 }}
-      whileHover={{ y: -12, boxShadow: `0 30px 70px ${color}22` }}
+      whileHover={{ y: -10, boxShadow: `0 30px 70px ${color}22` }}
       style={{ '--price-color': color }}
     >
       {popular && <div className='pricing-badge'>⭐ Most Popular</div>}
@@ -204,7 +199,7 @@ function PricingCard ({
   )
 }
 
-/* ─── Why Choose Me Card ─── */
+/* ── WhyCard ── */
 function WhyCard ({ icon, title, desc, color, delay }) {
   return (
     <motion.div
@@ -213,7 +208,7 @@ function WhyCard ({ icon, title, desc, color, delay }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay, type: 'spring', stiffness: 100 }}
-      whileHover={{ y: -8, boxShadow: `0 24px 60px ${color}22` }}
+      whileHover={{ y: -8 }}
       style={{ '--wc': color }}
     >
       <div className='why-icon'>{icon}</div>
@@ -224,7 +219,7 @@ function WhyCard ({ icon, title, desc, color, delay }) {
   )
 }
 
-/* ─── Service Guarantee Card (replaces Testimonials) ─── */
+/* ── GuaranteeCard ── */
 function GuaranteeCard ({ icon, title, desc, color, delay }) {
   return (
     <motion.div
@@ -237,7 +232,7 @@ function GuaranteeCard ({ icon, title, desc, color, delay }) {
       style={{ '--gc': color }}
     >
       <div className='guarantee-icon-wrap'>
-        <span className='guarantee-icon'>{icon}</span>
+        <span>{icon}</span>
       </div>
       <h4 className='guarantee-title'>{title}</h4>
       <p className='guarantee-desc'>{desc}</p>
@@ -245,7 +240,7 @@ function GuaranteeCard ({ icon, title, desc, color, delay }) {
   )
 }
 
-/* ─── Read More Modal (clean, no black screen) ─── */
+/* ── ReadMoreModal ── */
 function ReadMoreModal ({ service, onClose }) {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -264,47 +259,45 @@ function ReadMoreModal ({ service, onClose }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
+      transition={{ duration: 0.2 }}
     >
       <motion.div
         className='rm-box'
         onClick={e => e.stopPropagation()}
-        initial={{ opacity: 0, scale: 0.92, y: 40 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.92, y: 40 }}
-        transition={{ type: 'spring', stiffness: 160, damping: 22 }}
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 40, scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 26 }}
         style={{ '--mc': service.color }}
       >
-        {/* Close button */}
-        <button className='rm-close' onClick={onClose} aria-label='Close'>
+        <button className='rm-close' onClick={onClose}>
           ✕
         </button>
 
         {/* Header */}
         <div className='rm-header'>
           <span className='rm-numeral'>{service.id}</span>
-          <div className='rm-header-text'>
+          <div>
             <span className='rm-category'>{service.category}</span>
             <h2 className='rm-title'>{service.title}</h2>
           </div>
         </div>
 
-        {/* Divider */}
         <div className='rm-divider' />
 
-        {/* Full description — the main wide text content */}
+        {/* Main wide description */}
         <p className='rm-full-desc'>{service.fullDesc}</p>
 
-        {/* What's included list */}
-        <div className='rm-included-title'>✦ What's Included</div>
+        {/* Included */}
+        <p className='rm-section-label'>✦ What's Included</p>
         <ul className='rm-included-list'>
           {service.included.map((item, i) => (
             <motion.li
               key={i}
               className='rm-included-item'
-              initial={{ opacity: 0, x: 16 }}
+              initial={{ opacity: 0, x: 14 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 + i * 0.05 }}
+              transition={{ delay: 0.05 * i }}
             >
               <span className='rm-check'>✓</span>
               {item}
@@ -312,7 +305,8 @@ function ReadMoreModal ({ service, onClose }) {
           ))}
         </ul>
 
-        {/* Tech pills */}
+        {/* Tech */}
+        <p className='rm-section-label'>🛠 Technologies</p>
         <div className='rm-tech-row'>
           {service.tech.map((t, i) => (
             <span key={i} className='rm-tech-pill'>
@@ -321,16 +315,16 @@ function ReadMoreModal ({ service, onClose }) {
           ))}
         </div>
 
-        {/* Approach steps */}
-        <div className='rm-steps-title'>⚙️ My Approach</div>
+        {/* Approach */}
+        <p className='rm-section-label'>⚙️ My Approach</p>
         <div className='rm-steps'>
           {service.steps.map((s, i) => (
             <motion.div
               key={i}
               className='rm-step'
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + i * 0.07 }}
+              transition={{ delay: 0.07 * i }}
             >
               <div className='rm-step-num'>{i + 1}</div>
               <div>
@@ -341,7 +335,6 @@ function ReadMoreModal ({ service, onClose }) {
           ))}
         </div>
 
-        {/* CTA */}
         <div className='rm-cta-row'>
           <Magnetic>
             <a href='#contact' className='rm-cta-btn' onClick={onClose}>
@@ -357,7 +350,9 @@ function ReadMoreModal ({ service, onClose }) {
   )
 }
 
-/* ════════════ MAIN COMPONENT ════════════ */
+/* ══════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════ */
 export default function Myservice () {
   const [activeFilter, setActiveFilter] = useState('All')
   const [selectedService, setSelectedService] = useState(null)
@@ -413,7 +408,7 @@ export default function Myservice () {
       title: 'Integrated Interfaces',
       desc: 'I create seamless connections between user interfaces and backend systems, enabling smooth, secure data exchange from dynamic form handling to custom API paths.',
       fullDesc:
-        'Frontend and backend living in perfect harmony. I architect full-stack solutions where the UI layer communicates seamlessly with your server — RESTful APIs, real-time sockets, and secure authentication all wired into a single cohesive product your users will love. Every data flow is optimized, every edge case handled, and every interaction designed for speed and reliability.',
+        'Frontend and backend living in perfect harmony. I architect full-stack solutions where the UI layer communicates seamlessly with your server — RESTful APIs, real-time sockets, and secure authentication all wired into a single cohesive product. Every data flow is optimized, every edge case handled, and every interaction designed for speed and reliability.',
       included: [
         'React frontend with reusable components',
         'RESTful API design & implementation',
@@ -449,20 +444,20 @@ export default function Myservice () {
       title: 'Client-Centric Delivery',
       desc: 'Every project is delivered with precision and purpose—on time, completely aligned with your targets, and built to leave a lasting modern impression.',
       fullDesc:
-        'I treat every deadline as a commitment, not a suggestion. My delivery process is built around you — milestone check-ins, staging previews, and iterative feedback loops ensure you are never left wondering what is happening. You see real progress at every stage and receive exactly what was promised: a polished, production-ready product that reflects your vision with no surprises at launch.',
+        'I treat every deadline as a commitment, not a suggestion. My delivery process is built around you — milestone check-ins, staging previews, and iterative feedback loops ensure you are never left wondering. You see real progress at every stage and receive exactly what was promised: a polished, production-ready product that reflects your vision.',
       included: [
         'Weekly progress reports',
         'Staging environment for review',
         'Milestone-based delivery',
         'UAT support period',
-        'Post-launch monitoring (2 weeks)',
+        'Post-launch monitoring',
         'Full handoff documentation'
       ],
       tech: ['Vercel', 'Netlify', 'GitHub', 'Notion', 'Loom', 'Slack'],
       steps: [
         {
           title: 'Scope agreement',
-          desc: 'Detailed spec document signed off by both parties'
+          desc: 'Detailed spec signed off before development begins'
         },
         {
           title: 'Milestone delivery',
@@ -485,7 +480,7 @@ export default function Myservice () {
       title: 'Developer-Centric',
       desc: 'Built for uptime and impact: backend systems running on structured net code with an emphasis on rock-solid reliability that builds user confidence.',
       fullDesc:
-        'I architect backend systems that scale gracefully under load and survive the unexpected. Every route is secured, every edge case handled, and every service layer is modular and testable. Whether you need a REST API, a database-heavy application, or a microservices backbone, I build it with an emphasis on uptime, clarity, and the kind of reliability that earns and keeps user trust.',
+        'I architect backend systems that scale gracefully under load and survive the unexpected. Every route is secured, every edge case handled, and every service layer is modular and testable. Whether you need a REST API, a database-heavy application, or a microservices backbone, I build it with reliability that earns user trust.',
       included: [
         'Node.js / Express server setup',
         'Database schema design',
@@ -521,7 +516,7 @@ export default function Myservice () {
       title: 'Real-Time Updates',
       desc: 'I deploy full-stack applications with real-time updates and low latency metrics, ensuring users instantly experience data changes without reload delays.',
       fullDesc:
-        'Real-time features transform static apps into living, breathing products. I implement WebSocket connections, Socket.io integrations, and live data pipelines from the ground up — from instant chat systems and live dashboards to collaborative tools and push notification engines. Every event is mapped, every connection is resilient, and every user interaction reflects data changes in milliseconds, not seconds.',
+        'Real-time features transform static apps into living products. I implement WebSocket connections, Socket.io integrations, and live data pipelines from the ground up — from instant chat systems and live dashboards to collaborative tools. Every user interaction reflects data changes in milliseconds, not seconds.',
       included: [
         'WebSocket / Socket.io setup',
         'Live dashboard components',
@@ -557,7 +552,7 @@ export default function Myservice () {
       title: '24/7 Uptime Layouts',
       desc: 'I deliver applications optimized for continuous availability, high performance, and reliable server-side asset rendering under heavy networking traffic.',
       fullDesc:
-        'Downtime costs money, credibility, and users. I build and deploy applications with redundancy, health monitoring, and automated recovery at every layer. From load-balanced servers and CDN-optimized asset delivery to real-time uptime alerts and failover configurations, your application will be engineered to stay available when it matters most — under heavy traffic, unexpected errors, or infrastructure changes.',
+        'Downtime costs money, credibility, and users. I build and deploy applications with redundancy, health monitoring, and automated recovery at every layer. From load-balanced servers and CDN-optimized asset delivery to real-time uptime alerts, your application will stay available when it matters most.',
       included: [
         'Load balancer configuration',
         'Health check endpoints',
@@ -600,7 +595,7 @@ export default function Myservice () {
       title: 'Fully Responsive',
       desc: 'Fluid layouts built cleanly to scale elegantly across smartphone screens, tablets, and wide high-definition monitors using pure modern CSS logic.',
       fullDesc:
-        'Every screen size is a first-class citizen in my development process. I build layouts with CSS Grid, Flexbox, and fluid typography that adapt beautifully from the smallest mobile screen to the widest 4K monitor — no breakpoint hacks, no content overflow, no elements hiding on small devices. Your users get a premium, consistent experience regardless of what device they are holding in their hands.',
+        'Every screen size is a first-class citizen. I build layouts with CSS Grid, Flexbox, and fluid typography that adapt beautifully from 320px mobile to 4K monitors — no breakpoint hacks, no overflow bugs. Your users get a premium, consistent experience on every device they hold.',
       included: [
         'Mobile-first CSS architecture',
         'CSS Grid + Flexbox layouts',
@@ -636,7 +631,7 @@ export default function Myservice () {
       title: 'Creative UI/UX Design',
       desc: 'I design intuitive interfaces with custom gradients, interactive layers, and light-weight vector graphics that elevate user engagement and brand presence.',
       fullDesc:
-        'Great design is invisible — users simply feel it. I craft interface experiences that guide attention naturally, reduce friction at every interaction point, and reinforce your brand identity with precision. From low-fidelity wireframes and user flow diagrams to high-fidelity Figma prototypes and pixel-perfect implementation, every visual decision is intentional and every micro-interaction is designed to delight.',
+        'Great design is invisible — users simply feel it. I craft interface experiences that guide attention naturally, reduce friction at every touchpoint, and reinforce your brand identity with precision. From low-fidelity wireframes to high-fidelity Figma prototypes and pixel-perfect implementation, every visual decision is intentional.',
       included: [
         'User flow mapping',
         'Wireframes (low + high fidelity)',
@@ -676,7 +671,7 @@ export default function Myservice () {
       title: 'Full-Stack Integration',
       desc: 'Connecting secure databases, robust server layers, and interactive front-ends into one unified application package designed for high-velocity user scaling.',
       fullDesc:
-        'The complete picture — frontend, backend, database, and deployment — delivered as one unified, production-ready system built entirely by a single developer who understands every layer. There are no miscommunications between teams, no integration gaps, and no hidden technical debt. You get a single point of accountability and a product that works seamlessly end-to-end, from the first pixel on screen to the deepest database query.',
+        'The complete picture — frontend, backend, database, and deployment — as one unified production-ready system. No integration gaps, no hidden technical debt. You get a single point of accountability and a product that works seamlessly end-to-end, from the first pixel on screen to the deepest database query.',
       included: [
         'React frontend',
         'Node.js + Express backend',
@@ -724,6 +719,8 @@ export default function Myservice () {
     'DevOps',
     'Delivery'
   ]
+
+  // Simple filter — no AnimatePresence on the grid
   const filtered =
     activeFilter === 'All'
       ? servicesData
@@ -760,7 +757,7 @@ export default function Myservice () {
       title: 'Discovery',
       color: '#00f2fe',
       delay: 0,
-      desc: 'We start with a deep-dive into your goals, audience, and technical requirements to shape the perfect scope.'
+      desc: 'Deep-dive into your goals, audience, and technical requirements to shape the perfect scope.'
     },
     {
       number: '02',
@@ -800,7 +797,6 @@ export default function Myservice () {
     { name: 'Bootstrap', icon: '🅱️', color: '#7952b3', delay: 0.55 }
   ]
 
-  /* ── Why Choose Me ── */
   const whyCards = [
     {
       icon: '⚡',
@@ -814,7 +810,7 @@ export default function Myservice () {
       title: 'Security First',
       color: '#a100ff',
       delay: 0.1,
-      desc: 'JWT auth, input sanitization, rate limiting, CORS hardening — security is baked into every layer of the stack, not added as an afterthought.'
+      desc: 'JWT auth, input sanitization, rate limiting, CORS hardening — security is baked into every layer of the stack, never bolted on at the end.'
     },
     {
       icon: '📐',
@@ -846,59 +842,59 @@ export default function Myservice () {
     }
   ]
 
-  /* ── Service Guarantee (replaces Testimonials) ── */
+  // Guarantees — no "1 month / 3 month / 6 month" anywhere
   const guarantees = [
     {
       icon: '🛡️',
       title: 'Satisfaction Guaranteed',
       color: '#00f2fe',
       delay: 0,
-      desc: 'If the delivered work does not match the agreed scope and quality, I will revise it at no extra cost until it does. Your satisfaction is the finish line.'
+      desc: 'If the delivered work does not match the agreed scope and quality, I will revise it at no extra cost until it genuinely meets your expectations. Your satisfaction is the only finish line that matters to me.'
     },
     {
       icon: '📅',
       title: 'Deadline Commitment',
       color: '#a100ff',
       delay: 0.1,
-      desc: 'Every project comes with a clear, written timeline. I do not miss deadlines — and if scope changes arise, we discuss them openly before any extension.'
+      desc: 'Every project comes with a clear written timeline agreed upon before a single line of code is written. I honour every deadline — and if scope changes arise, we discuss them openly before any timeline adjusts.'
     },
     {
       icon: '🔁',
-      title: 'Unlimited Revisions',
+      title: 'Continuous Revisions',
       color: '#ff277b',
       delay: 0.2,
-      desc: 'Within the agreed project scope, revisions are included. I iterate with you until every detail matches your vision, with no hidden revision fees.'
+      desc: 'Within the agreed project scope, revisions are a natural part of the process, not an extra charge. I iterate with you through every phase until every detail precisely matches your vision.'
     },
     {
       icon: '🔐',
       title: 'Your Code, Your Property',
       color: '#38ef7d',
       delay: 0.3,
-      desc: 'Full IP ownership is transferred to you upon project completion. Your codebase, your assets, your product — no strings, no lock-in, no licensing traps.'
+      desc: 'Full intellectual property ownership transfers to you upon project completion. Your codebase, your assets, your product — with no strings attached, no licensing traps, and no vendor lock-in of any kind.'
     },
     {
       icon: '📞',
-      title: 'Responsive Communication',
+      title: 'Always Reachable',
       color: '#f1c40f',
       delay: 0.4,
-      desc: 'Questions answered within 24 hours. Progress updates every week. You will always have a clear picture of where your project stands.'
+      desc: 'Questions are answered promptly and progress is communicated every week. You will always have a clear, honest picture of where your project stands — no radio silence, no vague updates, ever.'
     },
     {
       icon: '🚀',
-      title: 'Post-Launch Support',
+      title: 'Ongoing Post-Launch Care',
       color: '#4facfe',
       delay: 0.5,
-      desc: 'Every project includes a post-launch period for monitoring, bug fixes, and quick adjustments — because launching is only the beginning.'
+      desc: 'Launching is only the beginning. Every project includes a dedicated post-launch period where I actively monitor performance, resolve any issues that surface, and make quick adjustments to keep everything running smoothly in production.'
     }
   ]
 
-  /* ── Pricing (text-based, no currency) ── */
+  // Pricing — text labels only, zero numbers or currency symbols
   const pricing = [
     {
       plan: 'Starter',
       priceLabel: 'Light Investment',
       priceNote:
-        'Ideal for individuals, small businesses, and landing pages needing a clean, professional online presence without a large budget.',
+        'Ideal for individuals and small businesses who need a clean, professional online presence without a large upfront commitment.',
       color: '#00f2fe',
       popular: false,
       delay: 0,
@@ -909,7 +905,7 @@ export default function Myservice () {
         { label: 'Backend API', included: false },
         { label: 'Database Integration', included: false },
         { label: 'Auth System', included: false },
-        { label: '1 Month Support', included: true }
+        { label: 'Ongoing Support Period', included: true }
       ]
     },
     {
@@ -927,14 +923,14 @@ export default function Myservice () {
         { label: 'Auth + JWT Security', included: true },
         { label: 'Admin Dashboard', included: true },
         { label: 'Real-Time Features', included: false },
-        { label: '3 Months Support', included: true }
+        { label: 'Extended Support Period', included: true }
       ]
     },
     {
       plan: 'Enterprise',
       priceLabel: 'Premium Investment',
       priceNote:
-        'For organizations requiring a complete, scalable, enterprise-grade system with real-time features, CI/CD, security auditing, and long-term support.',
+        'For organisations requiring a complete, scalable, enterprise-grade system with real-time features, CI/CD, security auditing, and long-term dedicated support.',
       color: '#ff277b',
       popular: false,
       delay: 0.3,
@@ -945,7 +941,7 @@ export default function Myservice () {
         { label: 'Performance Optimization', included: true },
         { label: 'CI/CD Pipeline Setup', included: true },
         { label: 'Security Audit', included: true },
-        { label: '6 Months Support', included: true }
+        { label: 'Long-Term Dedicated Support', included: true }
       ]
     }
   ]
@@ -959,7 +955,7 @@ export default function Myservice () {
     {
       q: 'Do you offer post-launch maintenance?',
       delay: 0.1,
-      a: 'Absolutely. I offer ongoing support packages covering bug fixes, feature additions, performance monitoring, and security patches — billed monthly or per-incident.'
+      a: 'Absolutely. I offer ongoing support covering bug fixes, feature additions, performance monitoring, and security patches — available on a continuous basis after every launch.'
     },
     {
       q: 'Can you work with an existing codebase?',
@@ -986,7 +982,7 @@ export default function Myservice () {
   return (
     <div className='myservice-root-container'>
       <Element name='services'>
-        {/* ══════ HERO ══════ */}
+        {/* ── HERO ── */}
         <section className='ms-section ms-hero'>
           <div className='ms-grid-bg' />
           <div className='ms-orb ms-orb-1' />
@@ -1047,7 +1043,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ══════ WHY CHOOSE ME ══════ */}
+        {/* ── WHY CHOOSE ME ── */}
         <section className='ms-section ms-why-section'>
           <div className='ms-inner container'>
             <motion.div
@@ -1074,7 +1070,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ══════ SERVICE CARDS GRID ══════ */}
+        {/* ── CAPABILITIES / CARDS ── */}
         <section className='ms-section ms-cards-section'>
           <div className='ms-inner container'>
             <motion.div
@@ -1087,68 +1083,54 @@ export default function Myservice () {
                 Core <span className='ms-grad-text'>Capabilities</span>
               </h2>
               <p className='ms-section-sub'>
-                Nine pillars of excellence driving every project I build. Click
-                any card to explore full details.
+                Nine pillars of excellence. Click any card to explore full
+                details.
               </p>
             </motion.div>
 
-            {/* Category Filter */}
+            {/* Filter tabs */}
             <div className='ms-filter-row'>
               {categories.map(cat => (
                 <motion.button
                   key={cat}
-                  className={`ms-filter-btn ${
-                    activeFilter === cat ? 'ms-filter-active' : ''
+                  className={`ms-filter-btn${
+                    activeFilter === cat ? ' ms-filter-active' : ''
                   }`}
                   onClick={() => setActiveFilter(cat)}
                   whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.96 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {cat}
                 </motion.button>
               ))}
             </div>
 
-            <motion.div
-              className='myservice-thumbnail'
-              initial='hidden'
-              whileInView='show'
-              viewport={{ once: true, margin: '-50px' }}
-              variants={{
-                hidden: { opacity: 0 },
-                show: { opacity: 1, transition: { staggerChildren: 0.07 } }
-              }}
-            >
-              <AnimatePresence>
-                {filtered.map(s => (
-                  <motion.div
-                    key={s.id}
-                    variants={{
-                      hidden: { opacity: 0, y: 30 },
-                      show: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { type: 'spring', stiffness: 80 }
-                      }
-                    }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                  >
-                    <div onClick={() => setSelectedService(s)}>
-                      <ServiceThumbnail
-                        thumbnailId={s.id}
-                        thumbnailTitle={s.title}
-                        thumbnailDesc={s.desc}
-                        onReadMore={() => setSelectedService(s)}
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+            {/*
+              KEY FIX: plain div grid, no AnimatePresence wrapper.
+              Each card gets key={s.id} so React remounts correctly on filter.
+              Individual motion.div handles fade-in only.
+            */}
+            <div className='myservice-thumbnail'>
+              {filtered.map(s => (
+                <motion.div
+                  key={s.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ServiceThumbnail
+                    thumbnailId={s.id}
+                    thumbnailTitle={s.title}
+                    thumbnailDesc={s.desc}
+                    onReadMore={() => setSelectedService(s)}
+                  />
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* ══════ PROCESS SECTION ══════ */}
+        {/* ── PROCESS ── */}
         <section className='ms-section ms-process-section'>
           <div className='ms-process-bg' />
           <div className='ms-inner container'>
@@ -1184,7 +1166,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ══════ TOOLS / TECH STACK ══════ */}
+        {/* ── TOOLS ── */}
         <section className='ms-section ms-tools-section'>
           <div className='ms-inner container'>
             <motion.div
@@ -1210,7 +1192,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ══════ SERVICE GUARANTEE (replaces Testimonials) ══════ */}
+        {/* ── GUARANTEE ── */}
         <section className='ms-section ms-guarantee-section'>
           <div className='ms-orb ms-orb-1' />
           <div className='ms-inner container'>
@@ -1237,7 +1219,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ══════ PRICING SECTION ══════ */}
+        {/* ── PRICING ── */}
         <section className='ms-section ms-pricing-section'>
           <div className='ms-orb ms-orb-4' />
           <div className='ms-inner container'>
@@ -1252,8 +1234,8 @@ export default function Myservice () {
                 Transparent <span className='ms-grad-text'>Pricing</span>
               </h2>
               <p className='ms-section-sub'>
-                No hidden fees. No surprises. Investment scales with the scope
-                and complexity of your project. Reach out for a tailored quote.
+                No hidden fees. Investment scales with the scope and complexity
+                of your project. Reach out for a tailored quote.
               </p>
             </motion.div>
             <div className='pricing-grid'>
@@ -1264,7 +1246,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ══════ FAQ SECTION ══════ */}
+        {/* ── FAQ ── */}
         <section className='ms-section ms-faq-section'>
           <div className='ms-inner container'>
             <div className='faq-layout'>
@@ -1296,7 +1278,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ══════ CTA BANNER ══════ */}
+        {/* ── CTA ── */}
         <section className='ms-section ms-cta-section'>
           <motion.div
             className='ms-cta-card container'
@@ -1321,7 +1303,7 @@ export default function Myservice () {
               </h2>
               <p className='ms-cta-sub'>
                 Let's turn your vision into a high-performance digital
-                experience. I'm currently available for new projects.
+                experience. Currently available for new projects.
               </p>
               <div className='ms-cta-btns'>
                 <Magnetic>
@@ -1344,7 +1326,7 @@ export default function Myservice () {
         </section>
       </Element>
 
-      {/* ══════ READ MORE MODAL ══════ */}
+      {/* ── MODAL ── */}
       <AnimatePresence>
         {selectedService && (
           <ReadMoreModal
