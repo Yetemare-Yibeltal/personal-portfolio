@@ -1,29 +1,33 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import './ServiceThumbnail.css'
 
-function ServiceThumbnail ({ thumbnailId, thumbnailTitle, thumbnailDesc }) {
+function ServiceThumbnail ({
+  thumbnailId,
+  thumbnailTitle,
+  thumbnailDesc,
+  onReadMore
+}) {
   return (
     <div className='service-container'>
       <div className='service-content-wrapper'>
         <section className='service-thum'>
-          {/* Glowing corner pip — top right decorative dot */}
           <div className='corner-pip' />
-
-          {/* Z+20: Roman numeral with animated gradient */}
           <div className='card-top-accent'>
             <span className='roman-numeral'>{thumbnailId}</span>
           </div>
-
-          {/* Z+40: Title + Description content block */}
           <div className='card-content-block'>
             <h3 className='service-card-title'>{thumbnailTitle}</h3>
             <p className='service-card-desc'>{thumbnailDesc}</p>
           </div>
-
-          {/* Z+65: Highest floating CTA button */}
-          <Link className='read-more-btn' to='/contact'>
+          <button
+            className='read-more-btn'
+            onClick={e => {
+              e.stopPropagation()
+              onReadMore && onReadMore()
+            }}
+          >
             <span>Read more</span>
-          </Link>
+          </button>
         </section>
       </div>
     </div>
