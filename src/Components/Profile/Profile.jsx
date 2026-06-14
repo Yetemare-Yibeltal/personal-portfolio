@@ -606,20 +606,51 @@ function Profile () {
                 ))}
               </div>
 
-              {/* Stats */}
+              {/* ── Option 4: Code-style fun fact line ── */}
               <motion.div
-                className='stats-row'
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.85 }}
+                className='code-fact-line'
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.82, duration: 0.5 }}
               >
-                <StatCounter value={20} label='Projects Done' />
-                <div className='stat-divider' />
-                <StatCounter value={3} label='Yrs Experience' />
-                <div className='stat-divider' />
-                <StatCounter value={10} label='Happy Clients' />
-                <div className='stat-divider' />
-                <StatCounter value={20} label='APIs Built' suffix='+' />
+                <span className='code-keyword'>const</span>
+                <span className='code-var'> developer</span>
+                <span className='code-punct'> = {'{'}</span>
+                <span className='code-key'> passion</span>
+                <span className='code-punct'>:</span>
+                <span className='code-string'> "&#8734;"</span>
+                <span className='code-punct'>,</span>
+                <span className='code-key'> coffee</span>
+                <span className='code-punct'>:</span>
+                <span className='code-string'> "daily"</span>
+                <span className='code-punct'>,</span>
+                <span className='code-key'> bugs</span>
+                <span className='code-punct'>:</span>
+                <span className='code-num'> 0</span>
+                <span className='code-punct'> {'}'}</span>
+              </motion.div>
+
+              {/* ── Option 2: Availability + info strip ── */}
+              <motion.div
+                className='avail-strip'
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.92, duration: 0.5 }}
+              >
+                <span className='avail-strip-item avail-strip-green'>
+                  <span className='avail-strip-dot' />
+                  Available for hire
+                </span>
+                <span className='avail-strip-divider' />
+                <span className='avail-strip-item'>
+                  <span className='avail-strip-icon'>&#9889;</span>
+                  Responds within 24h
+                </span>
+                <span className='avail-strip-divider' />
+                <span className='avail-strip-item'>
+                  <span className='avail-strip-icon'>&#127758;</span>
+                  Remote &amp; On-site
+                </span>
               </motion.div>
 
               {/* CTA Buttons */}
@@ -680,19 +711,6 @@ function Profile () {
                     </span>
                   </button>
                 </MagneticBtn>
-              </motion.div>
-
-              {/* Available for hire badge — standalone, clean placement */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1 }}
-                style={{ marginTop: '1.2rem' }}
-              >
-                <span className='avail-badge'>
-                  <span className='avail-pulse' />
-                  Available for hire
-                </span>
               </motion.div>
             </motion.div>
           </div>
