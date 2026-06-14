@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Element } from 'react-scroll'
+import React, { useState, useEffect, useRef } from 'react'
+import { Element, Link as ScrollLink } from 'react-scroll'
 import {
   motion,
   useMotionValue,
@@ -19,14 +19,12 @@ function CircleCursor () {
   useEffect(() => {
     const move = e => {
       const { clientX: x, clientY: y } = e
-      if (cursorRef.current) {
+      if (cursorRef.current)
         cursorRef.current.style.transform = `translate(${x - 8}px, ${y - 8}px)`
-      }
-      if (followerRef.current) {
+      if (followerRef.current)
         followerRef.current.style.transform = `translate(${x - 20}px, ${
           y - 20
         }px)`
-      }
     }
     const onDown = () => setClicked(true)
     const onUp = () => setClicked(false)
@@ -81,8 +79,8 @@ function CircleCursor () {
           position: 'fixed',
           top: 0,
           left: 0,
-          width: 40,
-          height: 40,
+          width: hovered ? 60 : 40,
+          height: hovered ? 60 : 40,
           borderRadius: '50%',
           border: `2px solid ${hovered ? '#a100ff' : '#00f2fe'}`,
           pointerEvents: 'none',
@@ -90,9 +88,7 @@ function CircleCursor () {
           transition:
             'transform 0.12s ease-out, border-color 0.3s, width 0.3s, height 0.3s, opacity 0.3s',
           willChange: 'transform',
-          opacity: hovered ? 0.8 : 0.5,
-          width: hovered ? 60 : 40,
-          height: hovered ? 60 : 40
+          opacity: hovered ? 0.8 : 0.5
         }}
       />
     </>
@@ -102,7 +98,6 @@ function CircleCursor () {
 /* ─── Particle Canvas Background ─── */
 function ParticleBackground () {
   const canvasRef = useRef(null)
-
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -110,16 +105,13 @@ function ParticleBackground () {
       particles = [],
       W,
       H
-
     const resize = () => {
       W = canvas.width = canvas.offsetWidth
       H = canvas.height = canvas.offsetHeight
     }
     resize()
     window.addEventListener('resize', resize)
-
-    const N = 80
-    for (let i = 0; i < N; i++) {
+    for (let i = 0; i < 80; i++) {
       particles.push({
         x: Math.random() * W,
         y: Math.random() * H,
@@ -129,7 +121,6 @@ function ParticleBackground () {
         hue: Math.random() * 60 + 180
       })
     }
-
     const draw = () => {
       ctx.clearRect(0, 0, W, H)
       particles.forEach(p => {
@@ -139,14 +130,13 @@ function ParticleBackground () {
         if (p.y < 0 || p.y > H) p.vy *= -1
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = `hsla(${p.hue}, 100%, 70%, 0.7)`
+        ctx.fillStyle = `hsla(${p.hue},100%,70%,0.7)`
         ctx.fill()
       })
-      // Connect nearby
-      for (let i = 0; i < N; i++) {
-        for (let j = i + 1; j < N; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
+      for (let i = 0; i < particles.length; i++)
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x,
+            dy = particles[i].y - particles[j].y
           const dist = Math.sqrt(dx * dx + dy * dy)
           if (dist < 110) {
             ctx.beginPath()
@@ -157,7 +147,6 @@ function ParticleBackground () {
             ctx.stroke()
           }
         }
-      }
       animId = requestAnimationFrame(draw)
     }
     draw()
@@ -166,7 +155,6 @@ function ParticleBackground () {
       window.removeEventListener('resize', resize)
     }
   }, [])
-
   return (
     <canvas
       ref={canvasRef}
@@ -183,19 +171,18 @@ function ParticleBackground () {
 }
 
 /* ─── Animated Gradient Text ─── */
-function GradientText ({ children, style = {} }) {
+function GradientText ({ children }) {
   return (
     <span
       style={{
         background:
-          'linear-gradient(270deg, #00f2fe, #a100ff, #ff277b, #4facfe, #00f2fe)',
+          'linear-gradient(270deg,#00f2fe,#a100ff,#ff277b,#4facfe,#00f2fe)',
         backgroundSize: '400% 400%',
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
         color: 'transparent',
         animation: 'gradientFlow 5s ease infinite',
-        display: 'inline-block',
-        ...style
+        display: 'inline-block'
       }}
     >
       {children}
@@ -203,14 +190,14 @@ function GradientText ({ children, style = {} }) {
   )
 }
 
-/* ─── Floating 3D Orbs ─── */
+/* ─── Floating Orb ─── */
 function FloatingOrb ({ style, delay = 0, color = '#00f2fe' }) {
   return (
     <motion.div
       style={{
         position: 'absolute',
         borderRadius: '50%',
-        background: `radial-gradient(circle, ${color}33 0%, transparent 70%)`,
+        background: `radial-gradient(circle,${color}33 0%,transparent 70%)`,
         filter: 'blur(40px)',
         pointerEvents: 'none',
         ...style
@@ -222,32 +209,28 @@ function FloatingOrb ({ style, delay = 0, color = '#00f2fe' }) {
 }
 
 /* ─── Magnetic Button ─── */
-function MagneticBtn ({ children, onClick, style = {} }) {
+function MagneticBtn ({ children, onClick, style = {}, className = '' }) {
   const ref = useRef(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
+  const x = useMotionValue(0),
+    y = useMotionValue(0)
   const sx = useSpring(x, { stiffness: 200, damping: 20 })
   const sy = useSpring(y, { stiffness: 200, damping: 20 })
-
   const onMove = e => {
     const rect = ref.current.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    x.set((e.clientX - cx) * 0.4)
-    y.set((e.clientY - cy) * 0.4)
+    x.set((e.clientX - rect.left - rect.width / 2) * 0.4)
+    y.set((e.clientY - rect.top - rect.height / 2) * 0.4)
   }
-  const onLeave = () => {
-    x.set(0)
-    y.set(0)
-  }
-
   return (
     <motion.button
       ref={ref}
       onMouseMove={onMove}
-      onMouseLeave={onLeave}
+      onMouseLeave={() => {
+        x.set(0)
+        y.set(0)
+      }}
       onClick={onClick}
       style={{ x: sx, y: sy, ...style }}
+      className={className}
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
     >
@@ -261,7 +244,6 @@ function StatCard ({ number, label, icon, color, delay }) {
   const [count, setCount] = useState(0)
   const [inView, setInView] = useState(false)
   const ref = useRef(null)
-
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([e]) => {
@@ -272,22 +254,20 @@ function StatCard ({ number, label, icon, color, delay }) {
     obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
-
   useEffect(() => {
     if (!inView) return
-    let start = 0
     const target = parseInt(number)
     const duration = 1800
-    const step = (timestamp, startTime) => {
-      if (!startTime) startTime = timestamp
-      const progress = Math.min((timestamp - startTime) / duration, 1)
-      setCount(Math.floor(progress * target))
-      if (progress < 1) requestAnimationFrame(ts => step(ts, startTime))
+    const step = (ts, t0) => {
+      if (!t0) t0 = ts
+      const p = Math.min((ts - t0) / duration, 1)
+      setCount(Math.floor(p * target))
+      if (p < 1)
+        setTimeout(() => requestAnimationFrame(t => step(t, t0)), delay * 1000)
       else setCount(target)
     }
-    setTimeout(() => requestAnimationFrame(ts => step(ts, null)), delay * 1000)
+    setTimeout(() => requestAnimationFrame(t => step(t, null)), delay * 1000)
   }, [inView])
-
   return (
     <motion.div
       ref={ref}
@@ -298,7 +278,7 @@ function StatCard ({ number, label, icon, color, delay }) {
       transition={{ delay, duration: 0.5 }}
       whileHover={{ y: -8, boxShadow: `0 20px 40px ${color}33` }}
       style={{
-        background: 'linear-gradient(135deg, #11111a, #1a1a2e)',
+        background: 'linear-gradient(135deg,#11111a,#1a1a2e)',
         border: `1px solid ${color}33`,
         borderRadius: 16,
         padding: '24px 20px',
@@ -306,8 +286,7 @@ function StatCard ({ number, label, icon, color, delay }) {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 8,
-        cursor: 'default',
-        transition: 'box-shadow 0.3s'
+        cursor: 'default'
       }}
     >
       <div style={{ fontSize: 28, marginBottom: 4 }}>{icon}</div>
@@ -316,7 +295,7 @@ function StatCard ({ number, label, icon, color, delay }) {
           fontSize: '2.2rem',
           fontWeight: 900,
           letterSpacing: -1,
-          background: `linear-gradient(135deg, #fff, ${color})`,
+          background: `linear-gradient(135deg,#fff,${color})`,
           WebkitBackgroundClip: 'text',
           backgroundClip: 'text',
           color: 'transparent'
@@ -343,29 +322,26 @@ function StatCard ({ number, label, icon, color, delay }) {
 /* ─── Tilt Image Card ─── */
 function TiltImageCard ({ src }) {
   const ref = useRef(null)
-  const rotX = useMotionValue(0)
-  const rotY = useMotionValue(0)
+  const rotX = useMotionValue(0),
+    rotY = useMotionValue(0)
   const sRotX = useSpring(rotX, { stiffness: 100, damping: 20 })
   const sRotY = useSpring(rotY, { stiffness: 100, damping: 20 })
-
   const onMove = e => {
     const rect = ref.current.getBoundingClientRect()
-    const x = e.clientX - rect.left - rect.width / 2
-    const y = e.clientY - rect.top - rect.height / 2
-    rotX.set((y / (rect.height / 2)) * -18)
-    rotY.set((x / (rect.width / 2)) * 18)
+    rotX.set(
+      ((e.clientY - rect.top - rect.height / 2) / (rect.height / 2)) * -18
+    )
+    rotY.set(((e.clientX - rect.left - rect.width / 2) / (rect.width / 2)) * 18)
   }
-  const onLeave = () => {
-    rotX.set(0)
-    rotY.set(0)
-  }
-
   return (
     <motion.div
       ref={ref}
       className='about-img-frame'
       onMouseMove={onMove}
-      onMouseLeave={onLeave}
+      onMouseLeave={() => {
+        rotX.set(0)
+        rotY.set(0)
+      }}
       style={{
         perspective: 1000,
         transformStyle: 'preserve-3d',
@@ -383,20 +359,19 @@ function TiltImageCard ({ src }) {
           width: '100%',
           height: '100%',
           borderRadius: 24,
-          background: 'linear-gradient(135deg, #00f2fe, #a100ff)',
+          background: 'linear-gradient(135deg,#00f2fe,#a100ff)',
           padding: 3,
           boxShadow: '0 25px 60px rgba(0,242,254,0.2)'
         }}
         whileHover={{ boxShadow: '0 40px 80px rgba(0,242,254,0.4)' }}
       >
-        {/* Shine overlay */}
         <motion.div
           style={{
             position: 'absolute',
             inset: 0,
             borderRadius: 22,
             background:
-              'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%)',
+              'linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 60%)',
             zIndex: 2,
             pointerEvents: 'none',
             rotateX: useTransform(sRotX, v => v * -0.5),
@@ -414,7 +389,6 @@ function TiltImageCard ({ src }) {
             display: 'block'
           }}
         />
-        {/* Floating badge */}
         <motion.div
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
@@ -423,7 +397,7 @@ function TiltImageCard ({ src }) {
             bottom: -18,
             left: '50%',
             transform: 'translateX(-50%)',
-            background: 'linear-gradient(135deg, #00f2fe22, #a100ff22)',
+            background: 'linear-gradient(135deg,#00f2fe22,#a100ff22)',
             backdropFilter: 'blur(16px)',
             border: '1px solid rgba(0,242,254,0.3)',
             borderRadius: 50,
@@ -466,7 +440,7 @@ function TimelineItem ({ year, title, place, color, delay }) {
           minWidth: 48,
           height: 48,
           borderRadius: 12,
-          background: `linear-gradient(135deg, ${color}33, ${color}11)`,
+          background: `linear-gradient(135deg,${color}33,${color}11)`,
           border: `1px solid ${color}44`,
           display: 'flex',
           alignItems: 'center',
@@ -510,12 +484,12 @@ function ServiceCard ({ icon, title, desc, color, delay }) {
       whileHover={{ y: -10, boxShadow: `0 30px 60px ${color}22` }}
       style={{
         background: hov
-          ? `linear-gradient(135deg, #11111a, ${color}11)`
+          ? `linear-gradient(135deg,#11111a,${color}11)`
           : '#11111a',
         border: `1px solid ${hov ? color + '44' : 'rgba(255,255,255,0.05)'}`,
         borderRadius: 20,
         padding: '32px 28px',
-        transition: 'background 0.4s, border-color 0.3s',
+        transition: 'background 0.4s,border-color 0.3s',
         cursor: 'default'
       }}
     >
@@ -546,7 +520,7 @@ function ServiceCard ({ icon, title, desc, color, delay }) {
         animate={{ width: hov ? '100%' : '0%' }}
         style={{
           height: 2,
-          background: `linear-gradient(90deg, ${color}, transparent)`,
+          background: `linear-gradient(90deg,${color},transparent)`,
           marginTop: 20,
           borderRadius: 2
         }}
@@ -617,30 +591,31 @@ export default function About () {
     }
   ]
 
+  /* ── Updated stats: 10+, 8, 3 yrs, 14 skills ── */
   const stats = [
     {
-      number: '50+',
+      number: '10+',
       label: 'Projects Done',
       icon: '🚀',
       color: '#00f2fe',
       delay: 0
     },
     {
-      number: '30+',
+      number: '8+',
       label: 'Happy Clients',
       icon: '😊',
       color: '#a100ff',
       delay: 0.15
     },
     {
-      number: '5+',
+      number: '3+',
       label: 'Years Exp',
       icon: '⚡',
       color: '#ff277b',
       delay: 0.3
     },
     {
-      number: '12+',
+      number: '14+',
       label: 'Tech Skills',
       icon: '🛠',
       color: '#4facfe',
@@ -727,7 +702,16 @@ export default function About () {
   const [activeTab, setActiveTab] = useState('skills')
   const tabs = ['skills', 'experience', 'services']
 
-  /* ─── inject global keyframes ─── */
+  /* ── Download CV handler ── */
+  const handleDownloadCV = () => {
+    const link = document.createElement('a')
+    link.href = `${process.env.PUBLIC_URL}/resume.pdf`
+    link.download = 'Yibeltal_Yitayew_CV.pdf'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   useEffect(() => {
     const style = document.createElement('style')
     style.textContent = `
@@ -735,31 +719,20 @@ export default function About () {
         0%,100%{background-position:0% 50%}
         50%{background-position:100% 50%}
       }
-      @keyframes rotate3d {
-        0%{transform:rotateY(0deg)}
-        100%{transform:rotateY(360deg)}
-      }
-      @keyframes pulseRing {
-        0%{transform:scale(1);opacity:0.6}
-        100%{transform:scale(1.5);opacity:0}
-      }
       * { cursor: none !important; }
-      .about-section-root { font-family: 'Segoe UI', system-ui, sans-serif; }
+      .about-section-root { font-family:'Segoe UI',system-ui,sans-serif; }
       .tab-btn {
-        background: none; border: 1px solid rgba(255,255,255,0.08);
-        color: #7878a0; font-size: 0.9rem; font-weight: 700;
-        padding: 10px 28px; border-radius: 50px; cursor: none;
-        letter-spacing: 1px; text-transform: uppercase;
-        transition: all 0.3s; position: relative; overflow: hidden;
+        background:none; border:1px solid rgba(255,255,255,0.08);
+        color:#7878a0; font-size:0.9rem; font-weight:700;
+        padding:10px 28px; border-radius:50px; cursor:none;
+        letter-spacing:1px; text-transform:uppercase; transition:all 0.3s;
       }
       .tab-btn.active {
-        background: linear-gradient(135deg, #00f2fe22, #a100ff22);
-        border-color: #00f2fe66; color: #00f2fe;
-        box-shadow: 0 0 20px rgba(0,242,254,0.15);
+        background:linear-gradient(135deg,#00f2fe22,#a100ff22);
+        border-color:#00f2fe66; color:#00f2fe;
+        box-shadow:0 0 20px rgba(0,242,254,0.15);
       }
-      .tab-btn:hover:not(.active) {
-        border-color: rgba(255,255,255,0.2); color: #fff;
-      }
+      .tab-btn:hover:not(.active) { border-color:rgba(255,255,255,0.2); color:#fff; }
     `
     document.head.appendChild(style)
     return () => document.head.removeChild(style)
@@ -779,7 +752,6 @@ export default function About () {
           minHeight: '100vh'
         }}
       >
-        {/* ── Animated BG ── */}
         <ParticleBackground />
         <FloatingOrb
           style={{ width: 500, height: 500, top: -100, left: -150 }}
@@ -805,12 +777,12 @@ export default function About () {
             pointerEvents: 'none',
             zIndex: 0,
             backgroundImage:
-              'linear-gradient(rgba(0,242,254,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,242,254,0.03) 1px, transparent 1px)',
+              'linear-gradient(rgba(0,242,254,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,242,254,0.03) 1px,transparent 1px)',
             backgroundSize: '60px 60px'
           }}
         />
 
-        {/* ══════ HERO TITLE ══════ */}
+        {/* ══ HERO TITLE ══ */}
         <motion.div
           style={{
             position: 'relative',
@@ -842,7 +814,7 @@ export default function About () {
           </div>
           <h1
             style={{
-              fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+              fontSize: 'clamp(2.5rem,6vw,5rem)',
               fontWeight: 900,
               lineHeight: 1.1,
               letterSpacing: -2,
@@ -865,14 +837,14 @@ export default function About () {
           </p>
         </motion.div>
 
-        {/* ══════ MAIN CARD: PHOTO + BIO ══════ */}
+        {/* ══ MAIN CARD: PHOTO + BIO ══ */}
         <motion.div
           style={{
             position: 'relative',
             zIndex: 1,
             maxWidth: 1200,
             margin: '0 auto 80px',
-            background: 'linear-gradient(135deg, #11111acc, #0d0d1acc)',
+            background: 'linear-gradient(135deg,#11111acc,#0d0d1acc)',
             backdropFilter: 'blur(20px)',
             border: '1px solid rgba(255,255,255,0.06)',
             borderRadius: 32,
@@ -882,18 +854,17 @@ export default function About () {
             gap: 50,
             alignItems: 'center',
             boxShadow:
-              '0 40px 120px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)'
+              '0 40px 120px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.05)'
           }}
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
-          {/* Photo with floating rings */}
+          {/* Photo */}
           <div
             style={{ position: 'relative', flexShrink: 0, margin: '0 auto' }}
           >
-            {/* Animated rings */}
             {[1, 1.3, 1.6].map((scale, i) => (
               <motion.div
                 key={i}
@@ -930,7 +901,7 @@ export default function About () {
             <TiltImageCard src={aboutImage} />
           </div>
 
-          {/* Bio text */}
+          {/* Bio */}
           <div style={{ flex: '1 1 380px' }}>
             <motion.div
               initial={{ opacity: 0 }}
@@ -959,7 +930,6 @@ export default function About () {
               >
                 Full Stack Developer & UI/UX Enthusiast
               </p>
-
               {[
                 `I'm a passionate <strong style="color:#00f2fe">Full Stack Developer</strong> with a flair for building clean, responsive web experiences that blend design and functionality. With a solid foundation in modern front-end engineering and back-end architecture, I thrive on turning complex ideas into user-friendly digital solutions.`,
                 `I believe great code tells a story — one that's readable, maintainable, and built to last. I'm constantly exploring new tools, frameworks, and <strong style="color:#a100ff">web security architectures</strong> to deliver solutions that are not just functional, but elegant.`,
@@ -990,12 +960,14 @@ export default function About () {
                   marginTop: 28
                 }}
               >
+                {/* Download CV — triggers actual file download */}
                 <MagneticBtn
+                  onClick={handleDownloadCV}
                   style={{
                     padding: '14px 36px',
                     borderRadius: 50,
                     border: 'none',
-                    background: 'linear-gradient(135deg, #00f2fe, #4facfe)',
+                    background: 'linear-gradient(135deg,#00f2fe,#4facfe)',
                     color: '#000',
                     fontWeight: 800,
                     fontSize: '0.95rem',
@@ -1005,25 +977,34 @@ export default function About () {
                 >
                   Download CV ↓
                 </MagneticBtn>
-                <MagneticBtn
-                  style={{
-                    padding: '14px 36px',
-                    borderRadius: 50,
-                    background: 'transparent',
-                    border: '1px solid rgba(0,242,254,0.4)',
-                    color: '#00f2fe',
-                    fontWeight: 800,
-                    fontSize: '0.95rem'
-                  }}
+
+                {/* View Projects — smooth scrolls to portfolio section */}
+                <ScrollLink
+                  to='portfolio'
+                  smooth={true}
+                  duration={600}
+                  offset={-70}
                 >
-                  View Projects →
-                </MagneticBtn>
+                  <MagneticBtn
+                    style={{
+                      padding: '14px 36px',
+                      borderRadius: 50,
+                      background: 'transparent',
+                      border: '1px solid rgba(0,242,254,0.4)',
+                      color: '#00f2fe',
+                      fontWeight: 800,
+                      fontSize: '0.95rem'
+                    }}
+                  >
+                    View Projects →
+                  </MagneticBtn>
+                </ScrollLink>
               </div>
             </motion.div>
           </div>
         </motion.div>
 
-        {/* ══════ STATS ROW ══════ */}
+        {/* ══ STATS ROW — updated numbers ══ */}
         <div
           style={{
             position: 'relative',
@@ -1031,7 +1012,7 @@ export default function About () {
             maxWidth: 1200,
             margin: '0 auto 80px',
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))',
             gap: 20
           }}
         >
@@ -1040,7 +1021,7 @@ export default function About () {
           ))}
         </div>
 
-        {/* ══════ TABBED SECTION ══════ */}
+        {/* ══ TABBED SECTION ══ */}
         <div
           style={{
             position: 'relative',
@@ -1049,7 +1030,6 @@ export default function About () {
             margin: '0 auto'
           }}
         >
-          {/* Tab buttons */}
           <motion.div
             style={{
               display: 'flex',
@@ -1066,7 +1046,7 @@ export default function About () {
               style={{
                 width: '100%',
                 textAlign: 'center',
-                fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+                fontSize: 'clamp(1.8rem,4vw,2.8rem)',
                 fontWeight: 900,
                 letterSpacing: -1,
                 marginBottom: 24
@@ -1078,7 +1058,7 @@ export default function About () {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
+                className={`tab-btn${activeTab === tab ? ' active' : ''}`}
               >
                 {tab === 'skills'
                   ? '⚡ Skills'
@@ -1090,6 +1070,7 @@ export default function About () {
           </motion.div>
 
           <AnimatePresence mode='wait'>
+            {/* Skills tab */}
             {activeTab === 'skills' && (
               <motion.div
                 key='skills'
@@ -1101,7 +1082,7 @@ export default function About () {
                 <div
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))',
                     gap: 16
                   }}
                 >
@@ -1191,6 +1172,7 @@ export default function About () {
               </motion.div>
             )}
 
+            {/* Experience tab */}
             {activeTab === 'experience' && (
               <motion.div
                 key='experience'
@@ -1232,6 +1214,7 @@ export default function About () {
               </motion.div>
             )}
 
+            {/* Services tab */}
             {activeTab === 'services' && (
               <motion.div
                 key='services'
@@ -1241,7 +1224,7 @@ export default function About () {
                 transition={{ duration: 0.4 }}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))',
                   gap: 20
                 }}
               >
@@ -1253,7 +1236,7 @@ export default function About () {
           </AnimatePresence>
         </div>
 
-        {/* ══════ TECH STACK TICKER ══════ */}
+        {/* ══ TECH TICKER ══ */}
         <div
           style={{
             position: 'relative',
