@@ -910,3 +910,137 @@
     display: none;
   }
 }
+
+/* ═══════════════════════════════════════════════
+   CODE FACT LINE  (Option 4)
+═══════════════════════════════════════════════ */
+.code-fact-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 242, 254, 0.1);
+  border-left: 3px solid var(--cyan);
+  border-radius: 8px;
+  line-height: 1.6;
+  max-width: 520px;
+  backdrop-filter: blur(4px);
+}
+@media (max-width: 991px) {
+  .code-fact-line {
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+  }
+}
+
+/* Syntax colour tokens */
+.code-keyword {
+  color: #c792ea;
+} /* purple — const */
+.code-var {
+  color: #82aaff;
+} /* blue — developer */
+.code-punct {
+  color: #89ddff;
+} /* cyan — = { } : , */
+.code-key {
+  color: #f07178;
+} /* red-orange — keys */
+.code-string {
+  color: #c3e88d;
+} /* green — string values */
+.code-num {
+  color: #f78c6c;
+} /* orange — 0 */
+
+/* ═══════════════════════════════════════════════
+   AVAILABILITY STRIP  (Option 2)
+═══════════════════════════════════════════════ */
+.avail-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 1.8rem;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 50px;
+  width: fit-content;
+  max-width: 100%;
+}
+@media (max-width: 991px) {
+  .avail-strip {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (max-width: 520px) {
+  .avail-strip {
+    border-radius: 14px;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 18px;
+  }
+  .avail-strip-divider {
+    display: none;
+  }
+}
+
+.avail-strip-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 0 14px;
+  white-space: nowrap;
+}
+
+/* First item — green "Available" */
+.avail-strip-green {
+  color: #38ef7d;
+}
+
+.avail-strip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38ef7d;
+  box-shadow: 0 0 8px #38ef7d;
+  display: inline-block;
+  flex-shrink: 0;
+  animation: availPulse 1.8s ease-in-out infinite;
+}
+
+.avail-strip-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.avail-strip-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+@keyframes availPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.5);
+  }
+}
