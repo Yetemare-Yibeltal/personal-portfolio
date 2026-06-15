@@ -10,41 +10,6 @@ import {
   AnimatePresence
 } from 'framer-motion'
 
-/* ── Counter ── */
-function Counter ({ target, suffix = '' }) {
-  const [count, setCount] = useState(0)
-  const ref = useRef(null)
-  const [triggered, setTriggered] = useState(false)
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting && !triggered) setTriggered(true)
-      },
-      { threshold: 0.6 }
-    )
-    obs.observe(ref.current)
-    return () => obs.disconnect()
-  }, [])
-  useEffect(() => {
-    if (!triggered) return
-    const duration = 1600
-    const step = (ts, t0) => {
-      if (!t0) t0 = ts
-      const p = Math.min((ts - t0) / duration, 1)
-      setCount(Math.floor(p * target))
-      if (p < 1) requestAnimationFrame(t => step(t, t0))
-      else setCount(target)
-    }
-    requestAnimationFrame(t => step(t, null))
-  }, [triggered])
-  return (
-    <span ref={ref}>
-      {count}
-      {suffix}
-    </span>
-  )
-}
-
 /* ── Magnetic ── */
 function Magnetic ({ children, strength = 0.35 }) {
   const ref = useRef(null)
@@ -160,7 +125,7 @@ function FaqItem ({ q, a, delay }) {
   )
 }
 
-/* ── PricingCard — text only, no numbers/currency ── */
+/* ── PricingCard ── */
 function PricingCard ({
   plan,
   priceLabel,
@@ -274,7 +239,6 @@ function ReadMoreModal ({ service, onClose }) {
           ✕
         </button>
 
-        {/* Header */}
         <div className='rm-header'>
           <span className='rm-numeral'>{service.id}</span>
           <div>
@@ -284,11 +248,8 @@ function ReadMoreModal ({ service, onClose }) {
         </div>
 
         <div className='rm-divider' />
-
-        {/* Main wide description */}
         <p className='rm-full-desc'>{service.fullDesc}</p>
 
-        {/* Included */}
         <p className='rm-section-label'>✦ What's Included</p>
         <ul className='rm-included-list'>
           {service.included.map((item, i) => (
@@ -305,7 +266,6 @@ function ReadMoreModal ({ service, onClose }) {
           ))}
         </ul>
 
-        {/* Tech */}
         <p className='rm-section-label'>🛠 Technologies</p>
         <div className='rm-tech-row'>
           {service.tech.map((t, i) => (
@@ -315,7 +275,6 @@ function ReadMoreModal ({ service, onClose }) {
           ))}
         </div>
 
-        {/* Approach */}
         <p className='rm-section-label'>⚙️ My Approach</p>
         <div className='rm-steps'>
           {service.steps.map((s, i) => (
@@ -719,66 +678,54 @@ export default function Myservice () {
     'DevOps',
     'Delivery'
   ]
-
-  // Simple filter — no AnimatePresence on the grid
   const filtered =
     activeFilter === 'All'
       ? servicesData
       : servicesData.filter(s => s.category === activeFilter)
 
-  const stats = [
-    {
-      val: 50,
-      suf: '+',
-      label: 'Projects Delivered',
-      icon: '🚀',
-      color: '#00f2fe'
-    },
-    { val: 30, suf: '+', label: 'Happy Clients', icon: '🤝', color: '#a100ff' },
-    {
-      val: 5,
-      suf: '+',
-      label: 'Years Experience',
-      icon: '⚡',
-      color: '#ff277b'
-    },
-    {
-      val: 99,
-      suf: '%',
-      label: 'Client Satisfaction',
-      icon: '💎',
-      color: '#4facfe'
-    }
-  ]
-
+  /* ── 6-step process ── */
   const process = [
     {
       number: '01',
       title: 'Discovery',
       color: '#00f2fe',
       delay: 0,
-      desc: 'Deep-dive into your goals, audience, and technical requirements to shape the perfect scope.'
+      desc: 'Deep-dive into your goals, audience, and technical requirements to shape the perfect scope. Every decision starts here.'
     },
     {
       number: '02',
-      title: 'Design',
-      color: '#a100ff',
-      delay: 0.1,
-      desc: 'Wireframes, prototypes, and UI mockups crafted with pixel-precision and your brand voice in mind.'
+      title: 'Planning',
+      color: '#38ef7d',
+      delay: 0.08,
+      desc: 'Architecture decisions, tech stack selection, milestone timelines, and a written spec signed off before any code is written.'
     },
     {
       number: '03',
-      title: 'Development',
-      color: '#ff277b',
-      delay: 0.2,
-      desc: 'Clean, modular code written with modern stacks — React, Node, MongoDB — tested at every step.'
+      title: 'Design',
+      color: '#a100ff',
+      delay: 0.16,
+      desc: 'Wireframes, prototypes, and high-fidelity UI mockups crafted with pixel-precision and your brand voice in mind.'
     },
     {
       number: '04',
+      title: 'Development',
+      color: '#ff277b',
+      delay: 0.24,
+      desc: 'Clean, modular code written with modern stacks — React, Node, MongoDB — reviewed, tested, and iterated at every step.'
+    },
+    {
+      number: '05',
+      title: 'Testing',
+      color: '#f1c40f',
+      delay: 0.32,
+      desc: 'End-to-end QA, cross-browser checks, performance audits, security scans, and UAT with your team before going live.'
+    },
+    {
+      number: '06',
       title: 'Launch',
       color: '#4facfe',
-      delay: 0.3,
-      desc: 'Deployment, performance tuning, SEO optimization, and a full handoff with documentation.'
+      delay: 0.4,
+      desc: 'Production deployment, performance tuning, SEO optimization, and a full handoff with documentation and ongoing support.'
     }
   ]
 
@@ -842,53 +789,51 @@ export default function Myservice () {
     }
   ]
 
-  // Guarantees — no "1 month / 3 month / 6 month" anywhere
   const guarantees = [
     {
       icon: '🛡️',
       title: 'Satisfaction Guaranteed',
       color: '#00f2fe',
       delay: 0,
-      desc: 'If the delivered work does not match the agreed scope and quality, I will revise it at no extra cost until it genuinely meets your expectations. Your satisfaction is the only finish line that matters to me.'
+      desc: 'If the delivered work does not match the agreed scope and quality, I will revise it at no extra cost until it genuinely meets your expectations.'
     },
     {
       icon: '📅',
       title: 'Deadline Commitment',
       color: '#a100ff',
       delay: 0.1,
-      desc: 'Every project comes with a clear written timeline agreed upon before a single line of code is written. I honour every deadline — and if scope changes arise, we discuss them openly before any timeline adjusts.'
+      desc: 'Every project comes with a clear written timeline agreed upon before a single line of code is written. I honour every deadline.'
     },
     {
       icon: '🔁',
       title: 'Continuous Revisions',
       color: '#ff277b',
       delay: 0.2,
-      desc: 'Within the agreed project scope, revisions are a natural part of the process, not an extra charge. I iterate with you through every phase until every detail precisely matches your vision.'
+      desc: 'Within the agreed project scope, revisions are a natural part of the process, not an extra charge. I iterate with you until every detail matches your vision.'
     },
     {
       icon: '🔐',
       title: 'Your Code, Your Property',
       color: '#38ef7d',
       delay: 0.3,
-      desc: 'Full intellectual property ownership transfers to you upon project completion. Your codebase, your assets, your product — with no strings attached, no licensing traps, and no vendor lock-in of any kind.'
+      desc: 'Full intellectual property ownership transfers to you upon project completion — no strings attached, no licensing traps, no vendor lock-in.'
     },
     {
       icon: '📞',
       title: 'Always Reachable',
       color: '#f1c40f',
       delay: 0.4,
-      desc: 'Questions are answered promptly and progress is communicated every week. You will always have a clear, honest picture of where your project stands — no radio silence, no vague updates, ever.'
+      desc: 'Questions are answered promptly and progress is communicated every week. No radio silence, no vague updates, ever.'
     },
     {
       icon: '🚀',
       title: 'Ongoing Post-Launch Care',
       color: '#4facfe',
       delay: 0.5,
-      desc: 'Launching is only the beginning. Every project includes a dedicated post-launch period where I actively monitor performance, resolve any issues that surface, and make quick adjustments to keep everything running smoothly in production.'
+      desc: 'Every project includes a dedicated post-launch period where I actively monitor performance and make quick adjustments to keep everything running smoothly.'
     }
   ]
 
-  // Pricing — text labels only, zero numbers or currency symbols
   const pricing = [
     {
       plan: 'Starter',
@@ -1016,30 +961,35 @@ export default function Myservice () {
               End-to-end digital solutions engineered with precision,
               creativity, and relentless attention to performance.
             </motion.p>
-            <div className='ms-stats-row'>
-              {stats.map((s, i) => (
-                <motion.div
-                  key={i}
-                  className='ms-stat-card'
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: i * 0.1,
-                    type: 'spring',
-                    stiffness: 100
-                  }}
-                  whileHover={{ y: -8, boxShadow: `0 20px 50px ${s.color}33` }}
-                  style={{ '--sc': s.color }}
-                >
-                  <div className='ms-stat-icon'>{s.icon}</div>
-                  <div className='ms-stat-val'>
-                    <Counter target={s.val} suffix={s.suf} />
-                  </div>
-                  <div className='ms-stat-label'>{s.label}</div>
-                </motion.div>
-              ))}
-            </div>
+
+            {/* Value strip — no stats (those live in About Me) */}
+            <motion.div
+              className='ms-value-strip'
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className='ms-value-item'>
+                <span className='ms-value-icon'>⚡</span>
+                <span className='ms-value-text'>Fast Delivery</span>
+              </div>
+              <span className='ms-value-divider' />
+              <div className='ms-value-item'>
+                <span className='ms-value-icon'>🔒</span>
+                <span className='ms-value-text'>Secure by Default</span>
+              </div>
+              <span className='ms-value-divider' />
+              <div className='ms-value-item'>
+                <span className='ms-value-icon'>📐</span>
+                <span className='ms-value-text'>Clean Architecture</span>
+              </div>
+              <span className='ms-value-divider' />
+              <div className='ms-value-item'>
+                <span className='ms-value-icon'>🤝</span>
+                <span className='ms-value-text'>Full Ownership Transfer</span>
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -1070,7 +1020,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ── CAPABILITIES / CARDS ── */}
+        {/* ── CAPABILITIES ── */}
         <section className='ms-section ms-cards-section'>
           <div className='ms-inner container'>
             <motion.div
@@ -1088,7 +1038,6 @@ export default function Myservice () {
               </p>
             </motion.div>
 
-            {/* Filter tabs */}
             <div className='ms-filter-row'>
               {categories.map(cat => (
                 <motion.button
@@ -1105,11 +1054,6 @@ export default function Myservice () {
               ))}
             </div>
 
-            {/*
-              KEY FIX: plain div grid, no AnimatePresence wrapper.
-              Each card gets key={s.id} so React remounts correctly on filter.
-              Individual motion.div handles fade-in only.
-            */}
             <div className='myservice-thumbnail'>
               {filtered.map(s => (
                 <motion.div
@@ -1130,7 +1074,7 @@ export default function Myservice () {
           </div>
         </section>
 
-        {/* ── PROCESS ── */}
+        {/* ── PROCESS (6 steps) ── */}
         <section className='ms-section ms-process-section'>
           <div className='ms-process-bg' />
           <div className='ms-inner container'>
@@ -1145,7 +1089,7 @@ export default function Myservice () {
                 My <span className='ms-grad-text'>Process</span>
               </h2>
               <p className='ms-section-sub'>
-                A proven four-phase workflow that transforms your idea into a
+                A proven six-phase workflow that transforms your idea into a
                 polished digital product.
               </p>
             </motion.div>
@@ -1160,7 +1104,7 @@ export default function Myservice () {
                 initial={{ width: 0 }}
                 whileInView={{ width: '100%' }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.4, ease: 'easeOut' }}
+                transition={{ duration: 1.6, ease: 'easeOut' }}
               />
             </div>
           </div>
@@ -1234,8 +1178,8 @@ export default function Myservice () {
                 Transparent <span className='ms-grad-text'>Pricing</span>
               </h2>
               <p className='ms-section-sub'>
-                No hidden fees. Investment scales with the scope and complexity
-                of your project. Reach out for a tailored quote.
+                No hidden fees. Investment scales with scope and complexity.
+                Reach out for a tailored quote.
               </p>
             </motion.div>
             <div className='pricing-grid'>
