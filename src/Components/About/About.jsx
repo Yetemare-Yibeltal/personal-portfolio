@@ -645,13 +645,6 @@ export default function About () {
       color: '#ff277b',
       delay: 0.2
     },
-    {
-      year: '2018',
-      title: 'BSc Computer Science',
-      place: 'University of Gondar',
-      color: '#4facfe',
-      delay: 0.3
-    }
   ]
 
   const services = [
