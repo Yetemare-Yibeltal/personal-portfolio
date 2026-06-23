@@ -293,7 +293,7 @@ function Header ({ onConnectClick }) {
                   />
                 </div>
                 <div className='brand-name-badge'>
-                  <span className='brand-name-top'>Yetemare</span>
+                  <span className='brand-name-top'>Yibeltal</span>
                   <span className='brand-name-sub'>Full Stack Developer</span>
                 </div>
               </a>

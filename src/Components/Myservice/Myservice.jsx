@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import ServiceThumbnail from './Myservice-thumbnail/ServiceThumbnail'
 import './Myservice-thumbnail/ServiceThumbnail.css'
 import './Myservice.css'
-import { Element } from 'react-scroll'
+import { Element, Link as ScrollLink } from 'react-scroll'
 import {
   motion,
   useMotionValue,
@@ -296,9 +296,16 @@ function ReadMoreModal ({ service, onClose }) {
 
         <div className='rm-cta-row'>
           <Magnetic>
-            <a href='#contact' className='rm-cta-btn' onClick={onClose}>
+            <ScrollLink
+              to='contact'
+              smooth={true}
+              duration={600}
+              offset={-70}
+              className='rm-cta-btn'
+              onClick={onClose}
+            >
               Start This Project →
-            </a>
+            </ScrollLink>
           </Magnetic>
           <span className='rm-avail'>
             <span className='avail-dot' /> Available now
@@ -1208,9 +1215,15 @@ export default function Myservice () {
                   Everything you need to know before we start building together.
                 </p>
                 <Magnetic>
-                  <a href='#contact' className='faq-cta-btn'>
+                  <ScrollLink
+                    to='contact'
+                    smooth={true}
+                    duration={600}
+                    offset={-70}
+                    className='faq-cta-btn'
+                  >
                     Ask Me Anything →
-                  </a>
+                  </ScrollLink>
                 </Magnetic>
               </motion.div>
               <div className='faq-right'>
@@ -1251,14 +1264,26 @@ export default function Myservice () {
               </p>
               <div className='ms-cta-btns'>
                 <Magnetic>
-                  <a href='#contact' className='cta-btn-primary'>
+                  <ScrollLink
+                    to='contact'
+                    smooth={true}
+                    duration={600}
+                    offset={-70}
+                    className='cta-btn-primary'
+                  >
                     Start a Project →
-                  </a>
+                  </ScrollLink>
                 </Magnetic>
                 <Magnetic>
-                  <a href='#portfolio' className='cta-btn-outline'>
+                  <ScrollLink
+                    to='portfolio'
+                    smooth={true}
+                    duration={600}
+                    offset={-70}
+                    className='cta-btn-outline'
+                  >
                     View My Work
-                  </a>
+                  </ScrollLink>
                 </Magnetic>
               </div>
               <div className='ms-cta-avail'>

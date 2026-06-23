@@ -613,14 +613,14 @@ function Profile () {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.82, duration: 0.5 }}
               >
-                <span className='code-keyword'>const</span>
+                <span className='code-keyword'>const &nbsp;</span>
                 <span className='code-var'> developer</span>
                 <span className='code-punct'> = {'{'}</span>
                 <span className='code-key'> passion</span>
                 <span className='code-punct'>:</span>
                 <span className='code-string'> "&#8734;"</span>
                 <span className='code-punct'>,</span>
-                <span className='code-key'> coffee</span>
+                <span className='code-key '> coffee</span>
                 <span className='code-punct'>:</span>
                 <span className='code-string'> "daily"</span>
                 <span className='code-punct'>,</span>

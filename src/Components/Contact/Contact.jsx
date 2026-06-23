@@ -91,7 +91,7 @@ const Contact = forwardRef((props, ref) => {
   const socials = [
     {
       icon: 'bi-linkedin',
-      href: 'https://www.linkedin.com/in/yibeltal-yitayew-7604a4370/',
+      href: 'https://et.linkedin.com/in/yibeltal-yitayew-7604a4370',
       label: 'LinkedIn',
       color: '#0a66c2'
     },

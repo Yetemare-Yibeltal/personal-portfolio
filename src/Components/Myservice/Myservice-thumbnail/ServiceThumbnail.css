@@ -190,6 +190,7 @@
   transition: top 0.45s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 0;
   opacity: 0.92;
+  pointer-events: none;
 }
 
 /* Shimmer overlay */
@@ -318,7 +319,9 @@
 /* Read more button */
 .read-more-btn {
   position: relative;
-  z-index: 3;
+  z-index: 5;
+  pointer-events: auto;
+  isolation: isolate;
   transform: translateZ(65px);
   display: inline-flex;
   align-items: center;
@@ -340,6 +343,7 @@
   content: '';
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background: linear-gradient(
     105deg,
     transparent 35%,

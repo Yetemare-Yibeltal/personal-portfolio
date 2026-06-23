@@ -111,14 +111,13 @@
   z-index: 2;
 }
 
-/* ==========================================================================
+/* ========================================================================
    HEADER
-========================================================================== */
+======================================================================== */
 .ct-head {
   text-align: center;
   margin-bottom: 48px;
 }
-
 .ct-eyebrow {
   display: inline-block;
   font-size: 11px;
@@ -132,7 +131,6 @@
   border-radius: 50px;
   margin-bottom: 18px;
 }
-
 .ct-title {
   font-size: clamp(1.6rem, 4vw, 2.6rem);
   font-weight: 600;
@@ -141,7 +139,6 @@
   letter-spacing: -0.02em;
   margin-bottom: 12px;
 }
-
 .ct-grad {
   background: linear-gradient(
     135deg,
@@ -163,7 +160,6 @@
     background-position: 200% center;
   }
 }
-
 .ct-sub {
   color: var(--ct-md);
   font-size: 0.95rem;
@@ -172,9 +168,9 @@
   line-height: 1.7;
 }
 
-/* ==========================================================================
+/* ========================================================================
    TWO-COLUMN GRID
-========================================================================== */
+======================================================================== */
 .ct-grid {
   display: grid;
   grid-template-columns: 1.35fr 1fr;
@@ -183,7 +179,6 @@
   margin: 0 auto 60px;
 }
 
-/* ── Card base ── */
 .ct-card {
   background: var(--ct-card);
   border: 1px solid var(--ct-border);
@@ -198,7 +193,6 @@
 .ct-card:hover {
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(4, 234, 222, 0.18);
 }
-
 .card-glow {
   position: absolute;
   inset: -1px;
@@ -211,14 +205,13 @@
   pointer-events: none;
 }
 
-/* ==========================================================================
+/* ========================================================================
    FORM CARD
-========================================================================== */
+======================================================================== */
 .ct-form {
   display: flex;
   flex-direction: column;
 }
-
 .f-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -231,7 +224,6 @@
   position: relative;
   margin-bottom: 24px;
 }
-
 .fg label {
   position: absolute;
   top: 12px;
@@ -241,7 +233,6 @@
   pointer-events: none;
   transition: all 0.25s ease;
 }
-
 .fg.active label,
 .fg.filled label {
   top: -9px;
@@ -250,7 +241,6 @@
   text-transform: uppercase;
   color: var(--ct-cyan);
 }
-
 .fg input,
 .fg textarea {
   width: 100%;
@@ -266,13 +256,40 @@
   caret-color: var(--ct-cyan);
   transition: border-color 0.3s;
 }
-
 .fg textarea {
   padding-top: 12px;
 }
-
 .msg-fg {
   margin-bottom: 28px;
+}
+
+/* ── FIX: Kill browser autofill white/yellow background ──────────────────
+   Chrome/Edge/Safari force a white (or pale yellow) background on
+   autofilled inputs via the -webkit-autofill pseudo-class, which
+   completely overrides `background: transparent` above. The trick:
+   use an inset box-shadow painted in our own transparent color and a
+   transition-delay long enough that the browser's forced paint never
+   visibly appears. This makes autofilled fields look identical to
+   manually typed ones. ──────────────────────────────────────────────── */
+.fg input:-webkit-autofill,
+.fg input:-webkit-autofill:hover,
+.fg input:-webkit-autofill:focus,
+.fg input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--ct-hi) !important;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  background-color: transparent !important;
+  caret-color: var(--ct-cyan) !important;
+  transition: background-color 600000s ease-in-out 0s,
+    color 600000s ease-in-out 0s;
+}
+
+/* Firefox autofill normalize */
+.fg input:autofill,
+.fg textarea:autofill {
+  background: transparent !important;
+  color: var(--ct-hi) !important;
+  filter: none;
 }
 
 /* Animated focus line */
@@ -377,15 +394,14 @@
   font-size: 0.9rem;
 }
 
-/* ==========================================================================
+/* ========================================================================
    INFO CARD
-========================================================================== */
+======================================================================== */
 .info-card {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
-
 .i-title {
   font-size: 1rem;
   font-weight: 600;
@@ -394,7 +410,6 @@
   position: relative;
   z-index: 1;
 }
-
 .i-item {
   display: flex;
   align-items: flex-start;
@@ -403,7 +418,6 @@
   position: relative;
   z-index: 1;
 }
-
 .i-icon {
   width: 38px;
   height: 38px;
@@ -422,7 +436,6 @@
   background: rgba(4, 234, 222, 0.22);
   box-shadow: 0 0 16px rgba(4, 234, 222, 0.18);
 }
-
 .i-lbl {
   display: block;
   font-size: 10px;
@@ -431,7 +444,6 @@
   color: var(--ct-lo);
   margin-bottom: 2px;
 }
-
 .i-val {
   display: block;
   font-size: 13px;
@@ -459,7 +471,6 @@ a.i-val:hover {
   z-index: 1;
   margin-top: 4px;
 }
-
 .pdot {
   width: 7px;
   height: 7px;
@@ -530,9 +541,9 @@ a.i-val:hover {
   transform: translateY(22px) rotateX(-90deg);
 }
 
-/* ==========================================================================
+/* ========================================================================
    GRADIENT DIVIDER
-========================================================================== */
+======================================================================== */
 .ct-divider {
   margin: 0 0 40px;
 }
@@ -565,9 +576,9 @@ a.i-val:hover {
   margin-top: -2px;
 }
 
-/* ==========================================================================
+/* ========================================================================
    SOCIAL ICONS
-========================================================================== */
+======================================================================== */
 .ct-socials {
   display: flex;
   justify-content: center;
@@ -576,7 +587,6 @@ a.i-val:hover {
   padding: 0;
   margin: 0 0 36px;
 }
-
 .soc-a {
   position: relative;
   display: flex;
@@ -626,9 +636,9 @@ a.i-val:hover {
   color: var(--acc);
 }
 
-/* ==========================================================================
+/* ========================================================================
    COPYRIGHT
-========================================================================== */
+======================================================================== */
 .ct-copy {
   display: flex;
   justify-content: space-between;
@@ -671,9 +681,9 @@ a.i-val:hover {
   width: 100%;
 }
 
-/* ==========================================================================
+/* ========================================================================
    DEV LOGO
-========================================================================== */
+======================================================================== */
 .ct-dev {
   display: flex;
   justify-content: flex-end;
@@ -752,15 +762,14 @@ a.i-val:hover {
   transform: scale(1.06);
 }
 
-/* ==========================================================================
+/* ========================================================================
    RESPONSIVE
-========================================================================== */
+======================================================================== */
 @media (max-width: 700px) {
   .ct-grid {
     grid-template-columns: 1fr;
   }
 }
-
 @media (max-width: 500px) {
   .f-row {
     grid-template-columns: 1fr;

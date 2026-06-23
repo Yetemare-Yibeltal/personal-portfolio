@@ -634,7 +634,6 @@ export default function About () {
     {
       year: '2022',
       title: 'MERN Stack Developer',
-      place: 'Tech Startup, Addis Ababa',
       color: '#a100ff',
       delay: 0.1
     },
