@@ -1,15 +1,42 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react'
 import { Element } from 'react-scroll'
+import emailjs from '@emailjs/browser'
 import './Contact.css'
+
+/*
+  ╔══════════════════════════════════════════════════════════╗
+  ║  EMAILJS SETUP — do this ONCE at emailjs.com (free)     ║
+  ╠══════════════════════════════════════════════════════════╣
+  ║  1. Sign up at https://www.emailjs.com                   ║
+  ║  2. Add Email Service → connect your Gmail/Outlook       ║
+  ║     → copy the  Service ID  (e.g. "service_abc123")     ║
+  ║  3. Email Templates → Create Template                    ║
+  ║     Use these exact variables in the template body:      ║
+  ║       {{from_name}}   — sender's name                   ║
+  ║       {{from_email}}  — sender's email                  ║
+  ║       {{message}}     — their message                   ║
+  ║     → copy the  Template ID  (e.g. "template_xyz789")   ║
+  ║  4. Account → API Keys → copy your  Public Key          ║
+  ║  5. Paste all three values in the CONFIG block below     ║
+  ╚══════════════════════════════════════════════════════════╝
+*/
+
+/* ── ⚙️  PASTE YOUR EMAILJS CREDENTIALS HERE ── */
+const EMAILJS_SERVICE_ID = 'service_pab231r' 
+const EMAILJS_TEMPLATE_ID = 'template_wuefx5l'
+const EMAILJS_PUBLIC_KEY = '1fQNH9QCOahAGREGi' // e.g. 'aBcDeFgHiJkLmNoP'
+/* ─────────────────────────────────────────────── */
 
 const Contact = forwardRef((props, ref) => {
   const canvasRef = useRef(null)
+  const formRef = useRef(null) // <-- emailjs needs a form ref
   const wrapRef = useRef(null)
+
   const [activeInput, setActiveInput] = useState(null)
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-  const [transmissionStatus, setTransmissionStatus] = useState('IDLE') // IDLE | SUCCESS
+  const [status, setStatus] = useState('IDLE') // IDLE | SENDING | SUCCESS | ERROR
 
-  /* ── Particle canvas ── */
+  /* ── Particle canvas — unchanged ── */
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -19,7 +46,6 @@ const Contact = forwardRef((props, ref) => {
       W = canvas.width = canvas.offsetWidth
       H = canvas.height = canvas.offsetHeight
     }
-
     const init = () => {
       pts = Array.from({ length: 70 }, () => ({
         x: Math.random() * W,
@@ -30,7 +56,6 @@ const Contact = forwardRef((props, ref) => {
         op: Math.random() * 0.45 + 0.1
       }))
     }
-
     const tick = () => {
       ctx.clearRect(0, 0, W, H)
       pts.forEach(p => {
@@ -58,7 +83,6 @@ const Contact = forwardRef((props, ref) => {
       }
       animId = requestAnimationFrame(tick)
     }
-
     resize()
     init()
     tick()
@@ -78,14 +102,30 @@ const Contact = forwardRef((props, ref) => {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = e => {
+  /* ── Real email send via EmailJS ── */
+  const handleSubmit = async e => {
     e.preventDefault()
     if (!formData.name || !formData.email || !formData.message) return
-    setTransmissionStatus('SUCCESS')
-    setTimeout(() => {
-      setTransmissionStatus('IDLE')
-      setFormData({ name: '', email: '', message: '' })
-    }, 3500)
+
+    setStatus('SENDING')
+
+    try {
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_PUBLIC_KEY
+      )
+      setStatus('SUCCESS')
+      setTimeout(() => {
+        setStatus('IDLE')
+        setFormData({ name: '', email: '', message: '' })
+      }, 4000)
+    } catch (err) {
+      console.error('EmailJS error:', err)
+      setStatus('ERROR')
+      setTimeout(() => setStatus('IDLE'), 4000)
+    }
   }
 
   const socials = [
@@ -119,10 +159,7 @@ const Contact = forwardRef((props, ref) => {
     <section ref={ref} id='contact' className='ct-shell'>
       <Element name='contact'>
         <div className='ct-wrap' ref={wrapRef}>
-          {/* Particle canvas */}
           <canvas ref={canvasRef} className='ct-canvas' aria-hidden='true' />
-
-          {/* Ambient blobs */}
           <div className='ct-blob b1' aria-hidden='true' />
           <div className='ct-blob b2' aria-hidden='true' />
           <div className='ct-blob b3' aria-hidden='true' />
@@ -146,8 +183,16 @@ const Contact = forwardRef((props, ref) => {
             <div className='ct-card form-card'>
               <div className='card-glow' />
 
-              {transmissionStatus === 'IDLE' ? (
-                <form onSubmit={handleSubmit} className='ct-form'>
+              {/* ── IDLE / SENDING state: show form ── */}
+              {(status === 'IDLE' || status === 'SENDING') && (
+                /*
+                  IMPORTANT: field `name` attributes must match
+                  the {{variable}} names in your EmailJS template:
+                    name="from_name"   → {{from_name}}
+                    name="from_email"  → {{from_email}}
+                    name="message"     → {{message}}
+                */
+                <form ref={formRef} onSubmit={handleSubmit} className='ct-form'>
                   <div className='f-row'>
                     <div
                       className={`fg ${
@@ -157,7 +202,7 @@ const Contact = forwardRef((props, ref) => {
                       <label>Full name</label>
                       <input
                         type='text'
-                        name='name'
+                        name='from_name' /* ← must match EmailJS template */
                         value={formData.name}
                         onChange={handleInputChange}
                         onFocus={() => setActiveInput('name')}
@@ -167,6 +212,7 @@ const Contact = forwardRef((props, ref) => {
                       />
                       <div className='fline' />
                     </div>
+
                     <div
                       className={`fg ${
                         activeInput === 'email' ? 'active' : ''
@@ -175,7 +221,7 @@ const Contact = forwardRef((props, ref) => {
                       <label>Email address</label>
                       <input
                         type='email'
-                        name='email'
+                        name='from_email' /* ← must match EmailJS template */
                         value={formData.email}
                         onChange={handleInputChange}
                         onFocus={() => setActiveInput('email')}
@@ -194,7 +240,7 @@ const Contact = forwardRef((props, ref) => {
                   >
                     <label>Your message</label>
                     <textarea
-                      name='message'
+                      name='message' /* ← must match EmailJS template */
                       rows={5}
                       value={formData.message}
                       onChange={handleInputChange}
@@ -205,12 +251,30 @@ const Contact = forwardRef((props, ref) => {
                     <div className='fline' />
                   </div>
 
-                  <button className='sbtn' type='submit'>
-                    <span>Send message</span>
-                    <i className='bi bi-send-fill' />
+                  <button
+                    className={`sbtn ${
+                      status === 'SENDING' ? 'sbtn--sending' : ''
+                    }`}
+                    type='submit'
+                    disabled={status === 'SENDING'}
+                  >
+                    {status === 'SENDING' ? (
+                      <>
+                        <span>Sending…</span>
+                        <i className='bi bi-arrow-repeat sbtn-spin' />
+                      </>
+                    ) : (
+                      <>
+                        <span>Send message</span>
+                        <i className='bi bi-send-fill' />
+                      </>
+                    )}
                   </button>
                 </form>
-              ) : (
+              )}
+
+              {/* ── SUCCESS state ── */}
+              {status === 'SUCCESS' && (
                 <div className='ct-success'>
                   <div className='s-icon'>
                     <i className='bi bi-check-circle-fill' />
@@ -219,9 +283,29 @@ const Contact = forwardRef((props, ref) => {
                   <p>I'll get back to you within 24 hours.</p>
                 </div>
               )}
+
+              {/* ── ERROR state ── */}
+              {status === 'ERROR' && (
+                <div className='ct-success ct-error'>
+                  <div className='s-icon s-icon--err'>
+                    <i className='bi bi-x-circle-fill' />
+                  </div>
+                  <h3>Delivery failed</h3>
+                  <p>
+                    Something went wrong. Please try emailing me directly at
+                    <br />
+                    <a
+                      href='mailto:metagesyibeltal540@gmail.com'
+                      className='i-val'
+                    >
+                      metagesyibeltal540@gmail.com
+                    </a>
+                  </p>
+                </div>
+              )}
             </div>
 
-            {/* Info card */}
+            {/* Info card — unchanged */}
             <div className='ct-card info-card'>
               <div className='card-glow' />
               <p className='i-title'>Direct channels</p>
@@ -278,7 +362,6 @@ const Contact = forwardRef((props, ref) => {
                 Available for freelance work
               </div>
 
-              {/* 3D Cube */}
               <div className='cube-wrap' aria-hidden='true'>
                 <div className='cube'>
                   <div className='cf f' />
