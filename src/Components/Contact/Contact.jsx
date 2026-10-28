@@ -3,27 +3,10 @@ import { Element } from 'react-scroll'
 import emailjs from '@emailjs/browser'
 import './Contact.css'
 
-/*
-  ╔══════════════════════════════════════════════════════════╗
-  ║  EMAILJS SETUP — do this ONCE at emailjs.com (free)     ║
-  ╠══════════════════════════════════════════════════════════╣
-  ║  1. Sign up at https://www.emailjs.com                   ║
-  ║  2. Add Email Service → connect your Gmail/Outlook       ║
-  ║     → copy the  Service ID  (e.g. "service_abc123")     ║
-  ║  3. Email Templates → Create Template                    ║
-  ║     Use these exact variables in the template body:      ║
-  ║       {{from_name}}   — sender's name                   ║
-  ║       {{from_email}}  — sender's email                  ║
-  ║       {{message}}     — their message                   ║
-  ║     → copy the  Template ID  (e.g. "template_xyz789")   ║
-  ║  4. Account → API Keys → copy your  Public Key          ║
-  ║  5. Paste all three values in the CONFIG block below     ║
-  ╚══════════════════════════════════════════════════════════╝
-*/
 
-/* ── ⚙️  PASTE YOUR EMAILJS CREDENTIALS HERE ── */
+/* ── ⚙️   EMAILJS CREDENTIALS */
 const EMAILJS_SERVICE_ID = 'service_pab231r' 
-const EMAILJS_TEMPLATE_ID = 'template_wuefx5l'
+const EMAILJS_TEMPLATE_ID = 'template_x0itijg'
 const EMAILJS_PUBLIC_KEY = '1fQNH9QCOahAGREGi' // e.g. 'aBcDeFgHiJkLmNoP'
 /* ─────────────────────────────────────────────── */
 
@@ -295,10 +278,10 @@ const Contact = forwardRef((props, ref) => {
                     Something went wrong. Please try emailing me directly at
                     <br />
                     <a
-                      href='mailto:metagesyibeltal540@gmail.com'
+                      href='mailto:yibeltalyitayew25@gmail.com'
                       className='i-val'
                     >
-                      metagesyibeltal540@gmail.com
+                      yibeltalyitayew25@gmail.com
                     </a>
                   </p>
                 </div>
