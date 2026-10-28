@@ -3,32 +3,41 @@ import { Element } from 'react-scroll'
 import emailjs from '@emailjs/browser'
 import './Contact.css'
 
-
-/* ── ⚙️   EMAILJS CREDENTIALS */
-const EMAILJS_SERVICE_ID = 'service_pab231r' 
+// EmailJS credentials
+const EMAILJS_SERVICE_ID = 'service_pab231r'
 const EMAILJS_TEMPLATE_ID = 'template_x0itijg'
-const EMAILJS_PUBLIC_KEY = '1fQNH9QCOahAGREGi' // e.g. 'aBcDeFgHiJkLmNoP'
-/* ─────────────────────────────────────────────── */
+const EMAILJS_PUBLIC_KEY = '1fQNH9QCOahAGREGi'
 
 const Contact = forwardRef((props, ref) => {
   const canvasRef = useRef(null)
-  const formRef = useRef(null) // <-- emailjs needs a form ref
+  const formRef = useRef(null)
   const wrapRef = useRef(null)
 
   const [activeInput, setActiveInput] = useState(null)
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState('IDLE') // IDLE | SENDING | SUCCESS | ERROR
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  })
+  const [status, setStatus] = useState('IDLE')
 
-  /* ── Particle canvas — unchanged ── */
+  // Animated particle canvas
   useEffect(() => {
     const canvas = canvasRef.current
+    if (!canvas) return
+
     const ctx = canvas.getContext('2d')
-    let animId, W, H, pts
+    if (!ctx) return
+
+    let animId
+    let W, H
+    let pts = []
 
     const resize = () => {
       W = canvas.width = canvas.offsetWidth
       H = canvas.height = canvas.offsetHeight
     }
+
     const init = () => {
       pts = Array.from({ length: 70 }, () => ({
         x: Math.random() * W,
@@ -39,21 +48,27 @@ const Contact = forwardRef((props, ref) => {
         op: Math.random() * 0.45 + 0.1
       }))
     }
+
     const tick = () => {
       ctx.clearRect(0, 0, W, H)
+
       pts.forEach(p => {
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
         ctx.fillStyle = `rgba(4,234,222,${p.op})`
         ctx.fill()
+
         p.x += p.dx
         p.y += p.dy
+
         if (p.x < 0 || p.x > W) p.dx *= -1
         if (p.y < 0 || p.y > H) p.dy *= -1
       })
+
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
           const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y)
+
           if (d < 90) {
             ctx.beginPath()
             ctx.strokeStyle = `rgba(4,234,222,${0.11 * (1 - d / 90)})`
@@ -64,63 +79,91 @@ const Contact = forwardRef((props, ref) => {
           }
         }
       }
+
       animId = requestAnimationFrame(tick)
     }
+
     resize()
     init()
     tick()
+
     const onResize = () => {
       resize()
       init()
     }
+
     window.addEventListener('resize', onResize)
+
     return () => {
       cancelAnimationFrame(animId)
       window.removeEventListener('resize', onResize)
     }
   }, [])
 
+  // Keep React state synchronized with the form fields
   const handleInputChange = e => {
-  const { name, value } = e.target
+    const { name, value } = e.target
 
-  const fieldMap = {
-    from_name: 'name',
-    from_email: 'email',
-    message: 'message'
+    const fieldMap = {
+      from_name: 'name',
+      from_email: 'email',
+      message: 'message'
+    }
+
+    const stateField = fieldMap[name]
+
+    if (!stateField) return
+
+    setFormData(prev => ({
+      ...prev,
+      [stateField]: value
+    }))
   }
 
-  const stateField = fieldMap[name]
-
-  setFormData(prev => ({
-    ...prev,
-    [stateField]: value
-  }))
-}
-
-
-  /* ── Real email send via EmailJS ── */
+  // Send contact form using EmailJS
   const handleSubmit = async e => {
     e.preventDefault()
-    if (!formData.name || !formData.email || !formData.message) return
+
+    if (!formRef.current) return
+
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.message.trim()
+    ) {
+      return
+    }
 
     setStatus('SENDING')
 
     try {
-      await emailjs.sendForm(
+      const response = await emailjs.sendForm(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         formRef.current,
-        EMAILJS_PUBLIC_KEY
+        { publicKey: EMAILJS_PUBLIC_KEY }
       )
+
+      console.log('EmailJS success:', response.status, response.text)
+
       setStatus('SUCCESS')
+
       setTimeout(() => {
         setStatus('IDLE')
-        setFormData({ name: '', email: '', message: '' })
+        setFormData({
+          name: '',
+          email: '',
+          message: ''
+        })
       }, 4000)
     } catch (err) {
       console.error('EmailJS error:', err)
+
       setStatus('ERROR')
-      setTimeout(() => setStatus('IDLE'), 4000)
+
+      setTimeout(() => {
+        setStatus('IDLE')
+      }, 5000)
     }
   }
 
@@ -156,38 +199,33 @@ const Contact = forwardRef((props, ref) => {
       <Element name='contact'>
         <div className='ct-wrap' ref={wrapRef}>
           <canvas ref={canvasRef} className='ct-canvas' aria-hidden='true' />
+
           <div className='ct-blob b1' aria-hidden='true' />
           <div className='ct-blob b2' aria-hidden='true' />
           <div className='ct-blob b3' aria-hidden='true' />
 
-          {/* ── Header ── */}
+          {/* Header */}
           <div className='ct-head'>
             <div className='ct-eyebrow'>Get in touch</div>
+
             <h2 className='ct-title'>
               Let's build something
               <span className='ct-grad'> extraordinary</span>
             </h2>
+
             <p className='ct-sub'>
               Have a project in mind? I'd love to hear about it. Send me a
               message and let's make it happen.
             </p>
           </div>
 
-          {/* ── Two-column grid ── */}
+          {/* Two-column grid */}
           <div className='ct-grid'>
-            {/* Form card */}
+            {/* Contact form card */}
             <div className='ct-card form-card'>
               <div className='card-glow' />
 
-              {/* ── IDLE / SENDING state: show form ── */}
               {(status === 'IDLE' || status === 'SENDING') && (
-                /*
-                  IMPORTANT: field `name` attributes must match
-                  the {{variable}} names in your EmailJS template:
-                    name="from_name"   → {{from_name}}
-                    name="from_email"  → {{from_email}}
-                    name="message"     → {{message}}
-                */
                 <form ref={formRef} onSubmit={handleSubmit} className='ct-form'>
                   <div className='f-row'>
                     <div
@@ -195,10 +233,12 @@ const Contact = forwardRef((props, ref) => {
                         activeInput === 'name' ? 'active' : ''
                       } ${formData.name ? 'filled' : ''}`}
                     >
-                      <label>Full name</label>
+                      <label htmlFor='contact-name'>Full name</label>
+
                       <input
+                        id='contact-name'
                         type='text'
-                        name='from_name' /* ← must match EmailJS template */
+                        name='from_name'
                         value={formData.name}
                         onChange={handleInputChange}
                         onFocus={() => setActiveInput('name')}
@@ -206,6 +246,7 @@ const Contact = forwardRef((props, ref) => {
                         autoComplete='name'
                         required
                       />
+
                       <div className='fline' />
                     </div>
 
@@ -214,10 +255,12 @@ const Contact = forwardRef((props, ref) => {
                         activeInput === 'email' ? 'active' : ''
                       } ${formData.email ? 'filled' : ''}`}
                     >
-                      <label>Email address</label>
+                      <label htmlFor='contact-email'>Email address</label>
+
                       <input
+                        id='contact-email'
                         type='email'
-                        name='from_email' /* ← must match EmailJS template */
+                        name='from_email'
                         value={formData.email}
                         onChange={handleInputChange}
                         onFocus={() => setActiveInput('email')}
@@ -225,6 +268,7 @@ const Contact = forwardRef((props, ref) => {
                         autoComplete='email'
                         required
                       />
+
                       <div className='fline' />
                     </div>
                   </div>
@@ -234,9 +278,11 @@ const Contact = forwardRef((props, ref) => {
                       activeInput === 'message' ? 'active' : ''
                     } ${formData.message ? 'filled' : ''}`}
                   >
-                    <label>Your message</label>
+                    <label htmlFor='contact-message'>Your message</label>
+
                     <textarea
-                      name='message' /* ← must match EmailJS template */
+                      id='contact-message'
+                      name='message'
                       rows={5}
                       value={formData.message}
                       onChange={handleInputChange}
@@ -244,6 +290,7 @@ const Contact = forwardRef((props, ref) => {
                       onBlur={() => setActiveInput(null)}
                       required
                     />
+
                     <div className='fline' />
                   </div>
 
@@ -269,24 +316,27 @@ const Contact = forwardRef((props, ref) => {
                 </form>
               )}
 
-              {/* ── SUCCESS state ── */}
+              {/* Success state */}
               {status === 'SUCCESS' && (
-                <div className='ct-success'>
+                <div className='ct-success' role='status'>
                   <div className='s-icon'>
                     <i className='bi bi-check-circle-fill' />
                   </div>
+
                   <h3>Message sent!</h3>
                   <p>I'll get back to you within 24 hours.</p>
                 </div>
               )}
 
-              {/* ── ERROR state ── */}
+              {/* Error state */}
               {status === 'ERROR' && (
-                <div className='ct-success ct-error'>
+                <div className='ct-success ct-error' role='alert'>
                   <div className='s-icon s-icon--err'>
                     <i className='bi bi-x-circle-fill' />
                   </div>
+
                   <h3>Delivery failed</h3>
+
                   <p>
                     Something went wrong. Please try emailing me directly at
                     <br />
@@ -301,22 +351,25 @@ const Contact = forwardRef((props, ref) => {
               )}
             </div>
 
-            {/* Info card — unchanged */}
+            {/* Direct contact information */}
             <div className='ct-card info-card'>
               <div className='card-glow' />
+
               <p className='i-title'>Direct channels</p>
 
               <div className='i-item'>
                 <div className='i-icon'>
                   <i className='bi bi-envelope-fill' />
                 </div>
+
                 <div>
                   <span className='i-lbl'>Email</span>
+
                   <a
-                    href='mailto:metagesyibeltal540@gmail.com'
+                    href='mailto:yibeltalyitayew25@gmail.com'
                     className='i-val'
                   >
-                    metagesyibeltal540@gmail.com
+                    yibeltalyitayew25@gmail.com
                   </a>
                 </div>
               </div>
@@ -325,8 +378,10 @@ const Contact = forwardRef((props, ref) => {
                 <div className='i-icon'>
                   <i className='bi bi-telephone-fill' />
                 </div>
+
                 <div>
                   <span className='i-lbl'>Phone</span>
+
                   <a href='tel:+251923853252' className='i-val'>
                     +2519 -23 85 32 52
                   </a>
@@ -337,6 +392,7 @@ const Contact = forwardRef((props, ref) => {
                 <div className='i-icon'>
                   <i className='bi bi-geo-alt-fill' />
                 </div>
+
                 <div>
                   <span className='i-lbl'>Location</span>
                   <span className='i-val'>Injibara, Ethiopia 🇪🇹</span>
@@ -347,6 +403,7 @@ const Contact = forwardRef((props, ref) => {
                 <div className='i-icon'>
                   <i className='bi bi-clock-fill' />
                 </div>
+
                 <div>
                   <span className='i-lbl'>Response time</span>
                   <span className='i-val'>Within 24 hours</span>
