@@ -81,9 +81,22 @@ const Contact = forwardRef((props, ref) => {
   }, [])
 
   const handleInputChange = e => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+  const { name, value } = e.target
+
+  const fieldMap = {
+    from_name: 'name',
+    from_email: 'email',
+    message: 'message'
   }
+
+  const stateField = fieldMap[name]
+
+  setFormData(prev => ({
+    ...prev,
+    [stateField]: value
+  }))
+}
+
 
   /* ── Real email send via EmailJS ── */
   const handleSubmit = async e => {
