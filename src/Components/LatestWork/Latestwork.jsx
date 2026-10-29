@@ -10,46 +10,45 @@ import './Latestwork.css'
 ───────────────────────────────────────────── */
 const projectsData = [
   {
-    title: 'Netflix App with React',
+    title: 'Digital Equb Platform',
     tag: 'Full Stack',
     stats: { stars: '24', forks: '8', views: '3.4k' },
-    github: 'https://github.com/Yetemare-Yibeltal',
-    live: 'https://github.com/Yetemare-Yibeltal'
+    github: 'https://github.com/Yetemare-Yibeltal/EQUB-PLATFORM-With-REACT.git',
+    live: 'https://equb-platform-with-react-1.onrender.com'
   },
   {
-    title: 'YouTube Clone',
+    title: 'Github Profile Stastics Viewer',
     tag: 'Frontend',
     stats: { stars: '18', forks: '5', views: '2.7k' },
-    github: 'https://github.com/Yetemare-Yibeltal',
-    live: 'https://github.com/Yetemare-Yibeltal'
+    github: 'https://github.com/Yetemare-Yibeltal/Profile-Statstics-.git',
+    live: 'https://profile-stastics.vercel.app/'
   },
   {
-    title: 'Apple with Bootstrap',
+    title: 'Year Counting App',
     tag: 'UI/UX',
-    stats: { stars: '11', forks: '3', views: '1.9k' },
-    github: 'https://github.com/Yetemare-Yibeltal',
-    live: 'https://github.com/Yetemare-Yibeltal'
+    stats: { stars: '13', forks: '3', views: '132' },
+    github: 'https://github.com/Yetemare-Yibeltal/Year-Counting-app.git',
+    live: 'https://year-counting-app.vercel.app/'
   },
   {
-    title: 'Instagram App',
+    title: 'Clinic Management System',
     tag: 'Full Stack',
-    stats: { stars: '31', forks: '12', views: '4.1k' },
-    github: 'https://github.com/Yetemare-Yibeltal',
-    live: 'https://github.com/Yetemare-Yibeltal'
+    stats: { stars: '21', forks: '12', views: '408' },
+    github: 'https://github.com/Yetemare-Yibeltal/Clinic-Management-System.git',
+    live: 'https://kidus-yared-healthcare-frontend.onrender.com'
   },
   {
-    title: 'Zoom App',
-    tag: 'WebRTC',
+    title: 'Netflix',
+    tag: 'With React Technologies',
     stats: { stars: '15', forks: '6', views: '2.2k' },
-    github: 'https://github.com/Yetemare-Yibeltal',
-    live: 'https://github.com/Yetemare-Yibeltal'
+    github: 'https://github.com/Yetemare-Yibeltal/Netflix-Clone.git',
+    live: 'https://netflix-clone-mu-two-19.vercel.app/'
   },
   {
-    title: 'Weather App',
+    title: 'Inventory Management System',
     tag: 'API Integration',
     stats: { stars: '9', forks: '2', views: '1.5k' },
-    github: 'https://github.com/Yetemare-Yibeltal',
-    live: 'https://github.com/Yetemare-Yibeltal'
+    github: 'https://github.com/Yetemare-Yibeltal/Inventory-supply-chain.git'
   },
   {
     title: 'Scientific Calculator',
@@ -330,7 +329,6 @@ function Latestwork () {
               ))}
             </AnimatePresence>
           </motion.div>
-
           {/* ── SHOW MORE / LESS BUTTON ── */}
           <div className='button-wrapper'>
             <motion.button
