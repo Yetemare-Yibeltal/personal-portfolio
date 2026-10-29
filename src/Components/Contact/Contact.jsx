@@ -167,33 +167,6 @@ const Contact = forwardRef((props, ref) => {
     }
   }
 
-  const socials = [
-    {
-      icon: 'bi-linkedin',
-      href: 'https://et.linkedin.com/in/yibeltal-yitayew-7604a4370',
-      label: 'LinkedIn',
-      color: '#0a66c2'
-    },
-    {
-      icon: 'bi-telegram',
-      href: 'https://t.me/yibeltalyitayew2024',
-      label: 'Telegram',
-      color: '#229ed9'
-    },
-    {
-      icon: 'bi-facebook',
-      href: 'https://web.facebook.com/',
-      label: 'Facebook',
-      color: '#1877f2'
-    },
-    {
-      icon: 'bi-youtube',
-      href: 'https://www.youtube.com/@SelamYibeltal-b4f',
-      label: 'YouTube',
-      color: '#ff0000'
-    }
-  ]
-
   return (
     <section ref={ref} id='contact' className='ct-shell'>
       <Element name='contact'>
